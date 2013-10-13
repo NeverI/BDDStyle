@@ -17,6 +17,7 @@ class TestMain
         runner.add(new ShouldTest());
         runner.add(new ThrowTest());
         runner.add(new StringsTest());
+        runner.add(new NumberTest());
 
         runner.run();
     }
