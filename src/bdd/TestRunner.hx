@@ -2,7 +2,7 @@ package bdd;
 
 class TestRunner
 {
-    public var status:TestStatus;
+    public var currentIt:It;
 
     public function new()
     {
