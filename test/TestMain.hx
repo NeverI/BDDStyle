@@ -1,7 +1,9 @@
 package ;
 
 import haxe.unit.TestRunner;
-import src.bdd.ShouldTest;
+
+import src.bdd.exception.ExceptionTest;
+import src.bdd.expection.*;
 
 class TestMain
 {
@@ -9,9 +11,11 @@ class TestMain
 
     public function new()
     {
-         var runner = new TestRunner();
+        var runner = new TestRunner();
 
+        runner.add(new ExceptionTest());
         runner.add(new ShouldTest());
+        runner.add(new ThrowTest());
 
         runner.run();
     }
