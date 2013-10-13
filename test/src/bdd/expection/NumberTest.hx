@@ -66,6 +66,32 @@ class NumberTest extends TestCase
         this.reporterCalledWithFailure('Not expected to 2 is lower then 10');
     }
 
+    public function testWithin_Success_WhenTheValueIsWhitin():Void
+    {
+        this.target.whitin(5, 20, 10);
+        this.reporterCalledWithSuccess();
+    }
+
+    public function testNotWithin_Success_WhenTheValueIsNotWhitin():Void
+    {
+        this.target.setIsNegated(true);
+        this.target.whitin(-5, -10, -20);
+        this.reporterCalledWithSuccess();
+    }
+
+    public function testWithin_Failure_WhenTheValueIsNotWhitin():Void
+    {
+        this.target.whitin(4.5, -0.7, -0.8);
+        this.reporterCalledWithFailure('Expected -0.8 in range 4.5 - -0.7');
+    }
+
+    public function testNotWithin_Failure_WhenTheValueIsWhitin():Void
+    {
+        this.target.setIsNegated(true);
+        this.target.whitin(1.3, 2, 1.5);
+        this.reporterCalledWithFailure('Not expected to 1.5 in range 1.3 - 2');
+    }
+
     public function testFloatEqual_Success_WhenTheValueIsEqual():Void
     {
         this.target.floatEqual(5.13, 5.1313, 0.002);

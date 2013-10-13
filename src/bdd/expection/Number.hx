@@ -14,6 +14,9 @@ class Number extends Abstract
         this.failureText.set('above', 'Expected %expected% does not greater then %actual%');
         this.failureText.set('not_above', 'Not expected to %actual% is lower then %expected%');
 
+        this.failureText.set('whitin', 'Expected %actual% in range %expected%');
+        this.failureText.set('not_whitin', 'Not expected to %actual% in range %expected%');
+
         this.failureText.set('floatEqual', 'Expected %expected% is not equal with %actual%');
         this.failureText.set('not_floatEqual', 'Not expected to %expected% is equal with %actual%');
 
@@ -40,6 +43,15 @@ class Number extends Abstract
         }
 
         this.failed(this.getFailureText('above', Std.string(expected), Std.string(actual)), pos);
+    }
+
+    public function whitin(above:Float, below:Float, actual:Float, ?pos:PosInfos):Void
+    {
+        if (this.condition(actual > above && actual < below)) {
+            return this.succeed(pos);
+        }
+
+        this.failed(this.getFailureText('whitin', Std.string(above)+' - '+Std.string(below), Std.string(actual)), pos);
     }
 
     public function floatEqual(expected:Float, actual:Float, margin:Float = 0.00001, ?pos:PosInfos):Void
