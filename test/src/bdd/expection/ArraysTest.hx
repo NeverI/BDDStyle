@@ -30,14 +30,14 @@ class ArraysTest extends TestCase
     public function testEmpty_Failure_WhenTheValueIsNotEmpty():Void
     {
         this.target.empty([1,2,3]);
-        this.reporterCalledWithFailure('Expected array not be empty got 3');
+        this.reporterCalledWithFailure('Expected not be empty got 3');
     }
 
     public function testNotEmpty_Failure_WhenTheValueIsEmpty():Void
     {
         this.target.setIsNegated(true);
         this.target.empty([]);
-        this.reporterCalledWithFailure('Not expected array to be empty');
+        this.reporterCalledWithFailure('Not expected to be empty');
     }
 
     public function testLength_Success_WhenTheLengthIsEqual():Void
@@ -139,6 +139,38 @@ class ArraysTest extends TestCase
         this.target.last('a', 'alma');
         this.reporterCalledWithFailure('Object is not iterable: alma');
     }
+
+    public function testContains_Success_WhenTheValueIsIn():Void
+    {
+        this.target.contains('bar', new IteratorClass());
+        this.reporterCalledWithSuccess();
+    }
+
+    public function testNotContains_Success_WhenTheValueIsNotIn():Void
+    {
+        this.target.setIsNegated(true);
+        this.target.contains(3, []);
+        this.reporterCalledWithSuccess();
+    }
+
+    public function testContains_Failure_WhenTheValueIsNotIn():Void
+    {
+        this.target.contains(5, [1,2,3]);
+        this.reporterCalledWithFailure('Expected contains 5 element in [1,2,3]');
+    }
+
+    public function testNotContains_Failure_WhenTheValueIsIn():Void
+    {
+        this.target.setIsNegated(true);
+        this.target.contains('foo', new Iterable());
+        this.reporterCalledWithFailure('Not expected to contains the foo in { props => [bar,foo], cursor => 2 }');
+    }
+
+    public function testContains_Failure_WhenTheValueIsNotItarable():Void
+    {
+        this.target.contains('a', 'alma');
+        this.reporterCalledWithFailure('Object is not iterable: alma');
+    }
 }
 
 class IteratorClass
@@ -157,7 +189,7 @@ class IteratorClass
 
 class Iterable
 {
-    public var props:Array<String>;
+    public var props:Array<Dynamic>;
     public var cursor:Int;
 
     public function new(){

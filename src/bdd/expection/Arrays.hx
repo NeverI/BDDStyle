@@ -8,8 +8,8 @@ class Arrays extends Abstract
     {
         super();
 
-        this.failureText.set('empty', 'Expected array not be empty got %actual%');
-        this.failureText.set('not_empty', 'Not expected array to be empty');
+        this.failureText.set('empty', 'Expected not be empty got %actual%');
+        this.failureText.set('not_empty', 'Not expected to be empty');
 
         this.failureText.set('length', 'Expected length %expected% not match with %actual%');
         this.failureText.set('not_length', 'Not expected the length to be the same: %actual%');
@@ -22,6 +22,9 @@ class Arrays extends Abstract
 
         this.failureText.set('last', 'Expected last %expected% element not match with %actual%');
         this.failureText.set('not_last', 'Not expected the last element to be the same: %actual%');
+
+        this.failureText.set('contains', 'Expected contains %expected% element in %actual%');
+        this.failureText.set('not_contains', 'Not expected to contains the %expected% in %actual%');
     }
 
     public function empty(actual:Dynamic, ?pos:PosInfos):Void
@@ -116,5 +119,27 @@ class Arrays extends Abstract
     public function last(expected:Dynamic, actual:Dynamic, ?pos:PosInfos):Void
     {
         this.expectXElement(-1, expected, actual, 'last', pos);
+    }
+
+    public function contains(expected:Dynamic, actual:Dynamic, ?pos:PosInfos):Void
+    {
+        var iterator:Iterator<Dynamic> = this.getIterable(actual);
+        if (iterator == null) {
+            return this.failed('Object is not iterable: ' + Std.string(actual), pos);
+        }
+
+        var found:Bool = false;
+        while(iterator.hasNext()) {
+            if (iterator.next() == expected) {
+                found = true;
+                break;
+            }
+        }
+
+        if (this.condition(found)) {
+            return this.succeed(pos);
+        }
+
+        this.failed(this.getFailureText('contains', Std.string(expected), Std.string(actual)), pos);
     }
 }
