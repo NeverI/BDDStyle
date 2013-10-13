@@ -11,16 +11,7 @@ module.exports = function(grunt) {
 
     exec: {
         compileNeko: {
-            command: 'haxe bdd.hxml neko',
-            stdout:false,
-            stderr:false,
-            exitCode: 1,
-            callback: function(err, stdout, stderr)
-            {
-                if (stderr != 'Error: Class name must start with uppercase character\n') {
-                    grunt.fail.warn(stderr);
-                }
-            }
+            command: 'haxe -main TestMain -lib mockatoo -cp src -cp test -neko build/neko_test.n'
         },
         runNeko: {
             command: 'neko build/neko_test.n',
