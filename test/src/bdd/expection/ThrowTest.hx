@@ -52,37 +52,43 @@ class ThrowTest extends TestCase
 
     public function testNotThrow_CallTheReporterWith_Sucess_WhenNotThrowAndNothingToExpected():Void
     {
-        this.target.notThrows(function(){ var a = 0; });
+        this.target.setIsNegated(true);
+        this.target.throws(function(){ var a = 0; });
         this.reporterCalledWithSuccess();
     }
 
     public function testNotThrow_CallTheReporterWith_Failure_WhenThrowAndNothingToExpexted():Void
     {
-        this.target.notThrows(function(){ throw  'alma'; });
+        this.target.setIsNegated(true);
+        this.target.throws(function(){ throw  'alma'; });
         this.reporterCalledWithFailure('Not expected an exception throwed');
     }
 
     public function testNotThrow_CallTheReporterWith_Sucess_WhenTheExpectsIsStringAndNotMatch():Void
     {
-        this.target.notThrows(function(){ throw  'alma'; }, 'korte');
+        this.target.setIsNegated(true);
+        this.target.throws(function(){ throw  'alma'; }, 'korte');
         this.reporterCalledWithSuccess();
     }
 
     public function testNotThrow_CallTheReporterWith_Failure_WhenTheExpectsIsStringAndMatch():Void
     {
-        this.target.notThrows(function(){ throw  'alma'; }, 'alma');
+        this.target.setIsNegated(true);
+        this.target.throws(function(){ throw  'alma'; }, 'alma');
         this.reporterCalledWithFailure('Not expected to throw the same string: alma');
     }
 
     public function testnotThrow_CallTheReporterWith_Success_WhenThrowedNotTheGivenType():Void
     {
-        this.target.notThrows(function(){ throw  'alma'; }, TestCase);
+        this.target.setIsNegated(true);
+        this.target.throws(function(){ throw  'alma'; }, TestCase);
         this.reporterCalledWithSuccess();
     }
 
     public function testNotThrow_CallTheReporterWith_Failue_WhenThrowedTheGivenType():Void
     {
-        this.target.notThrows(function(){ throw  'alma'; }, String);
-        this.reporterCalledWithFailure('Not Expected to throw the same type: String');
+        this.target.setIsNegated(true);
+        this.target.throws(function(){ throw  'alma'; }, String);
+        this.reporterCalledWithFailure('Not expected to throw the same type: String');
     }
 }

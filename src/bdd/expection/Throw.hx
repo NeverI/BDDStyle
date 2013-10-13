@@ -4,21 +4,46 @@ import haxe.PosInfos;
 
 class Throw extends Abstract
 {
+    public function new()
+    {
+        super();
+
+        this.failureText.set('throw', 'Expected exception not throwed');
+        this.failureText.set('not_throw', 'Not expected an exception throwed');
+
+        this.failureText.set('string', 'Expected exception %expected% but got %actual%');
+        this.failureText.set('not_string', 'Not expected to throw the same string: %actual%');
+
+        this.failureText.set('type', 'Expected exception type is %expected% but got %actual%');
+        this.failureText.set('not_type', 'Not expected to throw the same type: %actual%');
+    }
+
     public function throws(method: Void->Void, ?expected:Dynamic, ?pos:PosInfos):Void
     {
+        var throwed:Bool = false;
+        var exception:Dynamic = null;
+
         try {
             method();
         } catch (e:Dynamic) {
-            return this.verify(e, expected);
+            throwed = true;
+            exception = e;
         }
 
-        this.reportFailed('Expected exception not throwed');
+        if (throwed) {
+            return this.verify(exception, expected);
+
+        } else if (this.isNegated) {
+            return this.reportSucceed();
+        }
+
+        this.reportFailed(this.getFailureText('throw'));
     }
 
     private function verify(actual:Dynamic, ?expected:Dynamic):Void
     {
         if (expected == null) {
-            return this.reportSucceed();
+            return this.verifyNullType();
         }
 
         if (Std.is(expected, String)) {
@@ -28,13 +53,24 @@ class Throw extends Abstract
         this.verifyType(actual, expected);
     }
 
-    private function verifyString(actual:String, expected:String):Void
+    private function verifyNullType():Void
     {
-        if (this.stringSame(actual, expected)) {
+        if (!this.isNegated) {
             return this.reportSucceed();
         }
 
-        this.reportFailed('Expected exception ' + expected + ' but got ' + actual);
+        if (this.isNegated) {
+            return this.reportFailed(this.getFailureText('throw'));
+        }
+    }
+
+    private function verifyString(actual:String, expected:String):Void
+    {
+        if (this.condition(this.stringSame(actual, expected))) {
+            return this.reportSucceed();
+        }
+
+        this.reportFailed(this.getFailureText('string', expected, actual));
     }
 
     private function stringSame(actual:String, expected:String):Bool
@@ -44,55 +80,13 @@ class Throw extends Abstract
 
     private function verifyType(actual:Dynamic, expected:Dynamic):Void
     {
-        if (Std.is(actual, expected)) {
+        if (this.condition(Std.is(actual, expected))) {
             return this.reportSucceed();
         }
 
         var actualType = Type.getClassName(Type.getClass(actual));
         var expectedType = Type.getClassName(expected);
 
-        this.reportFailed('Expected exception type is ' + expectedType + ' but got ' + actualType);
-    }
-
-    public function notThrows(method: Void->Void, ?expected:Dynamic, ?pos:PosInfos):Void
-    {
-        try {
-            method();
-        } catch (e:Dynamic) {
-            return this.notVerification(e, expected);
-        }
-
-        this.reportSucceed();
-    }
-
-    private function notVerification(actual:Dynamic, expected:Dynamic):Void
-    {
-        if (expected == null) {
-            return this.reportFailed('Not expected an exception throwed');
-        }
-
-        if (Std.is(expected, String)) {
-            return this.notVerificationString(actual, expected);
-        }
-
-        this.notVerificationType(actual, expected);
-    }
-
-    private function notVerificationString(actual:String, expected:String):Void
-    {
-        if (!this.stringSame(actual, expected)) {
-            this.reportSucceed();
-        }
-
-        return this.reportFailed('Not expected to throw the same string: ' + actual);
-    }
-
-    private function notVerificationType(actual:Dynamic, expected:Dynamic):Void
-    {
-        if (!Std.is(actual, expected)) {
-            return this.reportSucceed();
-        }
-
-        this.reportFailed('Not Expected to throw the same type: ' + Type.getClassName(expected));
+        this.reportFailed(this.getFailureText('type', expectedType, actualType));
     }
 }
