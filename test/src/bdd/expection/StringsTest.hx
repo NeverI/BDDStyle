@@ -66,9 +66,6 @@ class StringsTest extends TestCase
         this.reporterCalledWithFailure('Not expected to alma started with al');
     }
 
-
-
-
     public function testEndWith_Success_WhenTheActualEndedWith():Void
     {
         this.target.endWith('ma', 'alma');
