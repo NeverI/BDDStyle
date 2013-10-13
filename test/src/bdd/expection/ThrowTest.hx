@@ -32,7 +32,7 @@ class ThrowTest extends TestCase
         this.reporterCalledWithSuccess();
     }
 
-    public function testThrow_CallTheReporterWith_Failue_WhenTheExpectsIsStringAndDoesNotMatch():Void
+    public function testThrow_CallTheReporterWith_Failure_WhenTheExpectsIsStringAndDoesNotMatch():Void
     {
         this.target.throws(function(){ throw  'alma'; }, 'korte');
         this.reporterCalledWithFailure('Expected exception korte but got alma');
@@ -44,7 +44,7 @@ class ThrowTest extends TestCase
         this.reporterCalledWithSuccess();
     }
 
-    public function testThrow_CallTheReporterWith_Failue_WhenNotThrowedTheGivenType():Void
+    public function testThrow_CallTheReporterWith_Failure_WhenNotThrowedTheGivenType():Void
     {
         this.target.throws(function(){ throw  'alma'; }, TestCase);
         this.reporterCalledWithFailure('Expected exception type is src.bdd.expection.TestCase but got String');
@@ -85,7 +85,7 @@ class ThrowTest extends TestCase
         this.reporterCalledWithSuccess();
     }
 
-    public function testNotThrow_CallTheReporterWith_Failue_WhenThrowedTheGivenType():Void
+    public function testNotThrow_CallTheReporterWith_Failure_WhenThrowedTheGivenType():Void
     {
         this.target.setIsNegated(true);
         this.target.throws(function(){ throw  'alma'; }, String);
