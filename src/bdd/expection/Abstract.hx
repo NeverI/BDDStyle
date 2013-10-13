@@ -25,22 +25,22 @@ class Abstract
         this.isNegated = value;
     }
 
-    private function reportSucceed(?pos:PosInfos)
+    private function succeed(?pos:PosInfos)
     {
         this.reporter.report(Result.Success(pos));
     }
 
-    private function reportFailed(msg:String, ?pos:PosInfos)
+    private function failed(msg:String, ?pos:PosInfos)
     {
         this.reporter.report(Result.Failure(msg, pos));
     }
 
-    private function reportError(e:bdd.exception.Expect)
+    private function error(e:bdd.exception.Expect)
     {
         this.reporter.report(Result.Error(e));
     }
 
-    private function reportWarrning(msg:String)
+    private function warrning(msg:String)
     {
         this.reporter.report(Result.Warning(msg));
     }

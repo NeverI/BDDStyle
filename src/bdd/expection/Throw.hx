@@ -31,46 +31,46 @@ class Throw extends Abstract
         }
 
         if (throwed) {
-            return this.verify(exception, expected);
+            return this.verify(exception, expected, pos);
 
         } else if (this.isNegated) {
-            return this.reportSucceed();
+            return this.succeed(pos);
         }
 
-        this.reportFailed(this.getFailureText('throw'));
+        this.failed(this.getFailureText('throw'), pos);
     }
 
-    private function verify(actual:Dynamic, ?expected:Dynamic):Void
+    private function verify(actual:Dynamic, ?expected:Dynamic, pos:PosInfos):Void
     {
         if (expected == null) {
-            return this.verifyNullType();
+            return this.verifyNullType(pos);
         }
 
         if (Std.is(expected, String)) {
-            return this.verifyString(actual, expected);
+            return this.verifyString(actual, expected, pos);
         }
 
-        this.verifyType(actual, expected);
+        this.verifyType(actual, expected, pos);
     }
 
-    private function verifyNullType():Void
+    private function verifyNullType(pos:PosInfos):Void
     {
         if (!this.isNegated) {
-            return this.reportSucceed();
+            return this.succeed(pos);
         }
 
         if (this.isNegated) {
-            return this.reportFailed(this.getFailureText('throw'));
+            return this.failed(this.getFailureText('throw'), pos);
         }
     }
 
-    private function verifyString(actual:String, expected:String):Void
+    private function verifyString(actual:String, expected:String, pos:PosInfos):Void
     {
         if (this.condition(this.stringSame(actual, expected))) {
-            return this.reportSucceed();
+            return this.succeed(pos);
         }
 
-        this.reportFailed(this.getFailureText('string', expected, actual));
+        this.failed(this.getFailureText('string', expected, actual), pos);
     }
 
     private function stringSame(actual:String, expected:String):Bool
@@ -78,15 +78,15 @@ class Throw extends Abstract
         return new EReg(expected, '').match(actual);
     }
 
-    private function verifyType(actual:Dynamic, expected:Dynamic):Void
+    private function verifyType(actual:Dynamic, expected:Dynamic, pos:PosInfos):Void
     {
         if (this.condition(Std.is(actual, expected))) {
-            return this.reportSucceed();
+            return this.succeed(pos);
         }
 
         var actualType = Type.getClassName(Type.getClass(actual));
         var expectedType = Type.getClassName(expected);
 
-        this.reportFailed(this.getFailureText('type', expectedType, actualType));
+        this.failed(this.getFailureText('type', expectedType, actualType), pos);
     }
 }

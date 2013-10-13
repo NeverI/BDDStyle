@@ -25,7 +25,7 @@ class ShouldTest extends TestCase
 
     public function testSucceed_CallTheReporterWithSuccess():Void
     {
-        this.target.succeed();
+        this.target.success();
         this.reporterCalledWithSuccess();
     }
 }

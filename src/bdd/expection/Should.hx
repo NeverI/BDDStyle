@@ -4,13 +4,13 @@ import haxe.PosInfos;
 
 class Should extends Abstract
 {
-    public function succeed(?pos:PosInfos):Void
+    public function success(?pos:PosInfos):Void
     {
-        this.reportSucceed(pos);
+        this.succeed(pos);
     }
 
     public function fail(msg:String = 'Fail anyway', ?pos:PosInfos):Void
     {
-        this.reportFailed(msg);
+        this.failed(msg, pos);
     }
 }
