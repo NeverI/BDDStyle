@@ -1,10 +1,11 @@
-package bdd;
+package bdd.expection;
 
 import haxe.PosInfos;
+import bdd.exception.Expect;
 
-enum ShouldResult {
+enum Result {
     Success(pos : PosInfos);
     Failure(msg : String, ?pos : PosInfos);
-    Error  (e : Dynamic);
+    Error  (e : Expect);
     Warning(msg : String);
 }
