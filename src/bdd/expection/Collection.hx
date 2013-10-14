@@ -2,7 +2,7 @@ package bdd.expection;
 
 import haxe.PosInfos;
 
-class Arrays extends Abstract
+class Collection extends Abstract
 {
     public function new()
     {

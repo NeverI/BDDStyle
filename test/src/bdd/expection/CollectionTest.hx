@@ -1,16 +1,16 @@
 package src.bdd.expection;
 
-import bdd.expection.Arrays;
+import bdd.expection.Collection;
 
-class ArraysTest extends TestCase
+class CollectionTest extends TestCase
 {
-    private var target:Arrays;
+    private var target:Collection;
 
     override public function setup():Void
     {
         super.setup();
 
-        this.target = new Arrays();
+        this.target = new Collection();
         this.target.setReporter(this.reporter);
     }
 
