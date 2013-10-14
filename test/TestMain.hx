@@ -19,6 +19,7 @@ class TestMain
         runner.add(new StringsTest());
         runner.add(new NumberTest());
         runner.add(new CollectionTest());
+        runner.add(new TypesTest());
 
         runner.run();
     }
