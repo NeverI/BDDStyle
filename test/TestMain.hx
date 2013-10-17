@@ -19,7 +19,8 @@ class TestMain
         runner.add(new StringsTest());
         runner.add(new NumberTest());
         runner.add(new CollectionTest());
-        runner.add(new TypesTest());
+        runner.add(new ATest());
+        runner.add(new AnTest());
 
         runner.run();
     }
