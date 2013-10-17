@@ -21,6 +21,7 @@ class TestMain
         runner.add(new CollectionTest());
         runner.add(new ATest());
         runner.add(new AnTest());
+        runner.add(new BeTest());
 
         runner.run();
     }
