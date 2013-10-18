@@ -24,6 +24,8 @@ class TestMain
         runner.add(new BeTest());
         runner.add(new ObjectTest());
 
+        runner.add(new CompositeShouldTest());
+
         runner.run();
     }
 }
