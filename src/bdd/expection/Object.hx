@@ -4,9 +4,9 @@ import haxe.PosInfos;
 
 class Object extends Abstract
 {
-    public function new()
+    public function new(reporter:ItReporter, isNegated:Bool = false)
     {
-        super();
+        super(reporter, isNegated);
 
         this.failureText.set('property', 'Expected object have a property %expected%');
         this.failureText.set('not_property', 'Not expected object have property %expected%');

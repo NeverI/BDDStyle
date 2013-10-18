@@ -5,13 +5,14 @@ import bdd.expection.Number;
 class NumberTest extends TestCase
 {
     private var target:Number;
+    private var notTarget:Number;
 
     override public function setup():Void
     {
         super.setup();
 
-        this.target = new Number();
-        this.target.setReporter(this.reporter);
+        this.target = new Number(this.reporter);
+        this.notTarget = new Number(this.reporter, true);
     }
 
     public function testBelow_Success_WhenTheValueIsBelow():Void
@@ -22,8 +23,7 @@ class NumberTest extends TestCase
 
     public function testNotBelow_Success_WhenTheValueIsNotBelow():Void
     {
-        this.target.setIsNegated(true);
-        this.target.below(-5, -10);
+        this.notTarget.below(-5, -10);
         this.reporterCalledWithSuccess();
     }
 
@@ -35,8 +35,7 @@ class NumberTest extends TestCase
 
     public function testNotBelow_Failure_WhenTheValueIsBelow():Void
     {
-        this.target.setIsNegated(true);
-        this.target.below(1.3, 2);
+        this.notTarget.below(1.3, 2);
         this.reporterCalledWithFailure('Not expected to 2 is greater then 1.3');
     }
 
@@ -48,8 +47,7 @@ class NumberTest extends TestCase
 
     public function testNotAbove_Success_WhenTheValueIsNotAbove():Void
     {
-        this.target.setIsNegated(true);
-        this.target.above(0, 2);
+        this.notTarget.above(0, 2);
         this.reporterCalledWithSuccess();
     }
 
@@ -61,8 +59,7 @@ class NumberTest extends TestCase
 
     public function testNotAbove_Failure_WhenTheValueIsAbove():Void
     {
-        this.target.setIsNegated(true);
-        this.target.above(10, 2);
+        this.notTarget.above(10, 2);
         this.reporterCalledWithFailure('Not expected to 2 is lower then 10');
     }
 
@@ -74,8 +71,7 @@ class NumberTest extends TestCase
 
     public function testNotWithin_Success_WhenTheValueIsNotWhitin():Void
     {
-        this.target.setIsNegated(true);
-        this.target.whitin(-5, -10, -20);
+        this.notTarget.whitin(-5, -10, -20);
         this.reporterCalledWithSuccess();
     }
 
@@ -87,8 +83,7 @@ class NumberTest extends TestCase
 
     public function testNotWithin_Failure_WhenTheValueIsWhitin():Void
     {
-        this.target.setIsNegated(true);
-        this.target.whitin(1.3, 2, 1.5);
+        this.notTarget.whitin(1.3, 2, 1.5);
         this.reporterCalledWithFailure('Not expected to 1.5 in range 1.3 - 2');
     }
 
@@ -100,8 +95,7 @@ class NumberTest extends TestCase
 
     public function testNotFloatEqual_Success_WhenTheValueIsNotEqual():Void
     {
-        this.target.setIsNegated(true);
-        this.target.floatEqual(5.2, 5.1313, 0.002);
+        this.notTarget.floatEqual(5.2, 5.1313, 0.002);
         this.reporterCalledWithSuccess();
     }
 
@@ -113,8 +107,7 @@ class NumberTest extends TestCase
 
     public function testNotFloatEqual_Failure_WhenTheValueIsEqual():Void
     {
-        this.target.setIsNegated(true);
-        this.target.floatEqual(-0.7002, -0.7, 0.01);
+        this.notTarget.floatEqual(-0.7002, -0.7, 0.01);
         this.reporterCalledWithFailure('Not expected to -0.7002 is equal with -0.7');
     }
 
@@ -126,8 +119,7 @@ class NumberTest extends TestCase
 
     public function testNotNaN_Success_WhenTheValueIsNotNaN():Void
     {
-        this.target.setIsNegated(true);
-        this.target.NaN(123);
+        this.notTarget.NaN(123);
         this.reporterCalledWithSuccess();
     }
 
@@ -139,8 +131,7 @@ class NumberTest extends TestCase
 
     public function testNotNaN_Failure_WhenTheValueIsNaN():Void
     {
-        this.target.setIsNegated(true);
-        this.target.NaN('xxx');
+        this.notTarget.NaN('xxx');
         this.reporterCalledWithFailure('Not expected xxx to be NaN');
     }
 
@@ -152,8 +143,7 @@ class NumberTest extends TestCase
 
     public function testNotFinite_Success_WhenTheValueIsNotFinite():Void
     {
-        this.target.setIsNegated(true);
-        this.target.finite(Math.NEGATIVE_INFINITY);
+        this.notTarget.finite(Math.NEGATIVE_INFINITY);
         this.reporterCalledWithSuccess();
     }
 
@@ -165,8 +155,7 @@ class NumberTest extends TestCase
 
     public function testNotFinite_Failure_WhenTheValueIsFinite():Void
     {
-        this.target.setIsNegated(true);
-        this.target.finite(-12.24);
+        this.notTarget.finite(-12.24);
         this.reporterCalledWithFailure('Not expected -12.24 to be finite');
     }
 }

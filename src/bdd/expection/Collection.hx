@@ -4,9 +4,9 @@ import haxe.PosInfos;
 
 class Collection extends Abstract
 {
-    public function new()
+    public function new(reporter:ItReporter, isNegated:Bool = false)
     {
-        super();
+        super(reporter, isNegated);
 
         this.failureText.set('empty', 'Expected not be empty got %actual%');
         this.failureText.set('not_empty', 'Not expected to be empty');

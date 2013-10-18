@@ -4,9 +4,9 @@ import haxe.PosInfos;
 
 class Be extends Abstract
 {
-    public function new()
+    public function new(reporter:ItReporter, isNegated:Bool = false)
     {
-        super();
+        super(reporter, isNegated);
 
         this.failureText.set('true', 'Expected to be true');
         this.failureText.set('not_true', 'Not expected to be true');

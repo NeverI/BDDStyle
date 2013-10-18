@@ -4,9 +4,9 @@ import haxe.PosInfos;
 
 class Number extends Abstract
 {
-    public function new()
+    public function new(reporter:ItReporter, isNegated:Bool = false)
     {
-        super();
+        super(reporter, isNegated);
 
         this.failureText.set('below', 'Expected %expected% does not lower then %actual%');
         this.failureText.set('not_below', 'Not expected to %actual% is greater then %expected%');

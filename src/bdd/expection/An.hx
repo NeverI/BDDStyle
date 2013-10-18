@@ -4,9 +4,9 @@ import haxe.PosInfos;
 
 class An extends TypeChecker
 {
-    public function new()
+    public function new(reporter:ItReporter, isNegated:Bool = false)
     {
-        super();
+        super(reporter, isNegated);
 
         this.failureText.set('instanceOf', 'Expected %expected% does not instance of %actual%');
         this.failureText.set('not_instanceOf', 'Not expected to be an instance of %expected%');

@@ -4,9 +4,9 @@ import haxe.PosInfos;
 
 class Strings extends Abstract
 {
-    public function new()
+    public function new(reporter:ItReporter, isNegated:Bool = false)
     {
-        super();
+        super(reporter, isNegated);
 
         this.failureText.set('match', 'Expected %expected% not match with %actual%');
         this.failureText.set('not_match', 'Not expected to match: %actual%');

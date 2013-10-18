@@ -5,25 +5,25 @@ import bdd.expection.An;
 class AnTest extends TestCase
 {
     private var target:An;
+    private var notTarget:An;
 
     override public function setup():Void
     {
         super.setup();
 
-        this.target = new An();
-        this.target.setReporter(this.reporter);
+        this.target = new An(this.reporter);
+        this.notTarget = new An(this.reporter, true);
     }
 
     public function testInstanceOf_Success_WhenTheValueIsInstance():Void
     {
-        this.target.instanceOf(An, new An());
+        this.target.instanceOf(An, new An(this.reporter));
         this.reporterCalledWithSuccess();
     }
 
     public function testNotInstanceOf_Success_WhenTheValueIsNotInstance():Void
     {
-        this.target.setIsNegated(true);
-        this.target.instanceOf(String, -10);
+        this.notTarget.instanceOf(String, -10);
         this.reporterCalledWithSuccess();
     }
 
@@ -35,8 +35,7 @@ class AnTest extends TestCase
 
     public function testNotInstanceOf_Failure_WhenTheValueIsInstance():Void
     {
-        this.target.setIsNegated(true);
-        this.target.instanceOf(AnTest, this);
+        this.notTarget.instanceOf(AnTest, this);
         this.reporterCalledWithFailure('Not expected to be an instance of src.bdd.expection.AnTest');
     }
 
@@ -48,8 +47,7 @@ class AnTest extends TestCase
 
     public function testNotObject_Success_WhenTheValueIsNotObject():Void
     {
-        this.target.setIsNegated(true);
-        this.target.object(null);
+        this.notTarget.object(null);
         this.reporterCalledWithSuccess();
     }
 
@@ -61,8 +59,7 @@ class AnTest extends TestCase
 
     public function testNotObject_Failure_WhenTheValueIsObject():Void
     {
-        this.target.setIsNegated(true);
-        this.target.object({});
+        this.notTarget.object({});
         this.reporterCalledWithFailure('Not expected to be object');
     }
 
@@ -74,8 +71,7 @@ class AnTest extends TestCase
 
     public function testNotEnum_Success_WhenTheValueIsNotEnum():Void
     {
-        this.target.setIsNegated(true);
-        this.target.Enum('alma');
+        this.notTarget.Enum('alma');
         this.reporterCalledWithSuccess();
     }
 
@@ -87,8 +83,7 @@ class AnTest extends TestCase
 
     public function testNotEnum_Failure_WhenTheValueIsEnum():Void
     {
-        this.target.setIsNegated(true);
-        this.target.Enum(Foo.Bar('alma'));
+        this.notTarget.Enum(Foo.Bar('alma'));
         this.reporterCalledWithFailure('Not expected to be enum');
     }
 }

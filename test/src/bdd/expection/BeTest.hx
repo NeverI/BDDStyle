@@ -5,13 +5,14 @@ import bdd.expection.Be;
 class BeTest extends TestCase
 {
     private var target:Be;
+    private var notTarget:Be;
 
     override public function setup():Void
     {
         super.setup();
 
-        this.target = new Be();
-        this.target.setReporter(this.reporter);
+        this.target = new Be(this.reporter);
+        this.notTarget = new Be(this.reporter, true);
     }
 
     public function testTrue_Success_WhenTheValueIsTrue():Void
@@ -22,8 +23,7 @@ class BeTest extends TestCase
 
     public function testNotTrue_Success_WhenTheValueIsNotTrue():Void
     {
-        this.target.setIsNegated(true);
-        this.target.True(1 == 2);
+        this.notTarget.True(1 == 2);
         this.reporterCalledWithSuccess();
     }
 
@@ -35,8 +35,7 @@ class BeTest extends TestCase
 
     public function testNotTrue_Failure_WhenTheValueIsTrue():Void
     {
-        this.target.setIsNegated(true);
-        this.target.True(true);
+        this.notTarget.True(true);
         this.reporterCalledWithFailure('Not expected to be true');
     }
 
@@ -48,8 +47,7 @@ class BeTest extends TestCase
 
     public function testNotFalse_Success_WhenTheValueIsNotFalse():Void
     {
-        this.target.setIsNegated(true);
-        this.target.False(1 != 2);
+        this.notTarget.False(1 != 2);
         this.reporterCalledWithSuccess();
     }
 
@@ -61,8 +59,7 @@ class BeTest extends TestCase
 
     public function testNotFalse_Failure_WhenTheValueIsFalse():Void
     {
-        this.target.setIsNegated(true);
-        this.target.False(false);
+        this.notTarget.False(false);
         this.reporterCalledWithFailure('Not expected to be false');
     }
 
@@ -74,8 +71,7 @@ class BeTest extends TestCase
 
     public function testNotEqual_Success_WhenTheValuesAreNotEqual():Void
     {
-        this.target.setIsNegated(true);
-        this.target.equal(1, 2);
+        this.notTarget.equal(1, 2);
         this.reporterCalledWithSuccess();
     }
 
@@ -87,8 +83,7 @@ class BeTest extends TestCase
 
     public function testNotEqual_Failure_WhenTheValuesAreEqual():Void
     {
-        this.target.setIsNegated(true);
-        this.target.equal(false, false);
+        this.notTarget.equal(false, false);
         this.reporterCalledWithFailure('Not expected to be an equal: false');
     }
 }

@@ -5,13 +5,14 @@ import bdd.expection.Should;
 class ShouldTest extends TestCase
 {
     private var target:Should;
+    private var notTarget:Should;
 
     override public function setup():Void
     {
         super.setup();
 
-        this.target = new Should();
-        this.target.setReporter(this.reporter);
+        this.target = new Should(this.reporter);
+        this.notTarget = new Should(this.reporter, true);
     }
 
     public function testFail_CallTheReporterWitFailure():Void
@@ -25,8 +26,7 @@ class ShouldTest extends TestCase
 
     public function testNotFail_CallTheReporterWithSuccess():Void
     {
-        this.target.setIsNegated(true);
-        this.target.fail();
+        this.notTarget.fail();
         this.reporterCalledWithSuccess();
     }
 
@@ -38,8 +38,7 @@ class ShouldTest extends TestCase
 
     public function testNotSucceed_CallTheReporterWitFailure():Void
     {
-        this.target.setIsNegated(true);
-        this.target.success();
+        this.notTarget.success();
         this.reporterCalledWithFailure('Not expected to succeed');
     }
 }

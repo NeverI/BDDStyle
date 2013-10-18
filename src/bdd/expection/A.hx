@@ -4,9 +4,9 @@ import haxe.PosInfos;
 
 class A extends TypeChecker
 {
-    public function new()
+    public function new(reporter:ItReporter, isNegated:Bool = false)
     {
-        super();
+        super(reporter, isNegated);
 
         this.failureText.set('string', 'Expected to be string got: %actual%');
         this.failureText.set('not_string', 'Not expected to be string');

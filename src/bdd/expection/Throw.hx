@@ -4,9 +4,9 @@ import haxe.PosInfos;
 
 class Throw extends Abstract
 {
-    public function new()
+    public function new(reporter:ItReporter, isNegated:Bool = false)
     {
-        super();
+        super(reporter, isNegated);
 
         this.failureText.set('throw', 'Expected exception not throwed');
         this.failureText.set('not_throw', 'Not expected an exception throwed');

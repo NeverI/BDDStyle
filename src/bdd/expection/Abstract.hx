@@ -9,20 +9,12 @@ class Abstract
     private var isNegated:Bool;
     private var failureText:Map<String,String>;
 
-    public function new()
-    {
-        this.isNegated = false;
-        this.failureText = new Map();
-    }
-
-    public function setReporter(reporter:ItReporter):Void
+    public function new(reporter:ItReporter, isNegated:Bool = false)
     {
         this.reporter = reporter;
-    }
+        this.isNegated = isNegated;
 
-    public function setIsNegated(value:Bool):Void
-    {
-        this.isNegated = value;
+        this.failureText = new Map();
     }
 
     private function succeed(?pos:PosInfos)

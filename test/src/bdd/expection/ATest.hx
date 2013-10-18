@@ -5,13 +5,14 @@ import bdd.expection.A;
 class ATest extends TestCase
 {
     private var target:A;
+    private var notTarget:A;
 
     override public function setup():Void
     {
         super.setup();
 
-        this.target = new A();
-        this.target.setReporter(this.reporter);
+        this.target = new A(this.reporter);
+        this.notTarget = new A(this.reporter, true);
     }
 
     public function testString_Success_WhenTheValueIsString():Void
@@ -22,8 +23,7 @@ class ATest extends TestCase
 
     public function testNotString_Success_WhenTheValueIsNotString():Void
     {
-        this.target.setIsNegated(true);
-        this.target.string(-10);
+        this.notTarget.string(-10);
         this.reporterCalledWithSuccess();
     }
 
@@ -35,8 +35,7 @@ class ATest extends TestCase
 
     public function testNotString_Failure_WhenTheValueIsString():Void
     {
-        this.target.setIsNegated(true);
-        this.target.string('alma');
+        this.notTarget.string('alma');
         this.reporterCalledWithFailure('Not expected to be string');
     }
 
@@ -48,8 +47,7 @@ class ATest extends TestCase
 
     public function testNotBool_Success_WhenTheValueIsNotBool():Void
     {
-        this.target.setIsNegated(true);
-        this.target.bool(-10);
+        this.notTarget.bool(-10);
         this.reporterCalledWithSuccess();
     }
 
@@ -61,8 +59,7 @@ class ATest extends TestCase
 
     public function testNotBool_Failure_WhenTheValueIsBool():Void
     {
-        this.target.setIsNegated(true);
-        this.target.bool(true);
+        this.notTarget.bool(true);
         this.reporterCalledWithFailure('Not expected to be bool');
     }
 
@@ -74,8 +71,7 @@ class ATest extends TestCase
 
     public function testNotNumber_Success_WhenTheValueIsNotNumber():Void
     {
-        this.target.setIsNegated(true);
-        this.target.number('alma');
+        this.notTarget.number('alma');
         this.reporterCalledWithSuccess();
     }
 
@@ -87,8 +83,7 @@ class ATest extends TestCase
 
     public function testNotNumber_Failure_WhenTheValueIsNumber():Void
     {
-        this.target.setIsNegated(true);
-        this.target.number(1);
+        this.notTarget.number(1);
         this.reporterCalledWithFailure('Not expected to be number');
     }
 
@@ -100,8 +95,7 @@ class ATest extends TestCase
 
     public function testNotFunction_Success_WhenTheValueIsNotFunction():Void
     {
-        this.target.setIsNegated(true);
-        this.target.Function(this);
+        this.notTarget.Function(this);
         this.reporterCalledWithSuccess();
     }
 
@@ -113,8 +107,7 @@ class ATest extends TestCase
 
     public function testNotFunction_Failure_WhenTheValueIsFunction():Void
     {
-        this.target.setIsNegated(true);
-        this.target.Function(Math.abs);
+        this.notTarget.Function(Math.abs);
         this.reporterCalledWithFailure('Not expected to be function');
     }
 }

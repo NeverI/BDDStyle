@@ -5,13 +5,14 @@ import bdd.expection.Strings;
 class StringsTest extends TestCase
 {
     private var target:Strings;
+    private var notTarget:Strings;
 
     override public function setup():Void
     {
         super.setup();
 
-        this.target = new Strings();
-        this.target.setReporter(this.reporter);
+        this.target = new Strings(this.reporter);
+        this.notTarget = new Strings(this.reporter, true);
     }
 
     public function testMatch_Success_WhenTheValuesAreMatches():Void
@@ -22,8 +23,7 @@ class StringsTest extends TestCase
 
     public function testNotMatch_Success_WhenTheValuesAreNotMatches():Void
     {
-        this.target.setIsNegated(true);
-        this.target.match('alma', 'korte');
+        this.notTarget.match('alma', 'korte');
         this.reporterCalledWithSuccess();
     }
 
@@ -35,8 +35,7 @@ class StringsTest extends TestCase
 
     public function testNotMatch_Success_WhenTheValuesAreMatches():Void
     {
-        this.target.setIsNegated(true);
-        this.target.match('alma', 'alma');
+        this.notTarget.match('alma', 'alma');
         this.reporterCalledWithFailure('Not expected to match: alma');
     }
 
@@ -48,8 +47,7 @@ class StringsTest extends TestCase
 
     public function testNotStartWith_Success_WhenTheActualNotStartedWith():Void
     {
-        this.target.setIsNegated(true);
-        this.target.startWith('kor', 'alma');
+        this.notTarget.startWith('kor', 'alma');
         this.reporterCalledWithSuccess();
     }
 
@@ -61,8 +59,7 @@ class StringsTest extends TestCase
 
     public function testNotStartWith_Failue_WhenTheActualStartedWith():Void
     {
-        this.target.setIsNegated(true);
-        this.target.startWith('al', 'alma');
+        this.notTarget.startWith('al', 'alma');
         this.reporterCalledWithFailure('Not expected to alma started with al');
     }
 
@@ -74,8 +71,7 @@ class StringsTest extends TestCase
 
     public function testNotEndWith_Success_WhenTheActualNotEndedWith():Void
     {
-        this.target.setIsNegated(true);
-        this.target.endWith('kor', 'alma');
+        this.notTarget.endWith('kor', 'alma');
         this.reporterCalledWithSuccess();
     }
 
@@ -87,8 +83,7 @@ class StringsTest extends TestCase
 
     public function testNotEndWith_Failue_WhenTheActualEndedWith():Void
     {
-        this.target.setIsNegated(true);
-        this.target.endWith('ma', 'alma');
+        this.notTarget.endWith('ma', 'alma');
         this.reporterCalledWithFailure('Not expected to alma ended with ma');
     }
 }

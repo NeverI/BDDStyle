@@ -5,13 +5,14 @@ import bdd.expection.Collection;
 class CollectionTest extends TestCase
 {
     private var target:Collection;
+    private var notTarget:Collection;
 
     override public function setup():Void
     {
         super.setup();
 
-        this.target = new Collection();
-        this.target.setReporter(this.reporter);
+        this.target = new Collection(this.reporter);
+        this.notTarget = new Collection(this.reporter, true);
     }
 
     public function testEmpty_Success_WhenTheValueIsEmpty():Void
@@ -22,8 +23,7 @@ class CollectionTest extends TestCase
 
     public function testNotEmpty_Success_WhenTheValueIsNotEmpty():Void
     {
-        this.target.setIsNegated(true);
-        this.target.empty([['alma', 'korte'], [1, 2]]);
+        this.notTarget.empty([['alma', 'korte'], [1, 2]]);
         this.reporterCalledWithSuccess();
     }
 
@@ -35,8 +35,7 @@ class CollectionTest extends TestCase
 
     public function testNotEmpty_Failure_WhenTheValueIsEmpty():Void
     {
-        this.target.setIsNegated(true);
-        this.target.empty([]);
+        this.notTarget.empty([]);
         this.reporterCalledWithFailure('Not expected to be empty');
     }
 
@@ -52,8 +51,7 @@ class CollectionTest extends TestCase
         var length = function():Int { return 1; };
         obj.length = length;
 
-        this.target.setIsNegated(true);
-        this.target.length(3, obj);
+        this.notTarget.length(3, obj);
         this.reporterCalledWithSuccess();
     }
 
@@ -65,8 +63,7 @@ class CollectionTest extends TestCase
 
     public function testNotLength_Failure_WhenTheLengthIsEqual():Void
     {
-        this.target.setIsNegated(true);
-        this.target.length(0, []);
+        this.notTarget.length(0, []);
         this.reporterCalledWithFailure('Not expected the length to be the same: 0');
     }
 
@@ -84,8 +81,7 @@ class CollectionTest extends TestCase
 
     public function testNotFirst_Success_WhenTheValueIsNotEqual():Void
     {
-        this.target.setIsNegated(true);
-        this.target.first(3, []);
+        this.notTarget.first(3, []);
         this.reporterCalledWithSuccess();
     }
 
@@ -97,8 +93,7 @@ class CollectionTest extends TestCase
 
     public function testNotFirst_Failure_WhenTheValueIsEqual():Void
     {
-        this.target.setIsNegated(true);
-        this.target.first('bar', new Iterable());
+        this.notTarget.first('bar', new Iterable());
         this.reporterCalledWithFailure('Not expected the first element to be the same: bar');
     }
 
@@ -116,8 +111,7 @@ class CollectionTest extends TestCase
 
     public function testNotLast_Success_WhenTheValueIsNotEqual():Void
     {
-        this.target.setIsNegated(true);
-        this.target.last(3, []);
+        this.notTarget.last(3, []);
         this.reporterCalledWithSuccess();
     }
 
@@ -129,8 +123,7 @@ class CollectionTest extends TestCase
 
     public function testNotLast_Failure_WhenTheValueIsEqual():Void
     {
-        this.target.setIsNegated(true);
-        this.target.last('foo', new Iterable());
+        this.notTarget.last('foo', new Iterable());
         this.reporterCalledWithFailure('Not expected the last element to be the same: foo');
     }
 
@@ -148,8 +141,7 @@ class CollectionTest extends TestCase
 
     public function testNotContains_Success_WhenTheValueIsNotIn():Void
     {
-        this.target.setIsNegated(true);
-        this.target.contains(3, []);
+        this.notTarget.contains(3, []);
         this.reporterCalledWithSuccess();
     }
 
@@ -161,8 +153,7 @@ class CollectionTest extends TestCase
 
     public function testNotContains_Failure_WhenTheValueIsIn():Void
     {
-        this.target.setIsNegated(true);
-        this.target.contains('foo', new Iterable());
+        this.notTarget.contains('foo', new Iterable());
         this.reporterCalledWithFailure('Not expected to contains the foo in { props => [bar,foo], cursor => 2 }');
     }
 
