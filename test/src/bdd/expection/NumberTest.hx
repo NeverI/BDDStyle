@@ -65,25 +65,25 @@ class NumberTest extends TestCase
 
     public function testWithin_Success_WhenTheValueIsWhitin():Void
     {
-        this.target.whitin(5, 20, 10);
+        this.target.whitin(5, 10, 20);
         this.reporterCalledWithSuccess();
     }
 
     public function testNotWithin_Success_WhenTheValueIsNotWhitin():Void
     {
-        this.notTarget.whitin(-5, -10, -20);
+        this.notTarget.whitin(-5, -20, -10);
         this.reporterCalledWithSuccess();
     }
 
     public function testWithin_Failure_WhenTheValueIsNotWhitin():Void
     {
-        this.target.whitin(4.5, -0.7, -0.8);
+        this.target.whitin(4.5, -0.8, -0.7);
         this.reporterCalledWithFailure('Expected -0.8 in range 4.5 - -0.7');
     }
 
     public function testNotWithin_Failure_WhenTheValueIsWhitin():Void
     {
-        this.notTarget.whitin(1.3, 2, 1.5);
+        this.notTarget.whitin(1.3, 1.5, 2);
         this.reporterCalledWithFailure('Not expected to 1.5 in range 1.3 - 2');
     }
 

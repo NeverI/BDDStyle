@@ -45,7 +45,7 @@ class Number extends Abstract
         this.failed(this.getFailureText('above', Std.string(expected), Std.string(actual)), pos);
     }
 
-    public function whitin(above:Float, below:Float, actual:Float, ?pos:PosInfos):Void
+    public function whitin(above:Float, actual:Float, below:Float, ?pos:PosInfos):Void
     {
         if (this.condition(actual > above && actual < below)) {
             return this.succeed(pos);
