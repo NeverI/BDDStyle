@@ -6,11 +6,19 @@ class Should extends Abstract
 {
     public function success(?pos:PosInfos):Void
     {
-        this.succeed(pos);
+        if (this.isNegated) {
+            this.failed('Not expected to succeed', pos);
+        } else {
+            this.succeed(pos);
+        }
     }
 
     public function fail(msg:String = 'Fail anyway', ?pos:PosInfos):Void
     {
-        this.failed(msg, pos);
+        if (this.isNegated) {
+            this.succeed(pos);
+        } else {
+            this.failed(msg, pos);
+        }
     }
 }

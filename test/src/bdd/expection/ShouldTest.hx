@@ -23,9 +23,23 @@ class ShouldTest extends TestCase
         this.reporterCalledWithFailure('Just fail');
     }
 
+    public function testNotFail_CallTheReporterWithSuccess():Void
+    {
+        this.target.setIsNegated(true);
+        this.target.fail();
+        this.reporterCalledWithSuccess();
+    }
+
     public function testSucceed_CallTheReporterWithSuccess():Void
     {
         this.target.success();
         this.reporterCalledWithSuccess();
+    }
+
+    public function testNotSucceed_CallTheReporterWitFailure():Void
+    {
+        this.target.setIsNegated(true);
+        this.target.success();
+        this.reporterCalledWithFailure('Not expected to succeed');
     }
 }
