@@ -63,7 +63,7 @@ class ATest extends TestCase
         this.reporterCalledWithFailure('Not expected to be bool');
     }
 
-    public function testNumber_Success_WhenTheValueNumber():Void
+    public function testNumber_Success_WhenTheValueIsNumber():Void
     {
         this.target.number(1.5);
         this.reporterCalledWithSuccess();
@@ -109,5 +109,29 @@ class ATest extends TestCase
     {
         this.notTarget.Function(Math.abs);
         this.reporterCalledWithFailure('Not expected to be function');
+    }
+
+    public function testNull_Success_WhenTheValueIsNull():Void
+    {
+        this.target.Null(null);
+        this.reporterCalledWithSuccess();
+    }
+
+    public function testNotNull_Success_WhenTheValueIsNotNull():Void
+    {
+        this.notTarget.Null('alma');
+        this.reporterCalledWithSuccess();
+    }
+
+    public function testNull_Failure_WhenTheValueIsNotNull():Void
+    {
+        this.target.Null('alma');
+        this.reporterCalledWithFailure('Expected to be null got: String');
+    }
+
+    public function testNotNull_Failure_WhenTheValueIsNull():Void
+    {
+        this.notTarget.Null(null);
+        this.reporterCalledWithFailure('Not expected to be null');
     }
 }

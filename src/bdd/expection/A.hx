@@ -19,6 +19,9 @@ class A extends TypeChecker
 
         this.failureText.set('function', 'Expected to be function got: %actual%');
         this.failureText.set('not_function', 'Not expected to be function');
+
+        this.failureText.set('null', 'Expected to be null got: %actual%');
+        this.failureText.set('not_null', 'Not expected to be null');
     }
 
     public function string(actual:Dynamic, ?pos:PosInfos):Void
@@ -39,5 +42,10 @@ class A extends TypeChecker
     public function Function(actual:Dynamic, ?pos:PosInfos):Void
     {
         this.checkType(Reflect.isFunction(actual), 'function', actual, pos);
+    }
+
+    public function Null(actual:Dynamic, ?pos:PosInfos):Void
+    {
+        this.checkType(actual == null, 'null', actual, pos);
     }
 }
