@@ -30,6 +30,7 @@ class TestMain
         runner.add(new EventDispatcherTest());
         runner.add(new ItTest());
         runner.add(new DescribeTest());
+        runner.add(new DescribeTrackerTest());
 
         runner.run();
     }
