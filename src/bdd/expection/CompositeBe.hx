@@ -100,11 +100,6 @@ class CompositeBe
         this.number.NaN(actual, pos);
     }
 
-    public function finite(actual:Dynamic, ?pos:PosInfos):Void
-    {
-        this.number.finite(actual, pos);
-    }
-
     public function match(expected:String, actual:String, ?pos:PosInfos):Void
     {
         this.string.match(expected, actual, pos);

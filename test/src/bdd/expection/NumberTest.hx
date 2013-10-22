@@ -134,28 +134,4 @@ class NumberTest extends TestCase
         this.notTarget.NaN('xxx');
         this.reporterCalledWithFailure('Not expected xxx to be NaN');
     }
-
-    public function testFinite_Success_WhenTheValueIsFinite():Void
-    {
-        this.target.finite(1.2323234);
-        this.reporterCalledWithSuccess();
-    }
-
-    public function testNotFinite_Success_WhenTheValueIsNotFinite():Void
-    {
-        this.notTarget.finite(Math.NEGATIVE_INFINITY);
-        this.reporterCalledWithSuccess();
-    }
-
-    public function testFinite_Failure_WhenTheValueIsNotFinite():Void
-    {
-        this.target.finite(Math.POSITIVE_INFINITY);
-        this.reporterCalledWithFailure('Expected inf to be finite');
-    }
-
-    public function testNotFinite_Failure_WhenTheValueIsFinite():Void
-    {
-        this.notTarget.finite(-12.24);
-        this.reporterCalledWithFailure('Not expected -12.24 to be finite');
-    }
 }

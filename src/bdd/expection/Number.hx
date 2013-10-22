@@ -78,15 +78,4 @@ class Number extends Abstract
 
         this.failed(this.getFailureText('NaN', '', Std.string(actual)), pos);
     }
-
-    public function finite(actual:Dynamic, ?pos:PosInfos):Void
-    {
-        var value:Float = Std.is(actual, String) ? Std.parseFloat(actual) : actual;
-
-        if (this.condition(Math.isFinite(value))) {
-            return this.succeed(pos);
-        }
-
-        this.failed(this.getFailureText('finite', '', Std.string(actual)), pos);
-    }
 }

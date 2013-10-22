@@ -35,13 +35,12 @@ class CompositeShouldTest extends TestCase
         this.should.be.whitin(0.9, 1, 1.5);
         this.should.be.floatEqual(1.5, 1.49, 0.015);
         this.should.be.NaN('foo');
-        this.should.be.finite(12);
 
         this.should.be.match('fo\\w', 'foo');
         this.should.be.startWith('f', 'foo');
         this.should.be.endWith('o', 'foo');
 
-        this.reporter.report(Result.Success(null)).verify(18);
+        this.reporter.report(Result.Success(null)).verify(17);
         this.assertTrue(true);
     }
 
@@ -64,13 +63,12 @@ class CompositeShouldTest extends TestCase
         this.should.not.be.whitin(1.9, 1, 1.5);
         this.should.not.be.floatEqual(1.5, 1.4, 0.05);
         this.should.not.be.NaN('0');
-        this.should.not.be.finite(Math.POSITIVE_INFINITY);
 
         this.should.not.be.match('fo2', 'foo');
         this.should.not.be.startWith('o', 'foo');
         this.should.not.be.endWith('f', 'foo');
 
-        this.reporter.report(Result.Success(null)).verify(18);
+        this.reporter.report(Result.Success(null)).verify(17);
         this.assertTrue(true);
     }
 
