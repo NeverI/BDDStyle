@@ -32,7 +32,7 @@ class DescribeTracker extends EventDispatcher
     private function callOnCurrent(methodName:String, param:Dynamic):Void
     {
         if (this.current == null) {
-            throw new bdd.exception.SetupError('Tracker does not has a current describe');
+            throw new bdd.exception.Exception('Tracker does not has a current describe');
         }
 
         Reflect.callMethod(this.current, Reflect.field(this.current, methodName), [ param ]);
