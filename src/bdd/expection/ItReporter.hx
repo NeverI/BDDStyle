@@ -1,29 +1,30 @@
 package bdd.expection;
 
-import bdd.It;
-import bdd.TestRunner;
-import bdd.exception.ItAbort;
+import bdd.event.EventDispatcher;
 
-class ItReporter
+class ItReporter extends EventDispatcher
 {
-    public var runner:TestRunner;
+    private var currentIt:It;
 
     public function new()
     {
+        super();
+        this.addListener('it.start', this.setCurrent);
+        this.addListener('it.error', this.addError);
     }
 
-    public function report(result: Result)
+    private function setCurrent(it:It):Void
     {
-        this.currentIt.setResult(result);
+        this.currentIt = it;
     }
 
-    private var currentIt(get, null):It;
-    private function get_currentIt():It
+    public function report(result:Result)
     {
-        if (this.runner == null || this.runner.currentIt == null) {
-            throw new ItAbort('ItReporter does not has runner or runner does not has it');
-        }
+        this.currentIt.addResult(result);
+    }
 
-        return this.runner.currentIt;
+    private function addError(error:Dynamic):Void
+    {
+        this.currentIt.addResult(Result.Error(error));
     }
 }
