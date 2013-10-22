@@ -45,7 +45,7 @@ class DescribeTrackerTest extends TestCase
 
         try {
             this.target.addBeforeEach(function(){});
-        } catch(e:bdd.exception.SetupError) {
+        } catch(e:bdd.exception.Exception) {
             this.assertTrue(true);
             return;
         }
