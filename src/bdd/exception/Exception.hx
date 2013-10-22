@@ -15,7 +15,7 @@ class Exception
 
     public function toString():String
     {
-        return 'message: ' + this.getMessage() + this.getStack();
+        return this.getMessage();
     }
 
     public function getMessage():String
