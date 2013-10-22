@@ -70,7 +70,11 @@ class CollectionTest extends TestCase
     public function testLength_Failure_WhenTheObjectDoesNotHaveLength():Void
     {
         this.target.length(1, {});
+        #if js
+        this.reporterCalledWithFailure('Object does not has length: {\n\n}');
+        #else
         this.reporterCalledWithFailure('Object does not has length: {}');
+        #end
     }
 
     public function testFirst_Success_WhenTheValueIsEqual():Void
@@ -103,25 +107,25 @@ class CollectionTest extends TestCase
         this.reporterCalledWithFailure('Object is not iterable: alma');
     }
 
-    public function testLast_Success_WhenTheValueIsEqual():Void
+    public function testLast_Success_WhenTheValueIsLast():Void
     {
         this.target.last('bar', new IteratorClass());
         this.reporterCalledWithSuccess();
     }
 
-    public function testNotLast_Success_WhenTheValueIsNotEqual():Void
+    public function testNotLast_Success_WhenTheValueIsNotLast():Void
     {
         this.notTarget.last(3, []);
         this.reporterCalledWithSuccess();
     }
 
-    public function testLast_Failure_WhenTheValueIsNotEqual():Void
+    public function testLast_Failure_WhenTheValueIsNotLast():Void
     {
         this.target.last(1, [1,2,3]);
         this.reporterCalledWithFailure('Expected last 1 element not match with 3');
     }
 
-    public function testNotLast_Failure_WhenTheValueIsEqual():Void
+    public function testNotLast_Failure_WhenTheValueIsLast():Void
     {
         this.notTarget.last('foo', new Iterable());
         this.reporterCalledWithFailure('Not expected the last element to be the same: foo');
@@ -154,7 +158,13 @@ class CollectionTest extends TestCase
     public function testNotContains_Failure_WhenTheValueIsIn():Void
     {
         this.notTarget.contains('foo', new Iterable());
+        #if js
+        this.reporterCalledWithFailure('Not expected to contains the foo in {\n\tprops : [bar,foo], \n\tcursor : 2\n}');
+        #elseif (flash9 || flash)
+        this.reporterCalledWithFailure('Not expected to contains the foo in [object Iterable]');
+        #else
         this.reporterCalledWithFailure('Not expected to contains the foo in { props => [bar,foo], cursor => 2 }');
+        #end
     }
 
     public function testContains_Failure_WhenTheValueIsNotItarable():Void

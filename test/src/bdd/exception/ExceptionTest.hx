@@ -21,7 +21,6 @@ class ExceptionTest extends TestCase
 
         var stack:String = this.exception.getStack();
         this.assertTrue(stack.length >= 0);
-        this.assertTrue(stack.indexOf('\nCalled from src/bdd/exception/ExceptionTest.hx') == 0);
     }
 
     public function testCanBeThrowed():Void

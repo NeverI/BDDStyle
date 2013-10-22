@@ -1,5 +1,6 @@
 package src.bdd;
 
+import bdd.It;
 import bdd.Describe;
 import bdd.event.EventDispatcher;
 
@@ -28,7 +29,7 @@ class DescribeTest extends TestCase
 
         this.target.addBeforeEach(function(){ callCount++; });
         this.target.addBeforeEach(function(){ callCount++; });
-        this.target.trigger('it.start', {});
+        this.target.trigger('it.start', new It('foo'));
 
         this.assertEquals(2, callCount);
     }
@@ -38,7 +39,7 @@ class DescribeTest extends TestCase
         var callCount:Int = 0;
 
         this.target.addAfterEach(function(){ callCount++; });
-        this.target.trigger('it.done', {});
+        this.target.trigger('it.done', new It('foo'));
 
         this.assertEquals(1, callCount);
     }

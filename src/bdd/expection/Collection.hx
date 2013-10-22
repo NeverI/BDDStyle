@@ -83,12 +83,17 @@ class Collection extends Abstract
             return null;
         }
 
-        if (Reflect.isFunction(actual.iterator)) {
-            return actual.iterator();
+        try {
+            if (Reflect.isFunction(actual.iterator)) {
+                return actual.iterator();
+            }
+        } catch(e:Dynamic) {
         }
-
-        if (Reflect.isFunction(actual.hasNext) && Reflect.isFunction(actual.next))  {
-            return actual;
+        try {
+            if (Reflect.isFunction(actual.hasNext) && Reflect.isFunction(actual.next))  {
+                return actual;
+            }
+        } catch(e:Dynamic) {
         }
 
         return null;

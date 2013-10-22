@@ -10,7 +10,11 @@ class TypeChecker extends Abstract
             return this.succeed(pos);
         }
 
-        var actualType = Type.getClassName(Type.getClass(actual));
+        var actualType = actual;
+        try {
+            actualType = actual == null ? 'null' : Type.getClassName(Type.getClass(actual));
+        } catch(e:Dynamic) {
+        }
 
         this.failed(this.getFailureText(failText, '', actualType), pos);
     }
