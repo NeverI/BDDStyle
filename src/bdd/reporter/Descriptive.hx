@@ -17,7 +17,7 @@ class Descriptive extends bdd.reporter.helper.Abstract
     private function groupStart(group:ExampleGroup):Void
     {
         this.identation = '';
-        this.print(Type.getClassName(Type.getClass(group)));
+        this.print('\n'+Type.getClassName(Type.getClass(group)));
     }
 
     override private function print(s:Dynamic):Void
@@ -42,6 +42,7 @@ class Descriptive extends bdd.reporter.helper.Abstract
 
     private function itDone(it:bdd.It):Void
     {
-        this.print((it.isPending ? 'P' : (it.isSuccess ? 'O' : 'X')) + ': '+it.overview);
+        var mark:String = it.isPending ? 'P' : (it.isSuccess ? '.' : 'X');
+        this.print((mark != '.' ? ': ' : '') + it.overview);
     }
 }
