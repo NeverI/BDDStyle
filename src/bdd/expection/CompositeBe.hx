@@ -7,6 +7,7 @@ class CompositeBe
     private var _a:A;
     private var be:Be;
     private var _an:An;
+    private var _equal:Equal;
     private var number:Number;
     private var string:Strings;
     private var collection:Collection;
@@ -16,6 +17,7 @@ class CompositeBe
         this._a = new A(reporter, isNegated);
         this.be = new Be(reporter, isNegated);
         this._an = new An(reporter, isNegated);
+        this._equal = new Equal(reporter, isNegated);
         this.number = new Number(reporter, isNegated);
         this.string = new Strings(reporter, isNegated);
         this.collection = new Collection(reporter, isNegated);
@@ -45,7 +47,7 @@ class CompositeBe
 
     public function equal(expected:Dynamic, actual:Dynamic, ?pos:PosInfos):Void
     {
-        this.be.equal(expected, actual, pos);
+        this._equal.equal(expected, actual, pos);
     }
 
     public function empty(actual:Dynamic, ?pos:PosInfos):Void

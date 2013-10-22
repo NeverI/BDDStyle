@@ -62,28 +62,4 @@ class BeTest extends TestCase
         this.notTarget.False(false);
         this.reporterCalledWithFailure('Not expected to be false');
     }
-
-    public function testEqual_Success_WhenTheValuesAreEqual():Void
-    {
-        this.target.equal('alma', 'alma');
-        this.reporterCalledWithSuccess();
-    }
-
-    public function testNotEqual_Success_WhenTheValuesAreNotEqual():Void
-    {
-        this.notTarget.equal(1, 2);
-        this.reporterCalledWithSuccess();
-    }
-
-    public function testEqual_Failure_WhenTheValuesAreNotEqual():Void
-    {
-        this.target.equal(true, false);
-        this.reporterCalledWithFailure('Expected true to be false');
-    }
-
-    public function testNotEqual_Failure_WhenTheValuesAreEqual():Void
-    {
-        this.notTarget.equal(false, false);
-        this.reporterCalledWithFailure('Not expected to be an equal: false');
-    }
 }

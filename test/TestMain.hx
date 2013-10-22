@@ -22,6 +22,7 @@ class TestMain
         runner.add(new ATest());
         runner.add(new AnTest());
         runner.add(new BeTest());
+        runner.add(new EqualTest());
         runner.add(new ObjectTest());
 
         runner.add(new CompositeShouldTest());
