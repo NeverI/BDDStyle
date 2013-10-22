@@ -1,6 +1,7 @@
 package bdd.expection;
 
 import haxe.PosInfos;
+import bdd.expection.ItReporter;
 import bdd.expection.Result;
 
 class Abstract
@@ -32,9 +33,9 @@ class Abstract
         this.reporter.report(Result.Error(e));
     }
 
-    private function warrning(msg:String)
+    private function warrning(msg:String, ?pos:PosInfos)
     {
-        this.reporter.report(Result.Warning(msg));
+        this.reporter.report(Result.Warning(msg, pos));
     }
 
     private function condition(condition:Bool):Bool
