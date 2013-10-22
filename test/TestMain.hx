@@ -29,6 +29,7 @@ class TestMain
         runner.add(new CompositeShouldTest());
         runner.add(new EventDispatcherTest());
         runner.add(new ItTest());
+        runner.add(new DescribeTest());
 
         runner.run();
     }
