@@ -5,6 +5,7 @@ import haxe.unit.TestRunner;
 import src.bdd.exception.ExceptionTest;
 import src.bdd.expection.*;
 import src.bdd.event.*;
+import src.bdd.*;
 
 class TestMain
 {
@@ -27,6 +28,7 @@ class TestMain
         runner.add(new ObjectTest());
         runner.add(new CompositeShouldTest());
         runner.add(new EventDispatcherTest());
+        runner.add(new ItTest());
 
         runner.run();
     }
