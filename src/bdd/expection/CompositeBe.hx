@@ -9,7 +9,6 @@ class CompositeBe
     private var _an:An;
     private var _equal:Equal;
     private var number:Number;
-    private var string:Strings;
     private var collection:Collection;
 
     public function new(reporter:ItReporter, isNegated:Bool = false)
@@ -19,7 +18,6 @@ class CompositeBe
         this._an = new An(reporter, isNegated);
         this._equal = new Equal(reporter, isNegated);
         this.number = new Number(reporter, isNegated);
-        this.string = new Strings(reporter, isNegated);
         this.collection = new Collection(reporter, isNegated);
     }
 
@@ -53,11 +51,6 @@ class CompositeBe
     public function empty(actual:Dynamic, ?pos:PosInfos):Void
     {
         this.collection.empty(actual, pos);
-    }
-
-    public function length(expected:Int, actual:Dynamic, ?pos:PosInfos):Void
-    {
-        this.collection.length(expected, actual, pos);
     }
 
     public function first(expected:Dynamic, actual:Dynamic, ?pos:PosInfos):Void
@@ -98,20 +91,5 @@ class CompositeBe
     public function NaN(actual:Dynamic, ?pos:PosInfos):Void
     {
         this.number.NaN(actual, pos);
-    }
-
-    public function match(expected:String, actual:String, ?pos:PosInfos):Void
-    {
-        this.string.match(expected, actual, pos);
-    }
-
-    public function startWith(expected:String, actual:String, ?pos:PosInfos):Void
-    {
-        this.string.startWith(expected, actual, pos);
-    }
-
-    public function endWith(expected:String, actual:String, ?pos:PosInfos):Void
-    {
-        this.string.endWith(expected, actual, pos);
     }
 }

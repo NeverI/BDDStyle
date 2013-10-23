@@ -25,7 +25,6 @@ class CompositeShouldTest extends TestCase
         this.should.be.equal('foo', 'foo');
 
         this.should.be.empty([]);
-        this.should.be.length(2, ['foo', 'bar']);
         this.should.be.first('foo', ['foo', 'bar']);
         this.should.be.last('bar', ['foo', 'bar']);
         this.should.be.nth(1, 'foobar', ['foo', 'foobar', 'bar']);
@@ -36,11 +35,7 @@ class CompositeShouldTest extends TestCase
         this.should.be.floatEqual(1.5, 1.49, 0.015);
         this.should.be.NaN('foo');
 
-        this.should.be.match('fo\\w', 'foo');
-        this.should.be.startWith('f', 'foo');
-        this.should.be.endWith('o', 'foo');
-
-        this.reporter.report(Result.Success(null)).verify(17);
+        this.reporter.report(Result.Success(null)).verify(13);
         this.assertTrue(true);
     }
 
@@ -53,7 +48,6 @@ class CompositeShouldTest extends TestCase
         this.should.not.be.equal('bar', 'foo');
 
         this.should.not.be.empty([1]);
-        this.should.not.be.length(1, ['foo', 'bar']);
         this.should.not.be.first('fo', ['foo', 'bar']);
         this.should.not.be.last('ba', ['foo', 'bar']);
         this.should.not.be.nth(2, 'foobar', ['foo', 'foobar', 'bar']);
@@ -64,11 +58,7 @@ class CompositeShouldTest extends TestCase
         this.should.not.be.floatEqual(1.5, 1.4, 0.05);
         this.should.not.be.NaN('0');
 
-        this.should.not.be.match('fo2', 'foo');
-        this.should.not.be.startWith('o', 'foo');
-        this.should.not.be.endWith('f', 'foo');
-
-        this.reporter.report(Result.Success(null)).verify(17);
+        this.reporter.report(Result.Success(null)).verify(13);
         this.assertTrue(true);
     }
 
@@ -106,39 +96,49 @@ class CompositeShouldTest extends TestCase
 
     public function testShouldHaveAndContains()
     {
+        this.should.have.length(2, ['foo', 'bar']);
         this.should.have.property('foo', {'foo': true});
         this.should.have.properties(['foo', 'bar'], {'foo': true, 'bar':true});
 
         this.should.contains('foo', ['foo', 'bar']);
 
-        this.reporter.report(Result.Success(null)).verify(4);
+        this.reporter.report(Result.Success(null)).verify(5);
         this.assertTrue(true);
     }
 
     public function testShouldNotHaveAndNotContains()
     {
+        this.should.not.have.length(1, ['foo', 'bar']);
         this.should.not.have.property('bar', {'foo': true});
         this.should.not.have.properties(['foo2', 'bar'], {'foo': true, 'bar':true});
 
         this.should.not.contains('fo', ['foo', 'bar']);
 
-        this.reporter.report(Result.Success(null)).verify(3);
+        this.reporter.report(Result.Success(null)).verify(4);
         this.assertTrue(true);
     }
 
-    public function testShouldThrows()
+    public function testShould()
     {
-        this.should.throws(function(){ throw 'alma'; });
+        this.should.match('fo\\w', 'foo');
+        this.should.startWith('f', 'foo');
+        this.should.endWith('o', 'foo');
 
-        this.reporter.report(Result.Success(null)).verify(1);
+        this.should.throws(function(){ throw 'foo'; });
+
+        this.reporter.report(Result.Success(null)).verify(4);
         this.assertTrue(true);
     }
 
-    public function testShouldNotThrows()
+    public function testShouldNot()
     {
+        this.should.not.match('fo2', 'foo');
+        this.should.not.startWith('o', 'foo');
+        this.should.not.endWith('f', 'foo');
+
         this.should.not.throws(function(){ });
 
-        this.reporter.report(Result.Success(null)).verify(1);
+        this.reporter.report(Result.Success(null)).verify(4);
         this.assertTrue(true);
     }
 }
