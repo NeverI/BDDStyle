@@ -43,6 +43,6 @@ class Descriptive extends bdd.reporter.helper.Abstract
     private function itDone(it:bdd.It):Void
     {
         var mark:String = it.isPending ? 'P' : (it.isSuccess ? '.' : 'X');
-        this.print((mark != '.' ? ': ' : '') + it.overview);
+        this.print((mark != '.' ? mark+': ' : '') + it.overview);
     }
 }
