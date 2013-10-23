@@ -163,7 +163,6 @@ should.be.False(false);
 should.be.equal('foo', 'foo');
 
 should.be.empty([]);
-should.be.length(2, ['foo', 'bar']);
 should.be.first('foo', ['foo', 'bar']);
 should.be.last('bar', ['foo', 'bar']);
 should.be.nth(1, 'foobar', ['foo', 'foobar', 'bar']);
@@ -173,10 +172,6 @@ should.be.below(0.9, 1.5);
 should.be.whitin(0.9, 1, 1.5);
 should.be.floatEqual(1.5, 1.49, 0.015);
 should.be.NaN('foo');
-
-should.be.match('fo\\w', 'foo');
-should.be.startWith('f', 'foo');
-should.be.endWith('o', 'foo');
 
 should.be.a.number(1);
 should.be.a.bool(true);
@@ -188,8 +183,17 @@ should.be.an.object({});
 should.be.an.Enum(Result.Success(null));
 should.be.an.instanceOf(TestCase, new TestCase());
 
+should.have.length(2, ['foo', 'bar']);
 should.have.property('foo', {'foo': true});
 should.have.properties(['foo', 'bar'], {'foo': true, 'bar':true});
+
+should.match('fo\\w', 'foo');
+should.startWith('f', 'foo');
+should.endWith('o', 'foo');
+
+should.contains('foo', ['foo', 'bar']);
+
+should.throws(function(){ throw 'foo'; });
 
 //and of course everything can be negated.
 should.not.fail();
