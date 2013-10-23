@@ -59,6 +59,7 @@ class ExampleGroupRunner extends bdd.event.EventDispatcher
         this.group = group;
         this.currentMethodIndex = 0;
         this.runnableMethods = Type.getInstanceFields(Type.getClass(group)).filter(this.isRunnable);
+        this.runnableMethods.sort(this.sortMethodNames);
 
         this.trigger('group.start', this.group);
         this.runNextMethod();
@@ -67,5 +68,10 @@ class ExampleGroupRunner extends bdd.event.EventDispatcher
     private function isRunnable(name:String):Bool
     {
         return name.indexOf('example') == 0;
+    }
+
+    private function sortMethodNames(a:String, b:String):Int
+    {
+        return a < b ? -1 : 1;
     }
 }
