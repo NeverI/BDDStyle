@@ -26,14 +26,6 @@ class ItTest extends TestCase
         this.assertTrue(runned);
     }
 
-    public function testRun_should_notRunTheMethodIfNotHasButSetDoneToTrue()
-    {
-        this.target = new It('foo desc');
-
-        this.target.run();
-        this.assertTrue(this.target.isDone);
-    }
-
     public function testRun_should_triggerItStartAndItDoneEvents()
     {
         this.target = new It('foo desc', function(){});
@@ -47,14 +39,6 @@ class ItTest extends TestCase
 
         this.assertTrue(started);
         this.assertTrue(done);
-    }
-
-    public function testRun_should_setDoneToTrue_afterMethodIsRunned()
-    {
-        this.target = new It('foo desc', function(){});
-
-        this.target.run();
-        this.assertTrue(this.target.isDone);
     }
 
     public function testIsPending_should_stillPendingWhileNotHasAResult()
