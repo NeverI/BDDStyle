@@ -26,7 +26,7 @@ class ThinkerTest extends bdd.ExampleGroup
         });
     }
 
-    public function example_2_guessAnsAsk():Void
+    public function example_3_guessAnsAsk():Void
     {
         extendBeforeEach(function(){
             when(generator.generate(0, 20)).thenReturn(10);
@@ -64,6 +64,23 @@ class ThinkerTest extends bdd.ExampleGroup
                 it('should return true if the value is equal with own number', function(){
                     should.be.True(target.ask(5));
                 });
+            });
+        });
+    }
+
+    public function example_2_async():Void
+    {
+        describe('working with async', function(){
+            it('really shoud', function(){
+                var asyncTimeout = 1500;
+                var callbackWillBeCalled = 500;
+
+                var thatWasFalse:Bool = false;
+                var asyncFunc = this.createAsyncBlock(function(?data){ this.should.be.True(thatWasFalse); }, asyncTimeout);
+
+                bdd.munit.Timer.delay( asyncFunc, callbackWillBeCalled);
+
+                thatWasFalse = true;
             });
         });
     }

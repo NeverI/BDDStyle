@@ -56,4 +56,12 @@ class ExampleGroup
     {
         ExampleGroup.describeTracker.addRunnable(new It(msg));
     }
+
+    #if php
+    #else
+    public function createAsyncBlock(block:Dynamic->Void, ?timeout:Int):Dynamic->Void
+    {
+        return ExampleGroup.describeTracker.createAsyncBlock(block, timeout);
+    }
+    #end
 }

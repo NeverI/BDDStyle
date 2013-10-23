@@ -5,12 +5,24 @@ import bdd.event.EventDispatcher;
 class DescribeTracker extends EventDispatcher
 {
     private var current:Describe;
+    private var currentIt:It;
 
     public function new()
     {
         super();
 
         this.addListener('describe.start', this.updateCurrent);
+        this.addListener('it.start', this.updateCurrentIt);
+    }
+
+    private function updateCurrent(describe:Describe):Void
+    {
+        this.current = describe;
+    }
+
+    private function updateCurrentIt(it:It):Void
+    {
+        this.currentIt = it;
     }
 
     public function start(describe:Describe):Void
@@ -48,8 +60,8 @@ class DescribeTracker extends EventDispatcher
         this.callOnCurrent('addRunnable', runnable);
     }
 
-    private function updateCurrent(describe:Describe):Void
+    public function createAsyncBlock(block:Dynamic->Void, ?timeout:Int):Dynamic->Void
     {
-        this.current = describe;
+        return this.currentIt.createAsyncBlock(block, timeout);
     }
 }

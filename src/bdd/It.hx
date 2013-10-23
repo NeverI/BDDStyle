@@ -6,14 +6,15 @@ class It extends bdd.event.EventDispatcher implements IRunnable
 {
     private var results:Array<Result>;
 
-    private var _isDone:Bool;
     private var _isSuccess:Bool;
     private var _isPending:Bool;
 
     private var _overview:String;
     private var method:Void->Void;
 
-    public function new(overview:String, ?method:Void->Void)
+    private var asyncBlockHandler:AsyncBlockHandler;
+
+    public function new(overview:String, ?method:Void->Void, ?asyncBlockHandler:bdd.AsyncBlockHandler)
     {
         super();
 
@@ -21,9 +22,10 @@ class It extends bdd.event.EventDispatcher implements IRunnable
         this.method = method;
 
         this.results = [];
-        this._isDone = false;
         this._isPending = true;
         this._isSuccess = true;
+
+        this.asyncBlockHandler = asyncBlockHandler != null ? asyncBlockHandler : new AsyncBlockHandler();
     }
 
     public var overview(get, null):String;
@@ -38,10 +40,10 @@ class It extends bdd.event.EventDispatcher implements IRunnable
         return this._isPending;
     }
 
-    public var isDone(get, null):Bool;
-    private function get_isDone():Bool
+    public var isSuccess(get, null):Bool;
+    private function get_isSuccess():Bool
     {
-        return this._isDone;
+        return this._isSuccess;
     }
 
     public var length(get, null):Int;
@@ -50,40 +52,14 @@ class It extends bdd.event.EventDispatcher implements IRunnable
         return this.results.length;
     }
 
+    public function iterator():Iterator<Result>
+    {
+        return this.results.iterator();
+    }
+
     public function clearMethod():Void
     {
         this.method = null;
-    }
-
-    public function run():Void
-    {
-        if (this._isDone) {
-            throw new bdd.exception.ItAbort('It already done');
-        }
-
-        this.trigger('it.start', this);
-
-        if (this.method == null) {
-            this.done();
-            return;
-        }
-
-        try {
-            this.method();
-        } catch (e:Dynamic) {
-            this.trigger('it.error', e);
-        }
-        this.done();
-    }
-
-    public function done():Void
-    {
-        if (this._isDone) {
-            throw new bdd.exception.ItAbort('It already done');
-        }
-
-        this._isDone = true;
-        this.trigger('it.done', this);
     }
 
     public function addResult(result:Result):Void
@@ -97,16 +73,47 @@ class It extends bdd.event.EventDispatcher implements IRunnable
             default:
                 this._isSuccess = false;
         }
+     }
+
+    public function createAsyncBlock(block:Dynamic->Void, ?timeout:Int):Dynamic->Void
+    {
+        return this.asyncBlockHandler.createAsyncBlock(block, timeout);
     }
 
-    public function iterator():Iterator<Result>
+    public function run():Void
     {
-        return this.results.iterator();
+        this.trigger('it.start', this);
+
+        if (this.method == null) {
+            this.done();
+            return;
+        }
+
+        this.addListener('asyncBlock.done', this.asyncBlockDone);
+        this.asyncBlockHandler.startListen();
+
+        try {
+            this.method();
+        } catch (e:Dynamic) {
+            this.trigger('it.error', e);
+        }
+
+        this.asyncBlockHandler.waitForAsync();
     }
 
-    public var isSuccess(get, null):Bool;
-    private function get_isSuccess():Bool
+    private function done():Void
     {
-        return this._isSuccess;
+        this.trigger('it.done', this);
+    }
+
+    private function asyncBlockDone(isTimedOut:Bool):Void
+    {
+        this.removeListener('asyncBlock.done', this.asyncBlockDone);
+
+        if (isTimedOut) {
+            this.addResult(Result.Error('Async block is timed out'));
+        }
+
+        this.done();
     }
 }
