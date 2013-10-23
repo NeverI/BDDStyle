@@ -154,7 +154,7 @@ OK spec: 7 failed: 0 success: 7 expects: 7 (#Summary reporter)
 ```
 
 shoulds:
-```haxe
+```
 should.success();
 should.fail();
 
