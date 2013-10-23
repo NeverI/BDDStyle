@@ -11,7 +11,7 @@ class Factory
         this.infoCollector = new InfoCollector();
     }
 
-    public function create(cls:Class<Dynamic>):Void
+    public function create(cls:Class<Dynamic>):Abstract
     {
         return Type.createInstance(cls, [this.printer, this.infoCollector ]);
     }
