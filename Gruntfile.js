@@ -1,8 +1,8 @@
 module.exports = function(grunt) {
 
   var
-    project = 'haxe -main TestMain -lib mockatoo -cp src -cp test ',
-    example = 'haxe -main TestMain -lib mockatoo -cp example -cp src ',
+    project = 'haxe -main TestMain -lib mockatoo -cp test ',
+    example = 'haxe -main TestMain -lib mockatoo -cp example ',
     littleColoring = function(err, stdout, stderr)
     {
         if (err || stderr) {
@@ -20,11 +20,11 @@ module.exports = function(grunt) {
   grunt.initConfig({
     watch: {
       source: {
-        files: ['src/**/*.hx', 'test/src/**/*.hx'],
+        files: ['bdd/**/*.hx', 'test/bdd/**/*.hx'],
         tasks: ['exec:compileNeko', 'exec:runNeko']
       },
       example: {
-        files: ['example/**/*.hx', 'src/**/*.hx'],
+        files: ['example/**/*.hx', 'bdd/**/*.hx'],
         tasks: ['exec:compileExampleNeko', 'exec:runExampleNeko']
       }
     },
