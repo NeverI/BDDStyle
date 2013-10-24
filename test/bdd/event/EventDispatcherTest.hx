@@ -1,6 +1,4 @@
-package src.bdd.event;
-
-import bdd.event.EventDispatcher;
+package bdd.event;
 
 import haxe.unit.TestCase;
 

@@ -2,10 +2,10 @@ package ;
 
 import haxe.unit.TestRunner;
 
-import src.bdd.exception.ExceptionTest;
-import src.bdd.expection.*;
-import src.bdd.event.*;
-import src.bdd.*;
+import bdd.exception.ExceptionTest;
+import bdd.expection.*;
+import bdd.event.*;
+import bdd.*;
 
 class TestMain
 {

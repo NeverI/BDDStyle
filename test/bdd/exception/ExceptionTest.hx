@@ -1,7 +1,6 @@
-package src.bdd.exception;
+package bdd.exception;
 
 import haxe.unit.TestCase;
-import bdd.exception.Exception;
 
 class ExceptionTest extends TestCase
 {

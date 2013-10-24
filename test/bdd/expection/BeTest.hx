@@ -1,6 +1,4 @@
-package src.bdd.expection;
-
-import bdd.expection.Be;
+package bdd.expection;
 
 class BeTest extends TestCase
 {

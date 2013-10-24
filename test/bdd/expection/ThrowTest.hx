@@ -1,6 +1,4 @@
-package src.bdd.expection;
-
-import bdd.expection.Throw;
+package bdd.expection;
 
 class ThrowTest extends TestCase
 {
@@ -48,7 +46,7 @@ class ThrowTest extends TestCase
     public function testThrow_CallTheReporterWith_Failure_WhenNotThrowedTheGivenType():Void
     {
         this.target.throws(function(){ throw  'alma'; }, TestCase);
-        this.reporterCalledWithFailure('Expected exception type is src.bdd.expection.TestCase but got String');
+        this.reporterCalledWithFailure('Expected exception type is bdd.expection.TestCase but got String');
     }
 
     public function testNotThrow_CallTheReporterWith_Sucess_WhenNotThrowAndNothingToExpected():Void

@@ -1,12 +1,9 @@
-package src.bdd.expection;
+package bdd.expection;
 
 import haxe.unit.TestCase in HaxeTestCase;
 
 import mockatoo.Mockatoo.*;
 using mockatoo.Mockatoo;
-
-import bdd.expection.ItReporter;
-import bdd.expection.Result;
 
 class TestCase extends HaxeTestCase
 {

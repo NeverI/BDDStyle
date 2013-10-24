@@ -1,6 +1,4 @@
-package src.bdd.expection;
-
-import bdd.expection.Collection;
+package bdd.expection;
 
 class CollectionTest extends TestCase
 {

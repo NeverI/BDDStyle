@@ -1,10 +1,8 @@
-package src.bdd;
-
-import bdd.It;
-import bdd.expection.Result;
-import bdd.event.EventDispatcher;
+package bdd;
 
 import haxe.unit.TestCase;
+import bdd.expection.Result;
+import bdd.event.EventDispatcher;
 
 class ItTest extends TestCase
 {

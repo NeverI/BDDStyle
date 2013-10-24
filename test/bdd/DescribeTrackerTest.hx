@@ -1,12 +1,8 @@
-package src.bdd;
-
-import bdd.Describe;
-import bdd.DescribeTracker;
-import bdd.event.EventDispatcher;
+package bdd;
 
 import mockatoo.Mockatoo.*;
-
 import haxe.unit.TestCase;
+import bdd.event.EventDispatcher;
 
 class DescribeTrackerTest extends TestCase
 {

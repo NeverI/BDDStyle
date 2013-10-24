@@ -1,6 +1,4 @@
-package src.bdd.expection;
-
-import bdd.expection.Equal;
+package bdd.expection;
 
 class EqualTest extends TestCase
 {

@@ -1,6 +1,4 @@
-package src.bdd.expection;
-
-import bdd.expection.Should;
+package bdd.expection;
 
 class ShouldTest extends TestCase
 {

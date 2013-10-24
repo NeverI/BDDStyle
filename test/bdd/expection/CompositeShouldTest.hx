@@ -1,9 +1,6 @@
-package src.bdd.expection;
+package bdd.expection;
 
 using mockatoo.Mockatoo;
-
-import bdd.expection.Result;
-import bdd.expection.CompositeShould;
 
 class CompositeShouldTest extends TestCase
 {

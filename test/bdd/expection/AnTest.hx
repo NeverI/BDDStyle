@@ -1,6 +1,4 @@
-package src.bdd.expection;
-
-import bdd.expection.An;
+package bdd.expection;
 
 class AnTest extends TestCase
 {
@@ -36,7 +34,7 @@ class AnTest extends TestCase
     public function testNotInstanceOf_Failure_WhenTheValueIsInstance():Void
     {
         this.notTarget.instanceOf(AnTest, this);
-        this.reporterCalledWithFailure('Not expected to be an instance of src.bdd.expection.AnTest');
+        this.reporterCalledWithFailure('Not expected to be an instance of bdd.expection.AnTest');
     }
 
     public function testObject_Success_WhenTheValueIsObject():Void
