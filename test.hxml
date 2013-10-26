@@ -3,22 +3,9 @@
 -lib mockatoo
 
 -cp test
--cp src
 
 -swf-version 11
--swf build/as3_test.swf
-
---next
-
-## Flash 8
--main TestMain
--lib mockatoo
-
--cp src
--cp test
-
--swf-version 8
--swf build/as2_test.swf
+-swf build/test/flash.swf
 
 --next
 
@@ -26,10 +13,9 @@
 -main TestMain
 -lib mockatoo
 
--cp src
 -cp test
 
--js build/js_test.js
+-js build/test/js.js
 
 --next
 
@@ -37,10 +23,9 @@
 -main TestMain
 -lib mockatoo
 
--cp src
 -cp test
 
--neko build/neko_test.n
+-neko build/test/neko.n
 
 --next
 
@@ -48,10 +33,7 @@
 -main TestMain
 -lib mockatoo
 
--cp src
 -cp test
 
 #-D HXCPP_M64
--cpp build/cpp_test
-
-
+-cpp build/test/cpp
