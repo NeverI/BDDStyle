@@ -70,6 +70,8 @@ class CollectionTest extends TestCase
         this.target.length(1, {});
         #if js
         this.reporterCalledWithFailure('Object does not has length: {\n\n}');
+        #elseif cpp
+        this.reporterCalledWithFailure('Object does not has length: {  }');
         #else
         this.reporterCalledWithFailure('Object does not has length: {}');
         #end
@@ -160,6 +162,8 @@ class CollectionTest extends TestCase
         this.reporterCalledWithFailure('Not expected to contains the foo in {\n\tprops : [bar,foo], \n\tcursor : 2\n}');
         #elseif (flash9 || flash)
         this.reporterCalledWithFailure('Not expected to contains the foo in [object Iterable]');
+        #elseif cpp
+        this.reporterCalledWithFailure('Not expected to contains the foo in Iterable');
         #else
         this.reporterCalledWithFailure('Not expected to contains the foo in { props => [bar,foo], cursor => 2 }');
         #end
