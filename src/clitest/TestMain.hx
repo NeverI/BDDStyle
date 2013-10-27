@@ -1,6 +1,7 @@
 package ;
 
 import cli.*;
+import cli.helper.*;
 
 class TestMain
 {
@@ -15,6 +16,7 @@ class TestMain
         reporterFactory.create(bdd.reporter.Summary);
 
         var runner = new bdd.Runner();
+        runner.add(cli.helper.ArgsTest);
 
         runner.run();
     }
