@@ -11,7 +11,7 @@ Feature list (neko, flash, js):
        - nested 'describe' and 'before/afterEach'
        - async blocks inside 'it'-s
        - should.be.eql(this, this)
-       - easy extendable and modular reporting system
+       - extendable and modular reporting system
 
 Some code more then any other word (especially my english)
 TestMain.hx
