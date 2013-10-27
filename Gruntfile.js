@@ -22,6 +22,10 @@ module.exports = function(grunt) {
         example: {
             main: 'TestMain',
             cmd: 'haxe -main %main% -lib mockatoo -cp example',
+        },
+        clitest: {
+            main: 'TestMain',
+            cmd: 'haxe -main %main% -lib mockatoo -cp src -cp src/clitest',
         }
     },
     platforms = {
@@ -87,6 +91,10 @@ module.exports = function(grunt) {
             example: {
                 files: ['example/**/*.hx', 'bdd/**/*.hx'],
                 tasks: 'example_neko'
+            },
+            clitest: {
+                files: ['src/**/*.hx'],
+                tasks: 'clitest_neko'
             }
         },
 

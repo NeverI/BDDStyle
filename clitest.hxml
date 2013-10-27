@@ -1,0 +1,7 @@
+-main TestMain
+-lib mockatoo
+
+-cp src
+-cp src/clitest
+
+-neko build/clitest/neko.n
