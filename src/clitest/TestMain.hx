@@ -20,6 +20,7 @@ class TestMain
         runner.add(cli.CommandFactoryTest);
 
         runner.add(cli.project.PlatformTest);
+        runner.add(cli.project.HxmlPlatformTest);
         runner.run();
     }
 }
