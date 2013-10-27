@@ -19,6 +19,7 @@ class TestMain
         runner.add(cli.helper.ArgsTest);
         runner.add(cli.CommandFactoryTest);
 
+        runner.add(cli.project.PlatformTest);
         runner.run();
     }
 }
