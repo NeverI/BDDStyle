@@ -98,7 +98,8 @@ class ThinkerTest extends bdd.ExampleGroup
                 });
             });
 
-            describe('#ask(value:Int):Bool', function(){
+            // can be disable any desribe or it
+            xdescribe('#ask(value:Int):Bool', function(){
                 extendBeforeEach(function(){
                     target.think(0, 10);
                 });
@@ -107,7 +108,7 @@ class ThinkerTest extends bdd.ExampleGroup
                     should.be.False(target.ask(10));
                 });
 
-                it('should return true if the value is equal with own number', function(){
+                xit('should return true if the value is equal with own number', function(){
                     should.be.True(target.ask(5));
                 });
             });
@@ -147,10 +148,12 @@ gueesing and asking
         should return 1 if the value is bigger then own number
         should return 1 if the value is equal with own number
     #ask(value:Int):Bool
-        should return false if the value is not equal with own number
-        should return true if the value is equal with own number
+        P: should return false if the value is not equal with own number
+        P: should return true if the value is equal with own number
 
-OK spec: 7 failed: 0 success: 7 expects: 7 (#Summary reporter)
+# Summary reporter
+7 spec, 5 success, 2 pending, 0 failed, 5 expects.
+OK
 ```
 
 shoulds:
@@ -198,4 +201,6 @@ should.throws(function(){ throw 'foo'; });
 //and of course everything can be negated.
 should.not.fail();
 should.not.not.not.not.not.fail(); :D
+
+//checkout the tests for more detailed possibilities
 ```

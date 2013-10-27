@@ -6,6 +6,7 @@ class InfoCollector extends bdd.event.EventDispatcher
 {
     private var itCount:Int;
     private var _expectionCount:Int;
+    private var _pendingCount:Int;
     private var failedIts:Array<ItInfo>;
     private var fullOverview:String;
     private var currentIt:bdd.It;
@@ -26,6 +27,12 @@ class InfoCollector extends bdd.event.EventDispatcher
         return this.itCount;
     }
 
+    public var pendingCount(get, null):Int;
+    private function get_pendingCount():Int
+    {
+        return this._pendingCount;
+    }
+
     public var expectionCount(get, null):Int;
     private function get_expectionCount():Int
     {
@@ -41,6 +48,7 @@ class InfoCollector extends bdd.event.EventDispatcher
     private function resetData(data:Dynamic):Void
     {
         this.itCount = 0;
+        this._pendingCount = 0;
         this._expectionCount = 0;
         this.failedIts = [];
         this.fullOverview = '';
@@ -61,6 +69,7 @@ class InfoCollector extends bdd.event.EventDispatcher
     {
         this.itCount++;
         this._expectionCount += it.length;
+        this._pendingCount += it.isPending ? 1 : 0;
         this.currentIt = it;
 
         this.createFailedItInfo();

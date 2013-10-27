@@ -11,11 +11,14 @@ class Summary extends bdd.reporter.helper.Abstract
 
     private function printFinal(event:Dynamic):Void
     {
-        var report:String = this.infoCollector.failedSpecs.length == 0 ? 'OK' : 'Failed';
-        report += ' spec: ' + this.infoCollector.specCount;
-        report += ' failed: ' + this.infoCollector.failedSpecs.length;
-        report += ' success: ' + (this.infoCollector.specCount - this.infoCollector.failedSpecs.length);
-        report += ' expects: '+this.infoCollector.expectionCount;
+        var report:String = this.infoCollector.specCount + ' spec, ';
+        report += (this.infoCollector.specCount - this.infoCollector.pendingCount - this.infoCollector.failedSpecs.length)+ ' success, ';
+        report += this.infoCollector.pendingCount + ' pending, ';
+        report += this.infoCollector.failedSpecs.length + ' failed, ';
+        report += this.infoCollector.expectionCount + ' expects.';
+        report += '\n';
+        report += this.infoCollector.failedSpecs.length == 0 ? 'OK' : 'Failed';
+        report += '\n';
 
         this.print(report);
     }
