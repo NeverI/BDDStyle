@@ -10,7 +10,6 @@ class TestMain
     public function new()
     {
         var reporterFactory:bdd.reporter.helper.Factory = new bdd.reporter.helper.Factory();
-
         reporterFactory.create(bdd.reporter.Descriptive);
         reporterFactory.create(bdd.reporter.Error);
         reporterFactory.create(bdd.reporter.Summary);
@@ -21,6 +20,8 @@ class TestMain
 
         runner.add(cli.project.PlatformTest);
         runner.add(cli.project.HxmlPlatformTest);
+        runner.add(cli.project.ProjectTest);
+
         runner.run();
     }
 }
