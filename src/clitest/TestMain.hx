@@ -17,6 +17,7 @@ class TestMain
 
         var runner = new bdd.Runner();
         runner.add(cli.helper.ArgsTest);
+        runner.add(cli.CommandFactoryTest);
 
         runner.run();
     }
