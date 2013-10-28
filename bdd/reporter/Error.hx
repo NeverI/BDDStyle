@@ -13,7 +13,7 @@ class Error extends bdd.reporter.helper.Abstract
 
     private function printFailed(event:Dynamic):Void
     {
-        var counter:Int = 0;
+        var counter:Int = 1;
         this.print('\n');
         for (info in this.infoCollector.failedSpecs) {
             this.print(counter+') ' + info.fullOverview+'\n');
