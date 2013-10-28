@@ -4,30 +4,44 @@ import haxe.ds.StringMap;
 
 class Args
 {
+    private var _cwd:String;
     private var _command:String;
     private var _params:StringMap<String>;
 
+    private var _args:Array<String>;
+
     public function new(args:Array<String>)
     {
-        this._command = this.getCommand(args);
-        this._params = this.getParams(args);
+        this._args = args;
+        this._cwd = this.getCwd();
+        this._command = this.getCommand();
+        this._params = this.getParams();
     }
 
-    private function getCommand(args:Array<String>):String
+    private function getCwd():String
     {
-        if (args.length == 0 || this.isKey(args[0])) {
+        if (this._args.length == 0 || !sys.FileSystem.exists(this._args[0])) {
+            return Sys.getCwd();
+        }
+
+        return this._args.shift();
+    }
+
+    private function getCommand():String
+    {
+        if (this._args.length == 0 || this.isKey(0)) {
             return '';
         }
 
-        return args[0];
+        return this._args.shift();
     }
 
-    private function isKey(param:String):Bool
+    private function isKey(index:Int):Bool
     {
-        return param.charAt(0) == '-';
+        return this._args[index].charAt(0) == '-';
     }
 
-    private function getParams(args:Array<String>):StringMap<String>
+    private function getParams():StringMap<String>
     {
         var map:StringMap<String> = new StringMap<String>();
 
@@ -35,24 +49,30 @@ class Args
             return map;
         }
 
-        var i:Int = 1;
+        var i:Int = 0;
         var value:String = '';
-        while( i < args.length) {
-            if (this.isKey(args[i])) {
-                if (i+1 == args.length) {
+        while( i < this._args.length) {
+            if (this.isKey(i)) {
+                if (i+1 == this._args.length) {
                     value = '';
                 } else {
-                    value = args[i+1];
+                    value = this._args[i+1];
                 }
-                map.set(args[i].substring(1), value);
+                map.set(this._args[i].substring(1), value);
                 i += 2;
             } else {
-                map.set(args[i], args[i]);
+                map.set(this._args[i], this._args[i]);
                 i++;
             }
         }
 
         return map;
+    }
+
+    public var cwd(get, null):String;
+    public function get_cwd():String
+    {
+        return this._cwd;
     }
 
     public var command(get, null):String;

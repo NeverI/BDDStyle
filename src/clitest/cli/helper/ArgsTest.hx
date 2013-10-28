@@ -9,62 +9,142 @@ class ArgsTest extends bdd.ExampleGroup
 
     public function example():Void
     {
-        describe('.command:String', function(){
-            it('should return empty string when argument is an empty array', function(){
+        describe('when there are no arguments', function(){
+            extendBeforeEach(function(){
                 this.target = new cli.helper.Args([]);
-                should.be.equal('', this.target.command);
             });
 
-            it('should return empty string when argument list first element started with - ', function(){
-                this.target = new cli.helper.Args(['-p']);
-                should.be.equal('', this.target.command);
-            });
+            this.cwdShouldBeTheCurrentCwd();
 
-            it('should return the first element when it is not started with -', function(){
-                this.target = new cli.helper.Args(['foo']);
-                should.be.equal('foo', this.target.command);
-            });
+            this.commandShouldBeEmptyString();
+
+            this.argumentHasShouldReturnFalse('foo');
+
+            this.argumentGetShouldReturnEmptyString('foo');
         });
 
-        describe('#has(name:String):Bool', function(){
-            it('should return false when argument is not present', function(){
-                this.target = new cli.helper.Args([]);
-                should.be.False(target.has('foo'));
+        describe('when the first argument is a valid path', function(){
+           extendBeforeEach(function(){
+                this.target = new cli.helper.Args(['src']);
             });
 
-            it('should return false when command is not present', function(){
-                this.target = new cli.helper.Args(['-p']);
-                should.be.False(target.has('p'));
-            });
+            this.cwdShouldBeTheGivenCwd('src');
 
-            it('should return true when command and arugment are present', function(){
-                this.target = new cli.helper.Args(['foo', 'bar', '-p']);
-                should.be.True(target.has('bar'));
-                should.be.True(target.has('p'));
-            });
+            this.commandShouldBeEmptyString();
+
+            this.argumentHasShouldReturnFalse('foo');
+
+            this.argumentGetShouldReturnEmptyString('foo');
         });
 
-        describe('#get(name:String):String', function(){
-            it('should return empty string when argument is not present', function(){
-                this.target = new cli.helper.Args([]);
-                should.be.empty(this.target.get('foo'));
+        describe('when the first argument is not a valid path', function(){
+            extendBeforeEach(function(){
+                this.target = new cli.helper.Args(['foo', 'bar']);
             });
 
-            it('should return empty string when command is not present', function(){
-                this.target = new cli.helper.Args(['-p']);
-                should.be.empty(this.target.get('p'));
+            this.cwdShouldBeTheCurrentCwd();
+
+            this.commandShouldBeTheGivenString('foo');
+
+            this.argumentHasShouldReturnFalse('foo');
+
+            this.argumentGetShouldReturnString('bar', 'bar');
+        });
+
+        describe('when the first argument is a valid path second argument is not a valid command name', function(){
+            extendBeforeEach(function(){
+                this.target = new cli.helper.Args(['src', '-foo']);
             });
 
-            it('should return the value when command and arugment are present', function(){
-                this.target = new cli.helper.Args(['foo', 'bar', '-p', 'alma']);
-                should.be.equal('bar', target.get('bar'));
-                should.be.equal('alma',target.get('p'));
+            this.cwdShouldBeTheGivenCwd('src');
+
+            this.commandShouldBeEmptyString();
+
+            this.argumentHasShouldReturnFalse('foo');
+
+            this.argumentGetShouldReturnEmptyString('foo');
+        });
+
+        describe('when the first argument is a valid path second argument is a valid command name', function(){
+            extendBeforeEach(function(){
+                this.target = new cli.helper.Args(['src', 'foo', '-p', 'bar', 'bar', '-a']);
             });
 
-            it('should return empty string when command and arugment are present, but not has value', function(){
-                this.target = new cli.helper.Args(['foo', 'bar', '-p']);
-                should.be.empty(target.get('p'));
+            this.cwdShouldBeTheGivenCwd('src');
+
+            this.commandShouldBeTheGivenString('foo');
+
+            this.argumentHasShouldReturnTrue('p');
+
+            this.argumentGetShouldReturnString('p', 'bar');
+
+            it('#get(name:String):String should return the same value when argument is not started with -', function(){
+                should.be.equal('bar', this.target.get('bar'));
             });
+
+            it('#has(name:String):String should return true when argument has not value', function(){
+                should.be.True(this.target.has('a'));
+            });
+
+            it('#get(name:String):String should return the empty string when argument has not value', function(){
+                should.be.empty(this.target.get('a'));
+            });
+        });
+    }
+
+    private function cwdShouldBeTheCurrentCwd():Void
+    {
+        it('should .cwd be the current cwd', function(){
+            should.be.equal(Sys.getCwd(), this.target.cwd);
+        });
+    }
+
+    private function cwdShouldBeTheGivenCwd(cwd:String):Void
+    {
+        it('should .cwd be the given path', function(){
+            should.be.equal(cwd, this.target.cwd);
+        });
+    }
+
+    private function commandShouldBeEmptyString():Void
+    {
+        it('should .command be an empty string', function(){
+            should.be.equal('', this.target.command);
+        });
+    }
+
+    private function commandShouldBeTheGivenString(command:String):Void
+    {
+        it('should .command be the given argument', function(){
+            should.be.equal(command, this.target.command);
+        });
+    }
+
+    private function argumentHasShouldReturnFalse(arg:String):Void
+    {
+        it('#has(name:String):Bool should return false', function(){
+            should.be.False(target.has(arg));
+        });
+    }
+
+    private function argumentGetShouldReturnEmptyString(arg:String):Void
+    {
+        it('#get(name:String):String should return empty string', function(){
+            should.be.empty(this.target.get(arg));
+        });
+    }
+
+    private function argumentHasShouldReturnTrue(arg:String):Void
+    {
+        it('#has(name:String):Bool should return true', function(){
+            should.be.True(target.has(arg));
+        });
+    }
+
+    private function argumentGetShouldReturnString(arg:String, value:String):Void
+    {
+        it('#get(name:String):String should return the value', function(){
+            should.be.equal(value, this.target.get(arg));
         });
     }
 }
