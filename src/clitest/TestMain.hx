@@ -21,7 +21,7 @@ class TestMain
         runner.add(cli.CommandFactoryTest);
 
         runner.add(cli.project.PlatformTest);
-        runner.add(cli.project.ProjectTest);
+        runner.add(cli.project.HxmlProjectTest);
 
         runner.run();
     }
