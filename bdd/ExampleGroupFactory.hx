@@ -13,6 +13,10 @@ class ExampleGroupFactory
 
     public function create(cls:Class<Dynamic>):ExampleGroup
     {
-        return Type.createInstance(cls, [ this.should ]);
+        try {
+            return Type.createInstance(cls, [ this.should ]);
+        } catch(e:Dynamic) {
+            throw Type.getClassName(cls)+' is not an ExampleGroup';
+        }
     }
 }
