@@ -14,7 +14,7 @@ class CommandFactoryTest extends bdd.ExampleGroup
 
     public function example():Void
     {
-        describe('#create(args:cli.helper.Args):Command', function(){
+        describe('#create(argList:Array<String>):Command', function(){
             it('should create Help command if command is empty', function(){
                 var command = this.target.create([]);
                 should.be.an.instanceOf(cli.command.Help, command);
