@@ -23,6 +23,7 @@ class TestMain
         runner.add(cli.project.PlatformTest);
         runner.add(cli.project.HxmlProjectTest);
         runner.add(cli.project.OpenFLProjectTest);
+        runner.add(cli.project.FileFinderTest);
 
         runner.run();
     }
