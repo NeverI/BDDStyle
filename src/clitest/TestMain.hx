@@ -24,6 +24,7 @@ class TestMain
         runner.add(cli.project.HxmlProjectTest);
         runner.add(cli.project.OpenFLProjectTest);
         runner.add(cli.project.FileFinderTest);
+        runner.add(cli.project.FactoryTest);
 
         runner.run();
     }
