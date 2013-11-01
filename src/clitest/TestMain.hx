@@ -15,6 +15,7 @@ class TestMain
 
         var runner = new bdd.Runner();
         runner.add(cli.helper.ArgsTest);
+        runner.add(cli.helper.HxmlParserTest);
         runner.add(cli.CommandFactoryTest);
 
         runner.add(cli.project.PlatformTest);
