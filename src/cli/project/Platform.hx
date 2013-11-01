@@ -2,15 +2,23 @@ package cli.project;
 
 class Platform
 {
-    public var main:String;
-
-    private var sources:Array<String>;
+    private var _main:String;
+    private var _sources:Array<String>;
     private var _name:String;
     private var _runnable:String;
 
-    public function new()
+    public function new(data:PlatformData)
     {
-        this.sources = [];
+        this._main = data.main;
+        this._name = data.name;
+        this._sources = data.sources;
+        this._runnable = data.runnable;
+    }
+
+    public var main(get, null):String;
+    private function get_main():String
+    {
+        return this._main;
     }
 
     public var name(get, null):String;
@@ -25,16 +33,11 @@ class Platform
         return this._runnable;
     }
 
-    public function setSources(sources:Array<String>):Void
-    {
-        this.sources = sources;
-    }
-
     public function getTestPath():String
     {
         this.checkSources();
 
-        for (path in this.sources) {
+        for (path in this._sources) {
             if (sys.FileSystem.exists(path+'/'+this.main+'.hx')) {
                 return path;
             }
@@ -45,7 +48,7 @@ class Platform
 
     private function checkSources():Void
     {
-        if (this.sources.length == 0) {
+        if (this._sources.length == 0) {
             throw 'The source pathes are missing';
         }
     }
@@ -54,18 +57,26 @@ class Platform
     {
         this.checkSources();
 
-        for (path in this.sources) {
+        for (path in this._sources) {
             if (sys.FileSystem.exists(path+'/Main.hx')) {
                 return path;
             }
         }
 
-        for (path in this.sources) {
+        for (path in this._sources) {
             if (!sys.FileSystem.exists(path+'/'+this.main+'.hx')) {
                 return path;
             }
         }
 
-        return this.sources[0];
+        return this._sources[0];
     }
+}
+
+
+typedef PlatformData = {
+    var main:String;
+    var name:String;
+    var sources:Array<String>;
+    var runnable:String;
 }

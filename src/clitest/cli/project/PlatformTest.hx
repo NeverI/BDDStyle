@@ -4,23 +4,27 @@ class PlatformTest extends bdd.ExampleGroup
 {
     private var target:cli.project.Platform;
 
-    override public function beforeEach():Void
-    {
-        this.target = new cli.project.Platform();
-        this.target.main = 'TestMain';
-    }
-
     public function example():Void
     {
+        describe('main, name and runnable', function(){
+            it('should have getters', function(){
+                this.target = new cli.project.Platform({main:'TestMain', name:'swf', sources:[], runnable:'flash.swf'});
+
+                should.be.equal('TestMain', this.target.main);
+                should.be.equal('swf', this.target.name);
+                should.be.equal('flash.swf', this.target.runnable);
+            });
+        });
+
         describe('getTestPath():String', function(){
             it('should throw an exception if TestMain is not found', function(){
-                target.setSources(['src']);
+                setupPlatform(['src']);
 
                 should.throws(function(){ target.getTestPath(); }, 'TestMain not found');
             });
 
             it('should return that path where the TestMain class live', function(){
-                target.setSources(['src', 'src/clitest']);
+                setupPlatform(['src', 'src/clitest']);
 
                 should.be.equal('src/clitest', target.getTestPath());
             });
@@ -28,26 +32,33 @@ class PlatformTest extends bdd.ExampleGroup
 
         describe('getSourcePath():String', function(){
             it('should throw an expection if there are no sources', function(){
+                setupPlatform([]);
+
                 should.throws(function(){ target.getTestPath(); }, 'The source pathes are missing');
             });
 
             it('should return that path where Main class live', function(){
-                target.setSources(['src/clitest', 'src']);
+                setupPlatform(['src/clitest', 'src']);
 
                 should.be.equal('src', target.getSourcePath());
             });
 
             it('should return that path where no TestMain when Main not found', function(){
-                target.setSources(['src/clitest', 'bdd']);
+                setupPlatform(['src/clitest', 'bdd']);
 
                 should.be.equal('bdd', target.getSourcePath());
             });
 
             it('should return the first path when only the TestMain source present', function(){
-                target.setSources(['src/clitest']);
+                setupPlatform(['src/clitest']);
 
                 should.be.equal('src/clitest', target.getSourcePath());
             });
         });
+    }
+
+    private function setupPlatform(sources:Array<String>):Void
+    {
+        this.target = new cli.project.Platform({main:'TestMain', name:'swf', sources:sources, runnable:'flash.swf'});
     }
 }

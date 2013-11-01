@@ -1,7 +1,6 @@
 package ;
 
 import cli.*;
-import cli.helper.*;
 
 class TestMain
 {
@@ -19,7 +18,6 @@ class TestMain
         runner.add(cli.CommandFactoryTest);
 
         runner.add(cli.project.PlatformTest);
-        runner.add(cli.project.HxmlPlatformTest);
         runner.add(cli.project.ProjectTest);
 
         runner.run();
