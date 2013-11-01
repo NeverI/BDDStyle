@@ -62,6 +62,9 @@ import cpp.vm.Thread;
 class Timer
 {
 	#if (php)
+	public function new(time_ms:Int) {}
+	public static function delay(f:Dynamic->Void, time_ms:Int):Timer { return new Timer(0); }
+	public function stop(){};
 	#else
 
 	private var id:Null<Int>;
