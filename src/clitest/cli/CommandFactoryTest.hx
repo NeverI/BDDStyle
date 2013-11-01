@@ -26,7 +26,7 @@ class CommandFactoryTest extends bdd.ExampleGroup
             });
 
             it('should create command with the given name', function(){
-                var command = this.target.create(['build']);
+                var command = this.target.create(['.', 'build']);
                 should.be.an.instanceOf(cli.command.Build, command);
             });
         });
