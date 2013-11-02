@@ -4,6 +4,8 @@ import bdd.event.EventDispatcher;
 
 class DescribeTracker extends EventDispatcher
 {
+    public var isPending(get, null):Bool;
+
     private var current:Describe;
     private var currentIt:It;
 
@@ -13,6 +15,11 @@ class DescribeTracker extends EventDispatcher
 
         this.addListener('describe.start', this.updateCurrent);
         this.addListener('it.start', this.updateCurrentIt);
+    }
+
+    private function get_isPending():Bool
+    {
+        return this.current == null ? true : this.current.isPending;
     }
 
     private function updateCurrent(describe:Describe):Void
@@ -28,12 +35,6 @@ class DescribeTracker extends EventDispatcher
     public function start(describe:Describe):Void
     {
         this.current = describe;
-    }
-
-    public var isPending(get, null):Bool;
-    private function get_isPending():Bool
-    {
-        return this.current == null ? true : this.current.isPending;
     }
 
     public function addBeforeEach(method:Void->Void):Void

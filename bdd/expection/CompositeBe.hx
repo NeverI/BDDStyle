@@ -4,33 +4,22 @@ import haxe.PosInfos;
 
 class CompositeBe
 {
-    private var _a:A;
+    public var a(default, null):A;
+    public var an(default, null):An;
+
     private var be:Be;
-    private var _an:An;
-    private var _equal:Equal;
     private var number:Number;
+    private var equalChecker:Equal;
     private var collection:Collection;
 
     public function new(reporter:ItReporter, isNegated:Bool = false)
     {
-        this._a = new A(reporter, isNegated);
+        this.a = new A(reporter, isNegated);
         this.be = new Be(reporter, isNegated);
-        this._an = new An(reporter, isNegated);
-        this._equal = new Equal(reporter, isNegated);
+        this.an = new An(reporter, isNegated);
         this.number = new Number(reporter, isNegated);
+        this.equalChecker = new Equal(reporter, isNegated);
         this.collection = new Collection(reporter, isNegated);
-    }
-
-    public var a(get, null):A;
-    private function get_a():A
-    {
-        return this._a;
-    }
-
-    public var an(get, null):An;
-    private function get_an():An
-    {
-        return this._an;
     }
 
     public function True(actual:Bool, ?pos:PosInfos):Void
@@ -45,7 +34,7 @@ class CompositeBe
 
     public function equal(expected:Dynamic, actual:Dynamic, ?pos:PosInfos):Void
     {
-        this._equal.equal(expected, actual, pos);
+        this.equalChecker.equal(expected, actual, pos);
     }
 
     public function empty(actual:Dynamic, ?pos:PosInfos):Void

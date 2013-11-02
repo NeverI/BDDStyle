@@ -4,49 +4,29 @@ import bdd.expection.Result;
 
 class It extends bdd.event.EventDispatcher implements IRunnable
 {
-    private var results:Array<Result>;
+    public var overview(default, null):String;
+    public var isPending(default, null):Bool;
+    public var isSuccess(default, null):Bool;
+    public var length(get, null):Int;
 
-    private var _isSuccess:Bool;
-    private var _isPending:Bool;
-
-    private var _overview:String;
     private var method:Void->Void;
-
+    private var results:Array<Result>;
     private var asyncBlockHandler:AsyncBlockHandler;
 
     public function new(overview:String, ?method:Void->Void, ?asyncBlockHandler:bdd.AsyncBlockHandler)
     {
         super();
 
-        this._overview = overview;
+        this.overview = overview;
         this.method = method;
 
         this.results = [];
-        this._isPending = true;
-        this._isSuccess = true;
+        this.isPending = true;
+        this.isSuccess = true;
 
         this.asyncBlockHandler = asyncBlockHandler != null ? asyncBlockHandler : new AsyncBlockHandler();
     }
 
-    public var overview(get, null):String;
-    private function get_overview():String
-    {
-        return this._overview;
-    }
-
-    public var isPending(get, null):Bool;
-    private function get_isPending():Bool
-    {
-        return this._isPending;
-    }
-
-    public var isSuccess(get, null):Bool;
-    private function get_isSuccess():Bool
-    {
-        return this._isSuccess;
-    }
-
-    public var length(get, null):Int;
     private function get_length():Int
     {
         return this.results.length;
@@ -65,13 +45,13 @@ class It extends bdd.event.EventDispatcher implements IRunnable
     public function addResult(result:Result):Void
     {
         this.results.push(result);
-        this._isPending = false;
+        this.isPending = false;
 
         switch(result) {
             case Result.Success:
                 return;
             default:
-                this._isSuccess = false;
+                this.isSuccess = false;
         }
      }
 

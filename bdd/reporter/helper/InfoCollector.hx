@@ -4,10 +4,11 @@ import bdd.expection.Result;
 
 class InfoCollector extends bdd.event.EventDispatcher
 {
-    private var itCount:Int;
-    private var _expectionCount:Int;
-    private var _pendingCount:Int;
-    private var failedIts:Array<ItInfo>;
+    public var specCount(default, null):Int;
+    public var pendingCount(default, null):Int;
+    public var expectionCount(default, null):Int;
+    public var failedSpecs(default, null):Array<ItInfo>;
+
     private var fullOverview:String;
     private var currentIt:bdd.It;
 
@@ -21,36 +22,12 @@ class InfoCollector extends bdd.event.EventDispatcher
         this.addListener('it.done', this.collectItData);
     }
 
-    public var specCount(get, null):Int;
-    private function get_specCount():Int
-    {
-        return this.itCount;
-    }
-
-    public var pendingCount(get, null):Int;
-    private function get_pendingCount():Int
-    {
-        return this._pendingCount;
-    }
-
-    public var expectionCount(get, null):Int;
-    private function get_expectionCount():Int
-    {
-        return this._expectionCount;
-    }
-
-    public var failedSpecs(get, null):Array<ItInfo>;
-    private function get_failedSpecs():Array<ItInfo>
-    {
-        return this.failedIts;
-    }
-
     private function resetData(data:Dynamic):Void
     {
-        this.itCount = 0;
-        this._pendingCount = 0;
-        this._expectionCount = 0;
-        this.failedIts = [];
+        this.specCount = 0;
+        this.pendingCount = 0;
+        this.expectionCount = 0;
+        this.failedSpecs = [];
         this.fullOverview = '';
     }
 
@@ -67,9 +44,9 @@ class InfoCollector extends bdd.event.EventDispatcher
 
     private function collectItData(it:bdd.It):Void
     {
-        this.itCount++;
-        this._expectionCount += it.length;
-        this._pendingCount += it.isPending ? 1 : 0;
+        this.specCount++;
+        this.expectionCount += it.length;
+        this.pendingCount += it.isPending ? 1 : 0;
         this.currentIt = it;
 
         this.createFailedItInfo();
@@ -81,7 +58,7 @@ class InfoCollector extends bdd.event.EventDispatcher
             return;
         }
 
-        this.failedIts.push({
+        this.failedSpecs.push({
             fullOverview : this.fullOverview + ' ' + this.currentIt.overview,
             failedExpects : this.createFailedResultList()
         });

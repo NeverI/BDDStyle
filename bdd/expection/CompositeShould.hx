@@ -5,13 +5,15 @@ import haxe.PosInfos;
 
 class CompositeShould
 {
-    private var _be:CompositeBe;
-    private var _have:CompositeHave;
-    private var _throw:Throw;
-    private var _should:Should;
+    public var be(default, null):CompositeBe;
+    public var have(default, null):CompositeHave;
+    public var not(get, null):CompositeShould;
+
+    private var thrower:Throw;
+    private var should:Should;
     private var string:Strings;
-    private var _collection:Collection;
-    private var _negatedShould:CompositeShould;
+    private var collection:Collection;
+    private var negatedShould:CompositeShould;
 
     private var reporter:ItReporter;
     private var isNegated:Bool;
@@ -21,43 +23,30 @@ class CompositeShould
         this.reporter = reporter;
         this.isNegated = isNegated;
 
-        this._have = new CompositeHave(reporter, isNegated);
-        this._throw = new Throw(reporter, isNegated);
+        this.should = new Should(reporter, isNegated);
+        this.thrower = new Throw(reporter, isNegated);
+        this.be = new CompositeBe(reporter, isNegated);
         this.string = new Strings(reporter, isNegated);
-        this._should = new Should(reporter, isNegated);
-        this._collection = new Collection(reporter, isNegated);
-        this._be = new CompositeBe(reporter, isNegated);
+        this.have = new CompositeHave(reporter, isNegated);
+        this.collection = new Collection(reporter, isNegated);
     }
 
-    public var be(get, null):CompositeBe;
-    private function get_be():CompositeBe
-    {
-        return this._be;
-    }
-
-    public var have(get, null):CompositeHave;
-    private function get_have():CompositeHave
-    {
-        return this._have;
-    }
-
-    public var not(get, null):CompositeShould;
     private function get_not():CompositeShould
     {
-        if (this._negatedShould == null ) {
-            this._negatedShould = new CompositeShould(this.reporter, !this.isNegated);
+        if (this.negatedShould == null ) {
+            this.negatedShould = new CompositeShould(this.reporter, !this.isNegated);
         }
-        return this._negatedShould;
+        return this.negatedShould;
     }
 
     public function success(?pos):Void
     {
-        this._should.success(pos);
+        this.should.success(pos);
     }
 
     public function fail(msg:String = 'Fail anyway', ?pos:PosInfos):Void
     {
-        this._should.fail(msg, pos);
+        this.should.fail(msg, pos);
     }
 
     public function match(expected:String, actual:String, ?pos:PosInfos):Void
@@ -77,11 +66,11 @@ class CompositeShould
 
     public function throws(method: Void->Void, ?expected:Dynamic, ?pos:PosInfos):Void
     {
-        this._throw.throws(method, expected, pos);
+        this.thrower.throws(method, expected, pos);
     }
 
     public function contains(expected:Dynamic, actual:Dynamic, ?pos:PosInfos):Void
     {
-        this._collection.contains(expected, actual, pos);
+        this.collection.contains(expected, actual, pos);
     }
 }

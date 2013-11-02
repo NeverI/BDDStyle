@@ -2,10 +2,11 @@ package bdd;
 
 class Describe extends bdd.event.EventDispatcher implements IRunnable
 {
+    public var overview(default, null):String;
+
     private var currentRunnableIndex:Int;
     private var runnables:Array<IRunnable>;
 
-    private var _overview:String;
     private var method:Void->Void;
 
     private var beforeEaches:Array<Void->Void>;
@@ -17,7 +18,7 @@ class Describe extends bdd.event.EventDispatcher implements IRunnable
     {
         super();
 
-        this._overview = overview;
+        this.overview = overview;
         this.method = method;
 
         this.beforeEaches = [];
@@ -27,12 +28,6 @@ class Describe extends bdd.event.EventDispatcher implements IRunnable
         this.currentRunnableIndex = 0;
 
         this.isPending = false;
-    }
-
-    public var overview(get, null):String;
-    private function get_overview():String
-    {
-        return this._overview;
     }
 
     public function addBeforeEach(method:Void->Void):Void

@@ -3,6 +3,6 @@ package bdd;
 
 interface IRunnable
 {
-    public var overview(get, null):String;
+    public var overview(default, null):String;
     public function run():Void;
 }
