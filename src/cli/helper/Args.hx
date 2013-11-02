@@ -50,15 +50,9 @@ class Args
         }
 
         var i:Int = 0;
-        var value:String = '';
         while( i < this._args.length) {
             if (this.isKey(i)) {
-                if (i+1 == this._args.length) {
-                    value = '';
-                } else {
-                    value = this._args[i+1];
-                }
-                map.set(this._args[i].substring(1), value);
+                this.storeKeyValuePair(map, i);
                 i += 2;
             } else {
                 map.set(this._args[i], this._args[i]);
@@ -67,6 +61,23 @@ class Args
         }
 
         return map;
+    }
+
+    private function storeKeyValuePair(map:StringMap<String>,index:Int):Void
+    {
+        var value:String = '';
+
+        if (!this.nexIsLast(index)) {
+            value = this._args[ index + 1];
+        }
+
+        var key:String = this._args[index].substring(1);
+        map.set(key, value);
+    }
+
+    private function nexIsLast(index:Int):Bool
+    {
+        return index + 1 == this._args.length;
     }
 
     public var cwd(get, null):String;
