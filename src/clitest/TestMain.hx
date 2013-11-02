@@ -1,7 +1,5 @@
 package ;
 
-import cli.*;
-
 class TestMain
 {
     static function main(){ new TestMain(); }
@@ -18,14 +16,15 @@ class TestMain
         runner.add(cli.helper.HxmlParserTest);
         runner.add(cli.helper.OpenFLParserTest);
 
-        runner.add(cli.CommandFactoryTest);
-
         runner.add(cli.project.PlatformTest);
         runner.add(cli.project.HxmlProjectTest);
         runner.add(cli.project.OpenFLProjectTest);
         runner.add(cli.project.FileFinderTest);
         runner.add(cli.project.FactoryTest);
 
+        runner.add(cli.tools.FileCreatorTest);
+
+        runner.add(cli.CommandFactoryTest);
         runner.run();
     }
 }
