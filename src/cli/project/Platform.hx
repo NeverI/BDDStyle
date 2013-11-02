@@ -2,42 +2,25 @@ package cli.project;
 
 class Platform
 {
-    private var _main:String;
-    private var _sources:Array<String>;
-    private var _name:String;
-    private var _runnable:String;
+    private var sources:Array<String>;
+
+    public var main(default, null):String;
+    public var name(default, null):String;
+    public var runnable(default, null):String;
 
     public function new(data:PlatformData)
     {
-        this._main = data.main;
-        this._name = data.name;
-        this._sources = data.sources;
-        this._runnable = data.runnable;
-    }
-
-    public var main(get, null):String;
-    private function get_main():String
-    {
-        return this._main;
-    }
-
-    public var name(get, null):String;
-    private function get_name():String
-    {
-        return this._name;
-    }
-
-    public var runnable(get, null):String;
-    private function get_runnable():String
-    {
-        return this._runnable;
+        this.main = data.main;
+        this.name = data.name;
+        this.sources = data.sources;
+        this.runnable = data.runnable;
     }
 
     public function getTestPath():String
     {
         this.checkSources();
 
-        for (path in this._sources) {
+        for (path in this.sources) {
             if (sys.FileSystem.exists(path+'/'+this.main+'.hx')) {
                 return path;
             }
@@ -48,7 +31,7 @@ class Platform
 
     private function checkSources():Void
     {
-        if (this._sources.length == 0) {
+        if (this.sources.length == 0) {
             throw 'The source pathes are missing';
         }
     }
@@ -57,19 +40,19 @@ class Platform
     {
         this.checkSources();
 
-        for (path in this._sources) {
+        for (path in this.sources) {
             if (sys.FileSystem.exists(path+'/Main.hx')) {
                 return path;
             }
         }
 
-        for (path in this._sources) {
+        for (path in this.sources) {
             if (!sys.FileSystem.exists(path+'/'+this.main+'.hx')) {
                 return path;
             }
         }
 
-        return this._sources[0];
+        return this.sources[0];
     }
 }
 
