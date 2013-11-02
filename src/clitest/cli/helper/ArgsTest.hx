@@ -90,6 +90,30 @@ class ArgsTest extends bdd.ExampleGroup
                 should.be.empty(this.target.get('a'));
             });
         });
+
+        describe('ordered params', function(){
+            it('should set the first three argument after the command if they are not a key value pair', function(){
+                this.target = new cli.helper.Args(['src', 'foo', 'bar', 'alma', 'korte']);
+
+                should.be.equal('bar', this.target.first);
+                should.be.equal('alma', this.target.second);
+                should.be.equal('korte', this.target.third);
+
+                this.target = new cli.helper.Args(['foo', 'bar', 'alma', 'korte']);
+
+                should.be.equal('bar', this.target.first);
+                should.be.equal('alma', this.target.second);
+                should.be.equal('korte', this.target.third);
+            });
+
+            it('should only set while arugment is not a key value pair', function(){
+                this.target = new cli.helper.Args(['src', 'foo', 'bar', '-p', 'alma']);
+
+                should.be.equal('bar', this.target.first);
+                should.be.empty(this.target.second);
+                should.be.empty(this.target.third);
+            });
+        });
     }
 
     private function cwdShouldBeTheCurrentCwd():Void

@@ -6,6 +6,11 @@ class Args
 {
     private var _cwd:String;
     private var _command:String;
+
+    private var _first:String;
+    private var _second:String;
+    private var _third:String;
+
     private var _params:StringMap<String>;
 
     private var _args:Array<String>;
@@ -13,6 +18,9 @@ class Args
     public function new(args:Array<String>)
     {
         this._args = args;
+        this._first = '';
+        this._second = '';
+        this._third = '';
         this._cwd = this.getCwd();
         this._command = this.getCommand();
         this._params = this.getParams();
@@ -55,7 +63,7 @@ class Args
                 this.storeKeyValuePair(map, i);
                 i += 2;
             } else {
-                map.set(this._args[i], this._args[i]);
+                this.storeSimpleValue(map, i);
                 i++;
             }
         }
@@ -80,6 +88,21 @@ class Args
         return index + 1 == this._args.length;
     }
 
+    public function storeSimpleValue(map:StringMap<String>, index:Int):Void
+    {
+        var value:String = this._args[index];
+
+        if (index == 0) {
+            this._first = value;
+        } else if (index == 1) {
+            this._second = value;
+        } else if (index == 2) {
+            this._third = value;
+        }
+
+        map.set(value, value);
+    }
+
     public var cwd(get, null):String;
     public function get_cwd():String
     {
@@ -90,6 +113,24 @@ class Args
     public function get_command():String
     {
         return this._command;
+    }
+
+    public var first(get, null):String;
+    public function get_first():String
+    {
+        return this._first;
+    }
+
+    public var second(get, null):String;
+    public function get_second():String
+    {
+        return this._second;
+    }
+
+    public var third(get, null):String;
+    public function get_third():String
+    {
+        return this._third;
     }
 
     public function has(param:String):Bool
