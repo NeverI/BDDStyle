@@ -25,6 +25,8 @@ class TestMain
         runner.add(cli.tools.FileCreatorTest);
 
         runner.add(cli.CommandFactoryTest);
+        runner.add(cli.command.CreateTest);
+
         runner.run();
     }
 }
