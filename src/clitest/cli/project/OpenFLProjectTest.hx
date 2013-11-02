@@ -14,15 +14,16 @@ class OpenFLProjectTest extends bdd.ExampleGroup
 
     public function example():Void
     {
-        describe('constructor', function(){
-            it('should throw when requested platform is empty', function(){
-                should.throws(function(){
-                    new OpenFLProject(this.parser, []);
-                });
-            });
-        });
-
         describe('#getPlatforms():Array<Platform>', function(){
+            it('should set the default platform to systemName -neko if requested platform is empty', function(){
+                parsed();
+
+                this.target = new OpenFLProject(this.parser, []);
+                this.target.parse('xml');
+
+                verifyPlatforms([Sys.systemName().toLowerCase() + ' -neko']);
+            });
+
             it('should return only the requested platform', function(){
                 parsed();
 

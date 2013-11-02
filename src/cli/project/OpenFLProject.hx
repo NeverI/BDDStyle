@@ -12,13 +12,9 @@ class OpenFLProject implements IProject
 
     public function new(parser:OpenFLParser, requestedPlatforms:Array<String>)
     {
-        if (requestedPlatforms.length == 0) {
-            throw 'OpenFL test must has atleast one platform';
-        }
-
         this.parser = parser;
         this.platforms = [];
-        this.requestedPlatforms = requestedPlatforms;
+        this.requestedPlatforms = requestedPlatforms.length == 0 ? [ Sys.systemName().toLowerCase() + ' -neko' ] : requestedPlatforms;
     }
 
     public function parse(content:String):Void
