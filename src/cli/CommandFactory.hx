@@ -5,6 +5,7 @@ import cli.helper.Args;
 import cli.project.Factory;
 import cli.project.IProject;
 import cli.project.FileFinder;
+import cli.tools.Tools;
 
 class CommandFactory
 {
@@ -17,16 +18,16 @@ class CommandFactory
         var args = this.createArgs(argList);
 
         if (args.command == '') {
-            return new Help(args, null);
+            return new Help(args, null, null);
         }
 
         var project = this.createProject(args);
         var cls = this.getClass(args.command);
 
         try {
-            return Type.createInstance(cls, [args, project]);
+            return Type.createInstance(cls, [args, project, new Tools()]);
         } catch(e:Dynamic) {
-            return new Help(args, null);
+            return new Help(args, null, null);
         }
     }
 
