@@ -7,6 +7,10 @@ class Main
         var factory:CommandFactory = new CommandFactory();
         var command:cli.command.Command = factory.create(Sys.args());
 
-        comamnd.run();
+        try {
+            comamnd.run();
+        } catch(e:Dynamic) {
+            trace(e);
+        }
     }
 }
