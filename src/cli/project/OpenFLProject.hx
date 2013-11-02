@@ -14,7 +14,23 @@ class OpenFLProject implements IProject
     {
         this.parser = parser;
         this.platforms = [];
-        this.requestedPlatforms = requestedPlatforms.length == 0 ? [ Sys.systemName().toLowerCase() + ' -neko' ] : requestedPlatforms;
+
+        this.requestedPlatforms = requestedPlatforms.length == 0 ? [ 'neko' ] : requestedPlatforms;
+        this.translateRequestedHaxePlatformsToOpenFL();
+    }
+
+    private function translateRequestedHaxePlatformsToOpenFL():Void
+    {
+        var system:String = Sys.systemName().toLowerCase();
+
+        for (i in 0...this.requestedPlatforms.length) {
+            switch (this.requestedPlatforms[i]) {
+                case 'cpp': this.requestedPlatforms[i] = system;
+                case 'neko': this.requestedPlatforms[i] = system + ' -neko';
+                case 'swf': this.requestedPlatforms[i] = 'flash';
+                case 'js': this.requestedPlatforms[i] = 'html5';
+            }
+        }
     }
 
     public function parse(content:String):Void

@@ -15,9 +15,24 @@ class OpenFLProjectTest extends bdd.ExampleGroup
     public function example():Void
     {
         describe('#getPlatforms():Array<Platform>', function(){
-            it('should set the default platform to systemName -neko if requested platform is empty', function(){
-                parsed();
+            extendBeforeEach(function(){
+                when(this.parser.parse('xml')).thenReturn({
+                    main:'',
+                    name: '',
+                    sources:[],
+                    runnable:'',
+                });
+            });
 
+            it('should tranlate the haxe (cpp, neko, swf, js) platforms to openfl targets', function(){
+                this.target = new OpenFLProject(this.parser, ['cpp', 'neko', 'swf', 'js']);
+                this.target.parse('xml');
+
+                var system:String = Sys.systemName().toLowerCase();
+                verifyPlatforms([system, system + ' -neko', 'flash', 'html5']);
+            });
+
+            it('should set the default platform to neko if the requested platform is empty', function(){
                 this.target = new OpenFLProject(this.parser, []);
                 this.target.parse('xml');
 
@@ -25,24 +40,12 @@ class OpenFLProjectTest extends bdd.ExampleGroup
             });
 
             it('should return only the requested platform', function(){
-                parsed();
-
                 this.target = new OpenFLProject(this.parser, ['flash', 'linux']);
                 this.target.parse('xml');
 
                 verifyPlatforms(['flash', 'linux']);
             });
         });
-    }
-
-    private function parsed():Void
-    {
-        when(this.parser.parse('xml')).thenReturn({
-                main:'',
-                name: '',
-                sources:[],
-                runnable:'',
-                });
     }
 
     private function verifyPlatforms(expected:Array<String>):Void
