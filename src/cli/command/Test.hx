@@ -6,6 +6,14 @@ class Test extends Command
     private var platform:cli.project.Platform;
     private var cache:Map<String, String>;
 
+    override public function printHelp():Void
+    {
+        Sys.println('');
+        Sys.println('test [-g regexp] search for *Test.hx in the test path build & run');
+        Sys.println('                 when -g is present, it will build & run only');
+        Sys.println('                 the matching *Test.hx files');
+    }
+
     override public function run():Void
     {
         this.cache = new Map<String, String>();

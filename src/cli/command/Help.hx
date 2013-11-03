@@ -18,5 +18,6 @@ class Help extends Command
         this.printHelp();
 
         new Create(this.args, this.project, this.tools).printHelp();
+        new Test(this.args, this.project, this.tools).printHelp();
     }
 }
