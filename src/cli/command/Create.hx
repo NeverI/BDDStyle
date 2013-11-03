@@ -11,10 +11,12 @@ class Create extends Command
 
     override public function printHelp():Void
     {
-        trace('');
-        trace('create <className> create an empty class file with its own test class');
-        trace('                   Source path is one of the pathes which is contains a Main.hx or which is not contains the TestMain.hx or the same as the test path');
-        trace('                   Test path is where the the TestMain.hx is exists');
+        Sys.println('');
+        Sys.println('create <className> create an empty class file with its own test class');
+        Sys.println('                   Source path is one of the pathes which is contains');
+        Sys.println('                   a Main.hx or which is not contains the TestMain.hx');
+        Sys.println('                   or the same as the test path');
+        Sys.println('                   Test path is where the the TestMain.hx is exists');
     }
 
     override public function run():Void
