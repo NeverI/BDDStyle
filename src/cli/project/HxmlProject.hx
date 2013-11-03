@@ -47,14 +47,40 @@ class HxmlProject implements IProject
 
     public function run(platform:Platform):Void
     {
-
+        switch (platform.name) {
+            case 'neko':
+                this.printProcess(new sys.io.Process('neko', [platform.runnable]));
+            case 'cpp':
+                this.printProcess(new sys.io.Process(platform.runnable, []));
+        }
     }
 
+    private function printProcess(process:sys.io.Process):Void
+    {
+        var output = process.stderr.readAll();
+        if (output.length != 0) {
+            throw output;
+        }
+
+        Sys.print(process.stdout.readAll());
+    }
 
     public function build(platform:Platform):Void
     {
-
+        this.printProcess(new sys.io.Process('haxe', this.getParametersForPlatform(platform)));
     }
+
+    private function getParametersForPlatform(platform:Platform):Array<String>
+    {
+        for (block in this.platforms) {
+            if (block.platform == platform) {
+                return block.parameters;
+            }
+        }
+
+        throw 'Platform not found';
+    }
+
 }
 
 typedef HxmlBlock = {
