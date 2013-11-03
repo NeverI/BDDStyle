@@ -50,7 +50,7 @@ class CommandFactory
 
         var project:IProject = factory.create(projectFile, this.getRequestedPlatforms(args));
 
-        project.parse(sys.io.File.getContent(projectFile));
+        project.parse(sys.io.File.getContent(projectFile), projectFile);
 
         return project;
     }

@@ -7,6 +7,7 @@ class OpenFLProject implements IProject
 {
     private var platforms:Array<Platform>;
     private var requestedPlatforms:Array<String>;
+    private var file:String;
 
     private var parser:OpenFLParser;
 
@@ -33,8 +34,10 @@ class OpenFLProject implements IProject
         }
     }
 
-    public function parse(content:String):Void
+    public function parse(content:String, file:String=''):Void
     {
+        this.file = file;
+
         var platformData:PlatformData = this.parser.parse(content);
 
         for (platformName in requestedPlatforms) {
@@ -50,11 +53,21 @@ class OpenFLProject implements IProject
 
     public function run(platform:Platform):Void
     {
+        this.printProcess(new sys.io.Process('openfl', ['run', this.file].concat(platform.name.split(' '))));
+    }
 
+    private function printProcess(process:sys.io.Process):Void
+    {
+        var output = process.stderr.readAll();
+        if (output.length != 0) {
+            throw output;
+        }
+
+        Sys.print(process.stdout.readAll());
     }
 
     public function build(platform:Platform):Void
     {
-
+        this.printProcess(new sys.io.Process('openfl', ['build', this.file].concat(platform.name.split(' '))));
     }
 }

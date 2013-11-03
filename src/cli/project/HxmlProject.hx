@@ -15,7 +15,7 @@ class HxmlProject implements IProject
         this.requestedPlatforms = requestedPlatforms;
     }
 
-    public function parse(content:String):Void
+    public function parse(content:String, path:String=''):Void
     {
         this.platforms = this.parser.parse(content);
 
