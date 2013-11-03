@@ -15,6 +15,8 @@ class Command
         this.args = args;
         this.project = project;
         this.tools = tools;
+
+        Sys.setCwd(this.args.cwd);
     }
 
     public function printHelp():Void
