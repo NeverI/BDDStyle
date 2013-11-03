@@ -19,18 +19,10 @@ class Args
         this.first = '';
         this.second = '';
         this.third = '';
-        this.cwd = this.getCwd();
+
         this.command = this.getCommand();
+        this.cwd = this.getCwd();
         this.params = this.getParams();
-    }
-
-    private function getCwd():String
-    {
-        if (this.args.length == 0 || !sys.FileSystem.exists(this.args[0])) {
-            return Sys.getCwd();
-        }
-
-        return this.args.shift();
     }
 
     private function getCommand():String
@@ -45,6 +37,18 @@ class Args
     private function isKey(index:Int):Bool
     {
         return this.args[index].charAt(0) == '-';
+    }
+
+    private function getCwd():String
+    {
+        var last:String = this.args[this.args.length - 1];
+        var beforeLast:String = this.args[this.args.length - 2];
+
+        if (last != null && (beforeLast == null || !this.isKey(this.args.length - 2)) && sys.FileSystem.exists(last)) {
+            return this.args.pop();
+        }
+
+        return Sys.getCwd();
     }
 
     private function getParams():StringMap<String>
@@ -73,7 +77,7 @@ class Args
     {
         var value:String = '';
 
-        if (!this.nexIsLast(index)) {
+        if (!this.nextIsLast(index)) {
             value = this.args[ index + 1];
         }
 
@@ -81,7 +85,7 @@ class Args
         map.set(key, value);
     }
 
-    private function nexIsLast(index:Int):Bool
+    private function nextIsLast(index:Int):Bool
     {
         return index + 1 == this.args.length;
     }

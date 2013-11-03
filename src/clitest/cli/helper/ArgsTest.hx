@@ -23,21 +23,7 @@ class ArgsTest extends bdd.ExampleGroup
             this.argumentGetShouldReturnEmptyString('foo');
         });
 
-        describe('when the first argument is a valid path', function(){
-           extendBeforeEach(function(){
-                this.target = new cli.helper.Args(['src']);
-            });
-
-            this.cwdShouldBeTheGivenCwd('src');
-
-            this.commandShouldBeEmptyString();
-
-            this.argumentHasShouldReturnFalse('foo');
-
-            this.argumentGetShouldReturnEmptyString('foo');
-        });
-
-        describe('when the first argument is not a valid path', function(){
+        describe('when the first argument is a valid command', function(){
             extendBeforeEach(function(){
                 this.target = new cli.helper.Args(['foo', 'bar']);
             });
@@ -51,54 +37,28 @@ class ArgsTest extends bdd.ExampleGroup
             this.argumentGetShouldReturnString('bar', 'bar');
         });
 
-        describe('when the first argument is a valid path second argument is not a valid command name', function(){
+        describe('when the last argument is a valid path', function(){
             extendBeforeEach(function(){
-                this.target = new cli.helper.Args(['src', '-foo']);
+                this.target = new cli.helper.Args(['create', 'src']);
             });
 
             this.cwdShouldBeTheGivenCwd('src');
 
-            this.commandShouldBeEmptyString();
+            this.commandShouldBeTheGivenString('create');
 
-            this.argumentHasShouldReturnFalse('foo');
-
-            this.argumentGetShouldReturnEmptyString('foo');
+            this.argumentHasShouldReturnFalse('src');
         });
 
-        describe('when the first argument is a valid path second argument is a valid command name', function(){
+        describe('when the last argument is a valid path but also a key value pair', function(){
             extendBeforeEach(function(){
-                this.target = new cli.helper.Args(['src', 'foo', '-p', 'bar', 'bar', '-a']);
+                this.target = new cli.helper.Args(['create', '-p', 'src']);
             });
 
-            this.cwdShouldBeTheGivenCwd('src');
-
-            this.commandShouldBeTheGivenString('foo');
-
-            this.argumentHasShouldReturnTrue('p');
-
-            this.argumentGetShouldReturnString('p', 'bar');
-
-            it('#get(name:String):String should return the same value when argument is not started with -', function(){
-                should.be.equal('bar', this.target.get('bar'));
-            });
-
-            it('#has(name:String):String should return true when argument has not value', function(){
-                should.be.True(this.target.has('a'));
-            });
-
-            it('#get(name:String):String should return the empty string when argument has not value', function(){
-                should.be.empty(this.target.get('a'));
-            });
+            this.cwdShouldBeTheCurrentCwd();
         });
 
         describe('ordered params', function(){
             it('should set the first three argument after the command if they are not a key value pair', function(){
-                this.target = new cli.helper.Args(['src', 'foo', 'bar', 'alma', 'korte']);
-
-                should.be.equal('bar', this.target.first);
-                should.be.equal('alma', this.target.second);
-                should.be.equal('korte', this.target.third);
-
                 this.target = new cli.helper.Args(['foo', 'bar', 'alma', 'korte']);
 
                 should.be.equal('bar', this.target.first);
@@ -107,11 +67,19 @@ class ArgsTest extends bdd.ExampleGroup
             });
 
             it('should only set while arugment is not a key value pair', function(){
-                this.target = new cli.helper.Args(['src', 'foo', 'bar', '-p', 'alma']);
+                this.target = new cli.helper.Args(['foo', 'bar', '-p', 'alma']);
 
                 should.be.equal('bar', this.target.first);
                 should.be.empty(this.target.second);
                 should.be.empty(this.target.third);
+
+                this.target = new cli.helper.Args(['foo', 'bar', 'src']);
+
+                should.be.equal('bar', this.target.first);
+                should.be.empty(this.target.second);
+                should.be.empty(this.target.third);
+
+                this.cwdShouldBeTheGivenCwd('src');
             });
         });
     }
