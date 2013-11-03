@@ -9,11 +9,12 @@ class HxmlParser
     private var keyGetter:EReg;
 
     private var hxmlBlocks:Array<HxmlBlock>;
-    private var hxml:String;
+    private var parameters:Array<String>;
     private var platformData:PlatformData;
 
     public function new()
     {
+        this.parameters = [];
         this.valueGetter = ~/-\w+\s(.+)/;
         this.keyGetter = ~/-(\w+)\s.+/;
     }
@@ -57,11 +58,11 @@ class HxmlParser
         this.validatePlatformData();
 
         this.hxmlBlocks.push({
-            hxml: this.hxml,
+            parameters: this.parameters,
             platform: new Platform(this.platformData)
         });
 
-        this.hxml = '';
+        this.parameters = [];
         this.setupNewPlatformData();
     }
 
@@ -82,7 +83,7 @@ class HxmlParser
 
     private function process(line:String):Void
     {
-        this.hxml += line+' ';
+        this.parameters = this.parameters.concat(line.split(' '));
 
         if (line.indexOf('-main ') == 0) {
             this.platformData.main = this.getValueFromString(line);

@@ -49,7 +49,7 @@ class HxmlProjectTest extends bdd.ExampleGroup
     private function createHxmlBlock(name:String):HxmlBlock
     {
         return {
-            hxml: 'hxml',
+            parameters: [],
             platform: new cli.project.Platform({
                 main:'',
                 name: name,

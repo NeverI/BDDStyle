@@ -58,6 +58,6 @@ class HxmlProject implements IProject
 }
 
 typedef HxmlBlock = {
-    var hxml:String;
+    var parameters:Array<String>;
     var platform:Platform;
 }
