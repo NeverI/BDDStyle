@@ -44,6 +44,11 @@ class HxmlProject implements IProject
         }
         return platforms;
     }
+
+    public function run(platform:Platform):Void
+    {
+
+    }
 }
 
 typedef HxmlBlock = {
