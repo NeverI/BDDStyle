@@ -19,8 +19,27 @@ class HxmlProject implements IProject
     {
         this.platforms = this.parser.parse(content);
 
+        this.validateRequestedPlatforms();
+
         if (this.requestedPlatforms.length != 0) {
             this.platforms = this.platforms.filter(this.isRequestedPlatform);
+        }
+    }
+
+    private function validateRequestedPlatforms():Void
+    {
+        for (requested in this.requestedPlatforms) {
+            var found:Bool = false;
+            for (block in this.platforms) {
+                if (requested == block.platform.name) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                throw 'Requested ' + requested + ' platform is unavailable';
+            }
         }
     }
 
