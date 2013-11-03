@@ -33,24 +33,24 @@ class TestTest extends bdd.ExampleGroup
         describe('#run():Void', function(){
             extendBeforeEach(function(){
                 when(this.tools.getContent('src/clitest/TestMain.hx')).thenReturn(this.getSourceTestMain());
-                when(this.tools.getFiles('src/clitest', '.+Test.hx$')).thenReturn(['src/clitest/cli/command/TestTest.hx', 'src/clitest/cli/helper/ArgsTest.hx', 'src/clitest/cli/CommandFactoryTest.hx']);
+                when(this.tools.getFiles('src/clitest', '.+Test.hx$', null)).thenReturn(['src/clitest/cli/command/TestTest.hx', 'src/clitest/cli/helper/ArgsTest.hx', 'src/clitest/cli/CommandFactoryTest.hx']);
             });
 
             it('should search for *Test.hx when -g argument is not present', function(){
                 this.target.run();
 
-                verify(this.tools.getFiles('src/clitest', '.+Test.hx$'), atLeastOnce);
+                verify(this.tools.getFiles('src/clitest', '.+Test.hx$', null), atLeastOnce);
                 should.success();
             });
 
             it('should search for argument value plus Test.hx', function(){
                 when(this.args.has('g')).thenReturn(true);
                 when(this.args.get('g')).thenReturn('(Foo|bar/Bar)');
-                when(this.tools.getFiles('src/clitest', '(Foo|bar/Bar)Test.hx$')).thenReturn([]);
+                when(this.tools.getFiles('src/clitest', '(Foo|bar/Bar)Test.hx$', null)).thenReturn([]);
 
                 this.target.run();
 
-                verify(this.tools.getFiles('src/clitest', '(Foo|bar/Bar)Test.hx$'), atLeastOnce);
+                verify(this.tools.getFiles('src/clitest', '(Foo|bar/Bar)Test.hx$', null), atLeastOnce);
                 should.success();
             });
 

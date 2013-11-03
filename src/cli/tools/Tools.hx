@@ -31,14 +31,14 @@ class Tools
         return sys.io.File.getContent(path);
     }
 
-    public function getFiles(path:String, matcher:String):Array<String>
+    public function getFiles(path:String, matcher:String, ?files:Array<String>):Array<String>
     {
-        var files:Array<String> = [];
+        files = files == null ? [] : files;
 
         for (entry in sys.FileSystem.readDirectory(path)) {
             entry = path + '/' + entry;
             if (sys.FileSystem.isDirectory(entry)) {
-                files.concat(this.getFiles(entry, matcher));
+                this.getFiles(entry, matcher, files);
             } else if (new EReg(matcher, '').match(entry)){
                 files.push(entry);
             }
