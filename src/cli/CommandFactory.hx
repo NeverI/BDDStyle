@@ -1,6 +1,7 @@
 package cli;
 
 import cli.command.*;
+import cli.command.Test;
 import cli.helper.Args;
 import cli.project.Factory;
 import cli.project.IProject;
@@ -56,6 +57,6 @@ class CommandFactory
 
     private function getRequestedPlatforms(args):Array<String>
     {
-        return args.get('p').split(',');
+        return args.has('p') ? args.get('p').split(',') : [];
     }
 }

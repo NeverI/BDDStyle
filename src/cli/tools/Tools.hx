@@ -49,7 +49,7 @@ class Tools
 
     public function ask(question:String):String
     {
-        Sys.print(question);
+        Sys.print(question+' ');
         return Sys.stdin().readLine();
     }
 
