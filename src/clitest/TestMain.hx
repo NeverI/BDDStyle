@@ -23,6 +23,7 @@ class TestMain
         runner.add(cli.project.FactoryTest);
 
         runner.add(cli.tools.FileCreatorTest);
+        runner.add(cli.tools.AssetsTest);
 
         runner.add(cli.CommandFactoryTest);
         runner.add(cli.command.CreateTest);
