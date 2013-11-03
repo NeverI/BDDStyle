@@ -27,6 +27,8 @@ class TestMain
 
         runner.add(cli.CommandFactoryTest);
         runner.add(cli.command.CreateTest);
+        runner.add(cli.command.RunTest);
+        runner.add(cli.command.BuildTest);
         runner.add(cli.command.TestTest);
 
         runner.run();

@@ -49,6 +49,12 @@ class HxmlProject implements IProject
     {
 
     }
+
+
+    public function build(platform:Platform):Void
+    {
+
+    }
 }
 
 typedef HxmlBlock = {

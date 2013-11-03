@@ -52,4 +52,9 @@ class OpenFLProject implements IProject
     {
 
     }
+
+    public function build(platform:Platform):Void
+    {
+
+    }
 }
