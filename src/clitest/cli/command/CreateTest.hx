@@ -20,6 +20,9 @@ class CreateTest extends bdd.ExampleGroup
         this.platform = mock(cli.project.Platform);
         this.project = mock(cli.project.HxmlProject);
 
+        when(this.args.cwd).thenReturn('.');
+        when(this.tools.getAsset(anyString, anyObject)).thenReturn('');
+
         this.target = new cli.command.Create(this.args, this.project, this.tools);
     }
 
@@ -59,12 +62,18 @@ class CreateTest extends bdd.ExampleGroup
                         should.success();
                     });
 
-                    it('should create the file and its test file in the proper path', function(){
+                    it('should create the file and its test file from proper template', function(){
+                        var objectMatcher = function(data:Dynamic):Bool {
+                            should.be.equal('Class', Reflect.field(data, 'class'));
+                            should.be.equal('foo.bar', Reflect.field(data, 'package'));
+                            should.be.equal('foo.bar.Class', Reflect.field(data, 'fullClassName'));
+                            return true;
+                        }
+
                         this.target.run();
 
-                        verify(this.tools.putContent(anyString, 'package foo.bar;\n\nclass Class\n{\n\tpublic function new()\n\t{\n\t}\n}'), 1);
-                        verify(this.tools.putContent(anyString, 'package foo.bar;\n\nclass ClassTest extends bdd.ExampleGroup\n{\n\tprivate var target:foo.bar.Class;\n\n\tpublic function example():Void\n\t{\n\t}\n}'), 1);
-                        should.success();
+                        verify(this.tools.getAsset('assets/class.tpl', customMatcher(objectMatcher)), atLeastOnce);
+                        verify(this.tools.getAsset('assets/classTest.tpl', customMatcher(objectMatcher)), atLeastOnce);
                     });
                 });
 

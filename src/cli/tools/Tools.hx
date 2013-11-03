@@ -2,43 +2,64 @@ package cli.tools;
 
 class Tools
 {
+    private var assets:Assets;
     private var fileCreator:FileCreator;
-    private var asker:Asker;
 
-    public function new()
+    public function new(cwd:String)
     {
+        this.assets = new Assets(cwd);
+        this.fileCreator = new FileCreator();
+    }
+
+    public function getAsset(assets:String, ?data:Dynamic):String
+    {
+        return this.assets.get(assets, data);
+    }
+
+    public function fillTemplate(templateContent:String, ?data:Dynamic):String
+    {
+        return this.assets.fill(templateContent, data);
     }
 
     public function putContent(path:String, content:String):Void
     {
-        if (this.fileCreator == null) {
-            this.fileCreator = new FileCreator();
+        this.fileCreator.put(path, content);
+    }
+
+    public function getContent(path:String):String
+    {
+        return sys.io.File.getContent(path);
+    }
+
+    public function getFiles(path:String, matcher:EReg):Array<String>
+    {
+        var files:Array<String> = [];
+
+        for (entry in sys.FileSystem.readDirectory(path)) {
+            if (sys.FileSystem.isDirectory(entry)) {
+                files.concat(this.getFiles(entry, matcher));
+            } else if (matcher.match(entry)){
+                files.push(entry);
+            }
         }
 
-        this.fileCreator.put(path, content);
+        return files;
     }
 
     public function ask(question:String):String
     {
-        return this.getAsker().ask(question);
-    }
-
-    private function getAsker():Asker
-    {
-        if (this.asker == null) {
-            this.asker = new Asker();
-        }
-
-        return this.asker;
+        Sys.print(question);
+        return Sys.stdin().readLine();
     }
 
     public function askBool(question:String):Bool
     {
-        return this.getAsker().askBool(question);
+        var answer:String = this.ask(question);
+        return answer == 'yes' || answer == 'Yes' || answer == 'YES' || answer == 'Y' || answer == 'y';
     }
 
     public function askArray(question:String):Array<String>
     {
-        return this.getAsker().askArray(question);
+        return this.ask(question).split(',');
     }
 }

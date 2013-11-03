@@ -45,10 +45,10 @@ class Create extends Command
 
     private function createClass(platform:Platform):Void
     {
-        this.createHxFile(platform.getSourcePath() + '/' + this.pathPrefix, this.getClassContent());
+        this.createHxFile(platform.getSourcePath() + '/' + this.pathPrefix, 'class');
     }
 
-    private function createHxFile(path:String, content:String):Void
+    private function createHxFile(path:String, template:String):Void
     {
         path = path+'.hx';
 
@@ -57,29 +57,23 @@ class Create extends Command
         }
 
         if (!sys.FileSystem.exists(path) || this.tools.askBool('File ' + path+' is exists. Do you want overwrite?')) {
-            this.tools.putContent(path, content);
+            this.tools.putContent(path, this.getTemplate(template));
         }
 
         this.created.set(path, true);
     }
 
-    private function getClassContent():String
+    private function getTemplate(name:String):String
     {
-        return 'package '+this.packageName+';\n\nclass '+this.className+'\n{\n\tpublic function new()\n\t{\n\t}\n}';
+        return this.tools.getAsset('assets/'+name+'.tpl', {
+            'class': this.className,
+            'package': this.packageName,
+            'fullClassName': (this.packageName == '' ? '' : this.packageName + '.') + this.className
+            });
     }
 
     private function createTestClass(platform:Platform):Void
     {
-        this.createHxFile(platform.getTestPath() + '/' + this.pathPrefix+'Test', this.getTestClassContent());
-    }
-
-    private function getTestClassContent():String
-    {
-        return 'package '+this.packageName+';\n\nclass '+this.className+'Test extends bdd.ExampleGroup\n{\n\tprivate var target:'+this.getFullClassName()+';\n\n\tpublic function example():Void\n\t{\n\t}\n}';
-    }
-
-    private function getFullClassName():String
-    {
-        return (this.packageName == '' ? '' : this.packageName + '.') + this.className;
+        this.createHxFile(platform.getTestPath() + '/' + this.pathPrefix+'Test', 'classTest');
     }
 }
