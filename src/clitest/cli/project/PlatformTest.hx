@@ -6,13 +6,14 @@ class PlatformTest extends bdd.ExampleGroup
 
     public function example():Void
     {
-        describe('main, name and runnable', function(){
+        describe('main, mainHx, name and runnable', function(){
             it('should have getters', function(){
-                this.target = new cli.project.Platform({main:'TestMain', name:'swf', sources:[], runnable:'flash.swf'});
+                this.target = new cli.project.Platform({main:'cli.TestMain', name:'swf', sources:[], runnable:'flash.swf'});
 
-                should.be.equal('TestMain', this.target.main);
                 should.be.equal('swf', this.target.name);
+                should.be.equal('cli.TestMain', this.target.main);
                 should.be.equal('flash.swf', this.target.runnable);
+                should.be.equal('cli/TestMain.hx', this.target.mainHx);
             });
         });
 

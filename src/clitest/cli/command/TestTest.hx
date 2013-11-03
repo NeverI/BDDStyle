@@ -23,7 +23,7 @@ class TestTest extends bdd.ExampleGroup
         when(this.args.cwd).thenReturn('.');
         this.target = new cli.command.Test(this.args, this.project, this.tools);
 
-        when(this.platform.main).thenReturn('TestMain');
+        when(this.platform.mainHx).thenReturn('TestMain.hx');
         when(this.platform.getTestPath()).thenReturn('src/clitest');
         when(this.project.getPlatforms()).thenReturn([ this.platform, this.platform ]);
     }

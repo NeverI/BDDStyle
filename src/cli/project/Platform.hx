@@ -6,6 +6,7 @@ class Platform
 
     public var main(default, null):String;
     public var name(default, null):String;
+    public var mainHx(default, null):String;
     public var runnable(default, null):String;
 
     public function new(data:PlatformData)
@@ -14,6 +15,7 @@ class Platform
         this.name = data.name;
         this.sources = data.sources;
         this.runnable = data.runnable;
+        this.mainHx = this.main.split('.').join('/') + '.hx';
     }
 
     public function getTestPath():String
@@ -21,7 +23,7 @@ class Platform
         this.checkSources();
 
         for (path in this.sources) {
-            if (sys.FileSystem.exists(path+'/'+this.main+'.hx')) {
+            if (sys.FileSystem.exists(path+'/'+this.mainHx)) {
                 return path;
             }
         }
@@ -47,7 +49,7 @@ class Platform
         }
 
         for (path in this.sources) {
-            if (!sys.FileSystem.exists(path+'/'+this.main+'.hx')) {
+            if (!sys.FileSystem.exists(path+'/'+this.mainHx)) {
                 return path;
             }
         }

@@ -58,8 +58,7 @@ class Test extends Command
 
     private function getTestMainPath():String
     {
-        var mainName:Array<String> = this.platform.main.split('.');
-        return this.platform.getTestPath()+'/'+mainName.join('/')+'.hx';
+        return this.platform.getTestPath()+'/'+this.platform.mainHx;
     }
 
     private function getClassList():Array<String>
