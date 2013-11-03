@@ -8,7 +8,7 @@ class Main
         var command:cli.command.Command = factory.create(Sys.args());
 
         try {
-            comamnd.run();
+            command.run();
         } catch(e:Dynamic) {
             trace(e);
         }
