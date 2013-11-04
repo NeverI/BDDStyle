@@ -63,4 +63,27 @@ class Tools
     {
         return this.ask(question).split(',');
     }
+
+    public function getRunOptions(args:cli.helper.Args, platform:cli.project.Platform):Dynamic
+    {
+        var options:Dynamic = null;
+
+        if (platform.name != 'js') {
+            return options;
+        }
+
+        if (args.has('browser')) {
+            options = { browser: true };
+        }
+
+        if (args.has('nodejs')) {
+            if (options != null) {
+                Reflect.setField(options, 'nodejs', true);
+            } else {
+                options = { nodejs: true };
+            }
+        }
+
+        return options;
+    }
 }

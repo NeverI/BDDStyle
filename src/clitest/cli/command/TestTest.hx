@@ -36,7 +36,7 @@ class TestTest extends bdd.ExampleGroup
             it('should build & run all requested platform', function(){
                 this.target.run();
 
-                verify(this.project.run(this.platform), 2);
+                verify(this.project.run(this.platform, null), 2);
                 verify(this.project.build(this.platform), 2);
                 should.success();
             });

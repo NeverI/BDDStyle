@@ -64,7 +64,7 @@ class HxmlProject implements IProject
         return platforms;
     }
 
-    public function run(platform:Platform):Void
+    public function run(platform:Platform, ?options:Dynamic):Void
     {
         switch (platform.name) {
             case 'neko':
@@ -73,6 +73,8 @@ class HxmlProject implements IProject
                 new cli.helper.Process().run(platform.runnable);
             case 'swf':
                 new cli.helper.Process().runWithDefault(platform.runnable);
+            case 'js':
+                this.runJs(platform.runnable, options);
         }
     }
 
@@ -90,6 +92,22 @@ class HxmlProject implements IProject
         }
 
         throw 'Platform not found';
+    }
+
+    private function runJs(runnable:String, options:Dynamic):Void
+    {
+        if (options == null) {
+            return;
+        }
+
+        if (Reflect.hasField(options, 'nodejs')) {
+            new cli.helper.Process().run('nodejs', [runnable]);
+        }
+
+        if (Reflect.hasField(options, 'browser')) {
+            runnable = haxe.io.Path.directory(runnable) + '/index.html';
+            new cli.helper.Process().runWithDefault(runnable);
+        }
     }
 
 }

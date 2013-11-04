@@ -32,7 +32,7 @@ class RunTest extends bdd.ExampleGroup
             it('should call the project\'s run method with all requested platform', function(){
                 this.target.run();
 
-                verify(this.project.run(this.platform), 2);
+                verify(this.project.run(this.platform, null), 2);
                 verify(this.project.build(this.platform), never);
 
                 should.success();
