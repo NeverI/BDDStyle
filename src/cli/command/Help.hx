@@ -17,6 +17,13 @@ class Help extends Command
     {
         this.printHelp();
 
+        new Init(this.args, this.project, this.tools).printHelp();
+
+        if (this.project == null) {
+            Sys.println('Not found and specified a project file\n');
+            return;
+        }
+
         new Create(this.args, this.project, this.tools).printHelp();
         new Run(this.args, this.project, this.tools).printHelp();
         new Build(this.args, this.project, this.tools).printHelp();
