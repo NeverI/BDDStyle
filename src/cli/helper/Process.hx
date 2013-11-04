@@ -21,7 +21,7 @@ class Process
 
     public function run(command:String, ?arguments:Array<String>):Void
     {
-        var process = new sys.io.Process('neko', arguments != null ? arguments : []);
+        var process = new sys.io.Process(command, arguments != null ? arguments : []);
 
         var output = process.stderr.readAll();
         if (output.length != 0) {
