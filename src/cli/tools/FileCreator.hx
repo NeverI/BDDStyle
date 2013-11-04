@@ -10,7 +10,7 @@ class FileCreator
     {
         var folder:String = haxe.io.Path.directory(path);
         if (!this.folderExists(folder)) {
-            this.createTarget(folder);
+            this.createDir(folder);
         }
 
         sys.io.File.saveContent(path, content);
@@ -21,7 +21,7 @@ class FileCreator
         return sys.FileSystem.exists(path);
     }
 
-    private function createTarget(path:String):Void
+    public function createDir(path:String):Void
     {
         var folders:Array<String> = path.split('/');
         var current:String = '';

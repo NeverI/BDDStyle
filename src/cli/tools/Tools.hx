@@ -21,6 +21,11 @@ class Tools
         return this.assets.fill(templateContent, data);
     }
 
+    public function createDir(path:String):Void
+    {
+        this.fileCreator.createDir(path);
+    }
+
     public function putContent(path:String, content:String):Void
     {
         this.fileCreator.put(path, content);
