@@ -28,7 +28,7 @@ class CommandFactory
         try {
             return Type.createInstance(cls, [args, project, new Tools(Sys.getCwd())]);
         } catch(e:Dynamic) {
-            return new Help(args, null, null);
+            return new Help(args, project, null);
         }
     }
 
@@ -47,6 +47,10 @@ class CommandFactory
     {
         var factory:Factory = new Factory();
         var projectFile:String = new FileFinder(args).get();
+
+        if (projectFile == '') {
+            return null;
+        }
 
         var project:IProject = factory.create(projectFile, this.getRequestedPlatforms(args));
 
