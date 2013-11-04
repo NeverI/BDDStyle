@@ -31,10 +31,6 @@ class FileFinder
             this.findFile();
         }
 
-        if (this.filePath == '') {
-            throw 'Not found any project file';
-        }
-
         return this.filePath;
     }
 

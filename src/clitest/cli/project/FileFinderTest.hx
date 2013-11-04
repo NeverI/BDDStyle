@@ -47,8 +47,6 @@ class FileFinderTest extends bdd.ExampleGroup
                     should.be.equal('./test.hxml', this.target.get());
                 });
             });
-
-            it('should throw if not found any project file');
         });
     }
 
