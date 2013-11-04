@@ -55,7 +55,7 @@ class Tools
     public function ask(question:String):String
     {
         Sys.print(question+' ');
-        return Sys.stdin().readLine();
+        return StringTools.trim(Sys.stdin().readLine());
     }
 
     public function askBool(question:String):Bool
@@ -66,7 +66,26 @@ class Tools
 
     public function askArray(question:String):Array<String>
     {
-        return this.ask(question).split(',');
+        var answers:Array<String> = this.ask(question).split(',');
+        var cleared:Array<String> = [];
+        for (answer in answers) {
+            answer = StringTools.trim(answer);
+            if (answer != '') {
+                cleared.push(answer);
+            }
+        }
+        return cleared;
+    }
+
+    public function askNonEmpty(question:String):String
+    {
+        var value = this.ask(question);
+        if (value == '') {
+            Sys.println('Value cannot be empty');
+            value = this.askNonEmpty(question);
+        }
+
+        return value;
     }
 
     public function getRunOptions(args:cli.helper.Args, platform:cli.project.Platform):Dynamic
