@@ -53,21 +53,16 @@ class OpenFLProject implements IProject
 
     public function run(platform:Platform):Void
     {
-        this.printProcess(new sys.io.Process('openfl', ['run', this.file].concat(platform.name.split(' '))));
+        new cli.helper.Process().run('openfl', this.getArgument('run', platform));
     }
 
-    private function printProcess(process:sys.io.Process):Void
+    private function getArgument(command:String, platform:Platform):Array<String>
     {
-        var output = process.stderr.readAll();
-        if (output.length != 0) {
-            throw output;
-        }
-
-        Sys.print(process.stdout.readAll());
+        return [command, this.file].concat(platform.name.split(' '));
     }
 
     public function build(platform:Platform):Void
     {
-        this.printProcess(new sys.io.Process('openfl', ['build', this.file].concat(platform.name.split(' '))));
+        new cli.helper.Process().run('openfl', this.getArgument('build', platform));
     }
 }

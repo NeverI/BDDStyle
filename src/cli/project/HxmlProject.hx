@@ -68,25 +68,15 @@ class HxmlProject implements IProject
     {
         switch (platform.name) {
             case 'neko':
-                this.printProcess(new sys.io.Process('neko', [platform.runnable]));
+                new cli.helper.Process().run('neko', [platform.runnable]);
             case 'cpp':
-                this.printProcess(new sys.io.Process(platform.runnable, []));
+                new cli.helper.Process().run(platform.runnable);
         }
-    }
-
-    private function printProcess(process:sys.io.Process):Void
-    {
-        var output = process.stderr.readAll();
-        if (output.length != 0) {
-            throw output;
-        }
-
-        Sys.print(process.stdout.readAll());
     }
 
     public function build(platform:Platform):Void
     {
-        this.printProcess(new sys.io.Process('haxe', this.getParametersForPlatform(platform)));
+        new cli.helper.Process().run('haxe', this.getParametersForPlatform(platform));
     }
 
     private function getParametersForPlatform(platform:Platform):Array<String>
