@@ -71,6 +71,8 @@ class HxmlProject implements IProject
                 new cli.helper.Process().run('neko', [platform.runnable]);
             case 'cpp':
                 new cli.helper.Process().run(platform.runnable);
+            case 'swf':
+                new cli.helper.Process().runWithDefault(platform.runnable);
         }
     }
 
