@@ -8,9 +8,6 @@
 
     <haxelib name="%libs%" />
 
-    <assets path="Assets" rename="assets" exclude="openfl.svg" />
-    <icon path="Assets/openfl.svg" />
-
     <ndll name="std" />
     <ndll name="regexp" />
 
