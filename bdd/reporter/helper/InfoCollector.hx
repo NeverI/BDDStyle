@@ -39,7 +39,7 @@ class InfoCollector extends bdd.event.EventDispatcher
     private function contractFullOverview(describe:bdd.Describe):Void
     {
         var currenDesribeStartIndex:Int = this.fullOverview.lastIndexOf(describe.overview);
-        this.fullOverview = this.fullOverview.substring(0, currenDesribeStartIndex - 1);
+        this.fullOverview = this.fullOverview.substring(0, currenDesribeStartIndex);
     }
 
     private function collectItData(it:bdd.It):Void
