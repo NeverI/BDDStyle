@@ -34,7 +34,7 @@ class ExampleGroupRunner extends bdd.event.EventDispatcher
             return;
         }
 
-        this.rootDesribe = new Describe('', function(){
+        this.rootDesribe = new Describe(Type.getClassName(Type.getClass(this.group)), function(){
             Reflect.callMethod(this.group, this.getNextMethod(), []);
         });
 

@@ -17,7 +17,7 @@ class Descriptive extends bdd.reporter.helper.Abstract
     private function groupStart(group:ExampleGroup):Void
     {
         this.identation = '';
-        this.print('\n'+Type.getClassName(Type.getClass(group)));
+        this.print('');
     }
 
     override private function print(s:Dynamic):Void
