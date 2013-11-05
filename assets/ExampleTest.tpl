@@ -15,11 +15,11 @@ class ExampleTest extends bdd.ExampleGroup
             this.array.push('bar');
         });
 
-        it('should contains bar', function(){
-            should.contains('bar', this.array());
+        it('this.array should contains bar', function(){
+            should.contains('bar', this.array);
         });
 
-        describe('this.array', function(){
+        describe('this.array from a describe', function(){
             extendBeforeEach(function(){
                 this.array.pop();
             });
@@ -37,16 +37,18 @@ class ExampleTest extends bdd.ExampleGroup
     public function example_async():Void
     {
         describe('an example for async', function(){
-            it('really shoud', function(){
-                var asyncTimeout = 1500;
-                var callbackWillBeCalled = 500;
+            describe('just for fun', function(){
+                it('really works', function(){
+                    var asyncTimeout = 1500;
+                    var callbackWillBeCalled = 500;
 
-                var thatWillBeTrue:Bool = false;
-                var asyncFunc = createAsyncBlock(function(?data){ should.be.True(thatWillBeTrue); }, asyncTimeout);
+                    var thatWillBeTrue:Bool = false;
+                    var asyncFunc = createAsyncBlock(function(?data){ should.be.True(thatWillBeTrue); }, asyncTimeout);
 
-                bdd.munit.Timer.delay( asyncFunc, callbackWillBeCalled);
+                    bdd.munit.Timer.delay( asyncFunc, callbackWillBeCalled);
 
-                thatWillBeTrue = true;
+                    thatWillBeTrue = true;
+                });
             });
         });
     }
