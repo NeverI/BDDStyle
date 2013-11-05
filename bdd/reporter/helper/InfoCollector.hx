@@ -9,7 +9,7 @@ class InfoCollector extends bdd.event.EventDispatcher
     public var expectionCount(default, null):Int;
     public var failedSpecs(default, null):Array<ItInfo>;
 
-    private var fullOverview:String;
+    private var fullOverview:Array<String>;
     private var currentIt:bdd.It;
 
     public function new()
@@ -28,18 +28,17 @@ class InfoCollector extends bdd.event.EventDispatcher
         this.pendingCount = 0;
         this.expectionCount = 0;
         this.failedSpecs = [];
-        this.fullOverview = '';
+        this.fullOverview = [];
     }
 
     private function expandFullOverview(describe:bdd.Describe):Void
     {
-        this.fullOverview += describe.overview + ' ';
+        this.fullOverview.push(describe.overview);
     }
 
     private function contractFullOverview(describe:bdd.Describe):Void
     {
-        var currenDesribeStartIndex:Int = this.fullOverview.lastIndexOf(describe.overview);
-        this.fullOverview = this.fullOverview.substring(0, currenDesribeStartIndex);
+        this.fullOverview.pop();
     }
 
     private function collectItData(it:bdd.It):Void
@@ -59,7 +58,7 @@ class InfoCollector extends bdd.event.EventDispatcher
         }
 
         this.failedSpecs.push({
-            fullOverview : this.fullOverview + ' ' + this.currentIt.overview,
+            fullOverview : this.fullOverview.join(' ') + ' ' + this.currentIt.overview,
             failedExpects : this.createFailedResultList()
         });
     }
