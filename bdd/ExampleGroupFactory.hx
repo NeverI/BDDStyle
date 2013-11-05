@@ -11,12 +11,8 @@ class ExampleGroupFactory
         this.should = new CompositeShould(new bdd.expection.ItReporter());
     }
 
-    public function create(cls:Class<Dynamic>):ExampleGroup
+    public function create(cls:Class<ExampleGroup>):ExampleGroup
     {
-        try {
-            return Type.createInstance(cls, [ this.should ]);
-        } catch(e:Dynamic) {
-            throw Type.getClassName(cls)+' is not an ExampleGroup';
-        }
+        return Type.createInstance(cls, [ this.should ]);
     }
 }

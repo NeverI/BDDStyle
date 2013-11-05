@@ -39,7 +39,7 @@ class Runner extends bdd.event.EventDispatcher
         return this.groups[this.currentGroupIndex++];
     }
 
-    public function add(cls:Class<Dynamic>):Void
+    public function add(cls:Class<ExampleGroup>):Void
     {
         this.groups.push(this.groupFactory.create(cls));
     }
