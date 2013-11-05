@@ -12,7 +12,7 @@ class Silent extends bdd.reporter.helper.Abstract
     private function printFinal(event:Dynamic):Void
     {
         if (this.infoCollector.failedSpecs.length != 0) {
-            #if (cpp|neko)
+            #if (cpp||neko)
             Sys.exit(1);
             #else
             this.print('failed');
