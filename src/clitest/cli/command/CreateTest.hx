@@ -83,7 +83,7 @@ class CreateTest extends bdd.ExampleGroup
                     });
 
                     it('answer is no does not save the file', function(){
-                        when(this.tools.askBool(anyString)).thenReturn(false);
+                        when(this.tools.askBool(anyString, null)).thenReturn(false);
 
                         this.target.run();
 
@@ -92,7 +92,7 @@ class CreateTest extends bdd.ExampleGroup
                     });
 
                     it('answer is yes save the file', function(){
-                        when(this.tools.askBool(anyString)).thenReturn(true);
+                        when(this.tools.askBool(anyString, null)).thenReturn(true);
 
                         this.target.run();
 
