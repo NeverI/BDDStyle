@@ -49,18 +49,11 @@ class Init extends Command
 
     private function colletBasicData():Void
     {
-        this.testPath = this.tools.ask('test path (default test):');
-        this.testPath = this.testPath == '' ? 'test' : this.testPath;
-
-        this.sourcePath = this.tools.ask('source path (default src):');
-        this.sourcePath = this.sourcePath == '' ? 'src' : this.sourcePath;
-
-        this.exportPath = this.tools.ask('export path (default build):');
-        this.exportPath = this.exportPath == '' ? 'build' : this.exportPath;
-
+        this.testPath = this.tools.ask('test path (default test):', 'test');
+        this.sourcePath = this.tools.ask('source path (default src):', 'src');
+        this.exportPath = this.tools.ask('export path (default build):', 'build');
         this.libs = this.tools.askArray('haxelibs (other then bdd (commasep list)):');
-
-        this.reportes = this.tools.askArray('Available reporters:\n[Descriptive|Dot], Error, Summary, Silent or any own class\nreporters (default Descriptive,Error,Summary):');
+        this.reportes = this.tools.askArray('Available reporters:\n[Descriptive|Dot], Error, Summary, Silent or any own class\nreporters (default Descriptive,Error,Summary):', 'Descriptive,Error,Summary');
 
         this.libs.unshift('bdd');
 
@@ -123,10 +116,10 @@ class Init extends Command
     private function getHxmlExport(platform:String):String
     {
         switch(platform) {
-            case 'js': return '-js '+this.exportPath+'/test.js';
-            case 'swf': return '-swf '+this.exportPath+'/test.swf';
-            case 'neko': return '-neko '+this.exportPath+'/test.n';
-            default: return '-'+platform+' '+this.exportPath;
+            case 'js': return 'js '+this.exportPath+'/test.js';
+            case 'swf': return 'swf '+this.exportPath+'/test.swf';
+            case 'neko': return 'neko '+this.exportPath+'/test.n';
+            default: return platform+' '+this.exportPath;
         }
     }
 
