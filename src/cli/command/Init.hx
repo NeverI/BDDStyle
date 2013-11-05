@@ -97,7 +97,7 @@ class Init extends Command
 
     private function createProjectFile():Void
     {
-        this.projectFileContent = 'Project';//this.tools.getAsset('assets/'+this.format+'.tpl', this.projectTemplateData);
+        this.projectFileContent = this.tools.getAsset('assets/'+this.format+'.tpl', this.projectTemplateData);
     }
 
     private function initHxml():Void
@@ -111,7 +111,7 @@ class Init extends Command
         for (i in 0...platforms.length) {
             Reflect.setField(this.projectTemplateData, 'platform', this.getHxmlExport(platforms[i]));
 
-            this.projectFileContent += platforms[i];//this.tools.getAsset('assets/hxml.tpl', this.projectTemplateData);
+            this.projectFileContent += this.tools.getAsset('assets/hxml.tpl', this.projectTemplateData);
 
             if (i != platforms.length - 1) {
                 this.projectFileContent += '\n--next\n';
@@ -136,6 +136,7 @@ class Init extends Command
         this.tools.createDir(this.exportPath);
 
         this.tools.putContent(this.testPath+'/TestMain.hx', this.getTestMainContent());
+        this.tools.putContent(this.testPath+'/ExampleTest.hx', this.tools.getAsset('assets/ExampleTest.tpl'));
 
         this.saveProject();
 
@@ -144,7 +145,7 @@ class Init extends Command
 
     private function getTestMainContent():String
     {
-        return 'TestMain';//this.tools.getAsset('assets/TestMain.tpl', { reporters: this.getReporters() });
+        return this.tools.getAsset('assets/TestMain.tpl', { reporters: this.getReporters() });
     }
 
     private function getReporters():Array<String>
@@ -190,6 +191,6 @@ class Init extends Command
 
     public function getGruntContent():String
     {
-        return 'grunt';//this.tools.getAsset('assets/Gruntfile.tpl', { test: this.testPath, source: this.sourcePath });
+        return this.tools.getAsset('assets/Gruntfile.tpl', { test: this.testPath, source: this.sourcePath });
     }
 }

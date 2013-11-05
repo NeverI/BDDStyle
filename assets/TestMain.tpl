@@ -10,6 +10,7 @@ class TestMain
         reporterFactory.create(%reporters%);
 
         var runner = new bdd.Runner();
+        runner.add(ExampleTest);
 
         runner.run();
     }
