@@ -26,6 +26,8 @@ class Init extends Command
         this.colletBasicData();
         this.init();
         this.copyAssets();
+
+        Sys.println('done.');
     }
 
     private function askGrunt():Void
@@ -53,7 +55,6 @@ class Init extends Command
         this.sourcePath = this.tools.ask('source path (default src):', 'src');
         this.exportPath = this.tools.ask('export path (default build):', 'build');
         this.libs = this.tools.askArray('haxelibs (other then bdd (commasep list)):');
-        this.reportes = this.tools.askArray('Available reporters:\n[Descriptive|Dot], Error, Summary, Silent or any own class\nreporters (default Descriptive,Error,Summary):', 'Descriptive,Error,Summary');
 
         this.libs.unshift('bdd');
 
@@ -138,26 +139,7 @@ class Init extends Command
 
     private function getTestMainContent():String
     {
-        return this.tools.getAsset('assets/TestMain.tpl', { reporters: this.getReporters() });
-    }
-
-    private function getReporters():Array<String>
-    {
-        var correctedReporters:Array<String> = [];
-        for (reporter in this.reportes) {
-            if (this.isBuiltinReporter(reporter)) {
-                correctedReporters.push('bdd.reporter.' + reporter);
-            } else {
-                correctedReporters.push(reporter);
-            }
-        }
-
-        return correctedReporters;
-    }
-
-    private function isBuiltinReporter(reporter:String):Bool
-    {
-        return reporter == 'Descriptive' || reporter == 'Dot' || reporter == 'Error' || reporter == 'Summary' || reporter == 'Silent';
+        return this.tools.getAsset('assets/TestMain.tpl');
     }
 
     private function saveProject():Void

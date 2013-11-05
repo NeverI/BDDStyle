@@ -1,15 +1,17 @@
 package ;
 
+import bdd.reporter.*;
+
 class TestMain
 {
-    static function main(){ new TestMain(); }
-
-    public function new()
+    static function main()
     {
-        var reporterFactory:bdd.reporter.helper.Factory = new bdd.reporter.helper.Factory();
-        reporterFactory.create(bdd.reporter.Descriptive);
-        reporterFactory.create(bdd.reporter.Error);
-        reporterFactory.create(bdd.reporter.Summary);
+        var reporters = new Map<String, Array<Class<bdd.reporter.helper.Abstract>>>();
+        reporters.set('desc', [Descriptive, Error, Summary]);
+        reporters.set('dot', [Dot, Error, Summary]);
+        reporters.set('silent', [Silent]);
+
+        new bdd.reporter.helper.Factory().createFromList(reporters.get('dot'));
 
         var runner = new bdd.Runner();
         runner.add(cli.helper.ArgsTest);
