@@ -52,21 +52,22 @@ class Tools
         return files;
     }
 
-    public function ask(question:String):String
+    public function ask(question:String, def:String = ''):String
     {
         Sys.print(question+' ');
-        return StringTools.trim(Sys.stdin().readLine());
+        var value = StringTools.trim(Sys.stdin().readLine());
+        return value == '' ? def : value;
     }
 
-    public function askBool(question:String):Bool
+    public function askBool(question:String, def:String = ''):Bool
     {
-        var answer:String = this.ask(question);
+        var answer:String = this.ask(question, def);
         return answer == 'yes' || answer == 'Yes' || answer == 'YES' || answer == 'Y' || answer == 'y';
     }
 
-    public function askArray(question:String):Array<String>
+    public function askArray(question:String, def:String = ''):Array<String>
     {
-        var answers:Array<String> = this.ask(question).split(',');
+        var answers:Array<String> = this.ask(question, def).split(',');
         var cleared:Array<String> = [];
         for (answer in answers) {
             answer = StringTools.trim(answer);
