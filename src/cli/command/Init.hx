@@ -32,7 +32,7 @@ class Init extends Command
 
     private function askGrunt():Void
     {
-        this.gruntIsRequired = this.tools.askBool('Woud you like to use gruntjs for automatic test running?');
+        this.gruntIsRequired = this.tools.askBool('Woud you like to use gruntjs as automatic/colorizer runner?');
 
         if (!this.gruntIsRequired) {
             return;
