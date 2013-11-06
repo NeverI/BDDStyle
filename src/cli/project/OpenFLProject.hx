@@ -51,9 +51,9 @@ class OpenFLProject implements IProject
         return this.platforms;
     }
 
-    public function run(platform:Platform, ?options:Dynamic):Void
+    public function run(platform:Platform, ?options:Dynamic):Int
     {
-        new cli.helper.Process().run('openfl', this.getArgument('run', platform));
+        return new cli.helper.Process().run('openfl', this.getArgument('run', platform));
     }
 
     private function getArgument(command:String, platform:Platform):Array<String>

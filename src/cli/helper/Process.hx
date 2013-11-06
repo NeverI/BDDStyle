@@ -6,20 +6,22 @@ class Process
     {
     }
 
-    public function runWithDefault(runnable:String):Void
+    public function runWithDefault(runnable:String):Int
     {
         if (Sys.systemName() == 'Linux') {
-            this.run('xdg-open', [runnable]);
+            return this.run('xdg-open', [runnable]);
 
         } else if (Sys.systemName() == 'Mac') {
-            this.run('open', [runnable]);
+            return this.run('open', [runnable]);
 
         } else if (Sys.systemName() == 'Windows') {
-            this.run('start', [runnable]);
+            return this.run('start', [runnable]);
         }
+
+        return 1;
     }
 
-    public function run(command:String, ?arguments:Array<String>):Void
+    public function run(command:String, ?arguments:Array<String>):Int
     {
         var process = new sys.io.Process(command, arguments != null ? arguments : []);
 
@@ -29,5 +31,7 @@ class Process
         }
 
         Sys.print(process.stdout.readAll());
+
+        return process.exitCode();
     }
 }

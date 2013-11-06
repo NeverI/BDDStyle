@@ -17,9 +17,13 @@ class Summary extends bdd.reporter.helper.Abstract
         report += this.infoCollector.failedSpecs.length + ' failed, ';
         report += this.infoCollector.expectionCount + ' expects.';
         report += '\n';
-        report += this.infoCollector.failedSpecs.length == 0 ? 'OK' : 'Failed';
+        report += this.infoCollector.failedSpecs.length == 0 ? 'OK' : 'FAILED';
         report += '\n';
 
         this.print(report);
+
+        #if (cpp||neko)
+        Sys.exit(this.infoCollector.failedSpecs.length);
+        #end
     }
 }

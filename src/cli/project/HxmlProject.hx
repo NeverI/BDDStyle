@@ -64,18 +64,20 @@ class HxmlProject implements IProject
         return platforms;
     }
 
-    public function run(platform:Platform, ?options:Dynamic):Void
+    public function run(platform:Platform, ?options:Dynamic):Int
     {
         switch (platform.name) {
             case 'neko':
-                new cli.helper.Process().run('neko', [platform.runnable]);
+                return new cli.helper.Process().run('neko', [platform.runnable]);
             case 'cpp':
-                new cli.helper.Process().run(platform.runnable);
+                return new cli.helper.Process().run(platform.runnable);
             case 'swf':
-                new cli.helper.Process().runWithDefault(platform.runnable);
+                return new cli.helper.Process().runWithDefault(platform.runnable);
             case 'js':
-                this.runJs(platform.runnable, options);
+                return this.runJs(platform.runnable, options);
         }
+
+        return 1;
     }
 
     public function build(platform:Platform):Void
@@ -94,20 +96,22 @@ class HxmlProject implements IProject
         throw 'Platform not found';
     }
 
-    private function runJs(runnable:String, options:Dynamic):Void
+    private function runJs(runnable:String, options:Dynamic):Int
     {
         if (options == null) {
-            return;
+            return 0;
         }
 
         if (Reflect.hasField(options, 'nodejs')) {
-            new cli.helper.Process().run('nodejs', [runnable]);
+            return new cli.helper.Process().run('nodejs', [runnable]);
         }
 
         if (Reflect.hasField(options, 'browser')) {
             runnable = haxe.io.Path.directory(runnable) + '/index.html';
-            new cli.helper.Process().runWithDefault(runnable);
+            return new cli.helper.Process().runWithDefault(runnable);
         }
+
+        return 1;
     }
 
 }

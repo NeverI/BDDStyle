@@ -11,8 +11,11 @@ class Run extends Command
 
     override public function run():Void
     {
+        var exitCode:Int = 0;
         for (platform in this.project.getPlatforms()) {
-            this.project.run(platform, this.tools.getRunOptions(this.args, platform));
+            exitCode += this.project.run(platform, this.tools.getRunOptions(this.args, platform));
         }
+
+        Sys.exit(exitCode);
     }
 }
