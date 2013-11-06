@@ -1,0 +1,39 @@
+## Flash 9+
+-main TestMain
+-lib mockatoo
+
+-cp test
+
+-swf-version 11
+-swf build/test/flash.swf
+
+--next
+
+## JavaScript
+-main TestMain
+-lib mockatoo
+
+-cp test
+
+-js build/test/js.js
+
+--next
+
+## Neko
+-main TestMain
+-lib mockatoo
+
+-cp test
+
+-neko build/test/neko.n
+
+--next
+
+## CPP
+-main TestMain
+-lib mockatoo
+
+-cp test
+
+#-D HXCPP_M64
+-cpp build/test/cpp
