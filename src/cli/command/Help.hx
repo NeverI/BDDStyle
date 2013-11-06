@@ -15,12 +15,15 @@ class Help extends Command
 
     override public function run():Void
     {
+        if (this.project == null) {
+            Sys.println('Not found and specified a project file\n');
+        }
+
         this.printHelp();
 
         new Init(this.args, this.project, this.tools).printHelp();
 
         if (this.project == null) {
-            Sys.println('Not found and specified a project file\n');
             return;
         }
 
