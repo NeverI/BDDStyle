@@ -9,6 +9,7 @@ class Descriptive extends bdd.reporter.helper.Abstract
         super(printer, infoCollector);
 
         this.addListener('group.start', this.groupStart);
+        this.addListener('group.done', this.groupDone);
         this.addListener('describe.start', this.describeStart);
         this.addListener('describe.done', this.describeDone);
         this.addListener('it.done', this.itDone);
@@ -17,6 +18,10 @@ class Descriptive extends bdd.reporter.helper.Abstract
     private function groupStart(group:ExampleGroup):Void
     {
         this.identation = '';
+    }
+
+    private function groupDone(group:ExampleGroup):Void
+    {
         this.print('');
     }
 
