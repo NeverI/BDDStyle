@@ -36,22 +36,24 @@ class BuildTest extends bdd.ExampleGroup
                 when(this.tools.getFiles('src/clitest', '.+Test.hx$', null)).thenReturn(['src/clitest/cli/command/TestTest.hx', 'src/clitest/cli/helper/ArgsTest.hx', 'src/clitest/cli/CommandFactoryTest.hx']);
             });
 
-            it('should search for *Test.hx when -g argument is not present', function(){
-                this.target.run();
+            describe('-g argument as test file search regexp', function(){
+                it('should search for .+Test.hx$ when is not present', function(){
+                    this.target.run();
 
-                verify(this.tools.getFiles('src/clitest', '.+Test.hx$', null), atLeastOnce);
-                should.success();
-            });
+                    verify(this.tools.getFiles('src/clitest', '.+Test.hx$', null), atLeastOnce);
+                    should.success();
+                });
 
-            it('should search for argument value plus Test.hx', function(){
-                when(this.args.has('g')).thenReturn(true);
-                when(this.args.get('g')).thenReturn('(Foo|bar/Bar)');
-                when(this.tools.getFiles('src/clitest', '(Foo|bar/Bar)Test.hx$', null)).thenReturn([]);
+                it('should search for valueTest.hx$', function(){
+                    when(this.args.has('g')).thenReturn(true);
+                    when(this.args.get('g')).thenReturn('(Foo|bar/Bar)');
+                    when(this.tools.getFiles('src/clitest', '(Foo|bar/Bar)Test.hx$', null)).thenReturn([]);
 
-                this.target.run();
+                    this.target.run();
 
-                verify(this.tools.getFiles('src/clitest', '(Foo|bar/Bar)Test.hx$', null), atLeastOnce);
-                should.success();
+                    verify(this.tools.getFiles('src/clitest', '(Foo|bar/Bar)Test.hx$', null), atLeastOnce);
+                    should.success();
+                });
             });
 
             it('should convert the current TestMain to template', function() {
@@ -59,6 +61,25 @@ class BuildTest extends bdd.ExampleGroup
 
                 verify(this.tools.fillTemplate(this.getTemplatedTestMain(), anyObject), atLeastOnce);
                 should.success();
+            });
+
+            describe('-r argument set the used reporter', function(){
+                it('should use "default" when is not present', function() {
+                    this.target.run();
+
+                    verify(this.tools.fillTemplate(this.getTemplatedTestMain(), anyObject), atLeastOnce);
+                    should.success();
+                });
+
+                it('should use the value', function() {
+                    when(this.args.has('r')).thenReturn(true);
+                    when(this.args.get('r')).thenReturn('dot');
+
+                    this.target.run();
+
+                    verify(this.tools.fillTemplate(this.getTemplatedTestMain('dot'), anyObject), atLeastOnce);
+                    should.success();
+                });
             });
 
             it('should fill the template with the correct class data', function() {
@@ -104,8 +125,7 @@ class BuildTest extends bdd.ExampleGroup
         '\n' +
         '\tpublic function new()\n'+
         '\t{\n'+
-        '\t\tvar reporterFactory:bdd.reporter.helper.Factory = new bdd.reporter.helper.Factory();\n'+
-        '\t\treporterFactory.create(bdd.reporter.Descriptive);\n'+
+        '\t\tnew bdd.reporter.helper.Factory().createFromList(reporters.get("default"));\n'+
         '\n' +
         '\t\tvar runner = new bdd.Runner();\n'+
         '\t\t//runner.add(cli.helper.ArgsTest);\n'+
@@ -120,7 +140,7 @@ class BuildTest extends bdd.ExampleGroup
         '}';
     }
 
-    private function getTemplatedTestMain():String
+    private function getTemplatedTestMain(reporterName:String = 'default'):String
     {
         return '' +
         'package ;\n' +
@@ -131,11 +151,10 @@ class BuildTest extends bdd.ExampleGroup
         '\n' +
         '\tpublic function new()\n'+
         '\t{\n'+
-        '\t\tvar reporterFactory:bdd.reporter.helper.Factory = new bdd.reporter.helper.Factory();\n'+
-        '\t\treporterFactory.create(bdd.reporter.Descriptive);\n'+
+        "\t\tnew bdd.reporter.helper.Factory().createFromList(reporters.get('"+reporterName+"'));\n"+
         '\n' +
         '\t\tvar runner = new bdd.Runner();\n'+
-        '\t\trunner.add(%fullClassName%);\n'+
+        '        runner.add(%fullClassName%);\n'+
         '\n' +
         '\t\trunner.run();\n'+
         '\t}\n'+

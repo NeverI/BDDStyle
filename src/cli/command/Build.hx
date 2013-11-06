@@ -9,9 +9,11 @@ class Build extends Command
     override public function printHelp():Void
     {
         Sys.println('');
-        Sys.println('build [-g regexp] search for *Test.hx in the test path and build it');
-        Sys.println('                 when -g is present, it will build only');
-        Sys.println('                 the matching *Test.hx files');
+        Sys.println('build [-g regexp] [-r reporter]');
+        Sys.println('                 search for *Test.hx in the test path and build it');
+        Sys.println('                 -g it will build only the matching *Test.hx files');
+        Sys.println('                 -r reporter list key from your TestMain.hx');
+        Sys.println('                    when not specified the default used');
     }
 
     override public function run():Void
@@ -47,9 +49,12 @@ class Build extends Command
         var needToStore:Bool = true;
 
         for (line in sourceLines) {
-            if (line.indexOf('Runner();') != -1) {
+            if (line.indexOf('.createFromList(reporters.get(') != -1) {
+                var reporter:String = this.args.has('r') ? this.args.get('r') : 'default';
+                line = ~/reporters.get\(['|"](.+)['|"]\)/.replace(line, "reporters.get('"+reporter+"')");
+            } else if (line.indexOf('Runner();') != -1) {
                 lines.push(line);
-                lines.push('\t\trunner.add(%fullClassName%);');
+                lines.push('        runner.add(%fullClassName%);');
                 needToStore = false;
             } else if (line.indexOf('runner.run();') != -1) {
                 lines.push('');

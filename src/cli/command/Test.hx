@@ -5,7 +5,7 @@ class Test extends Build
     override public function printHelp():Void
     {
         Sys.println('');
-        Sys.println('test [-g regexp] build & run');
+        Sys.println('test [-g regexp] [-r reporter] build & run');
     }
 
     override private function processPlatform():Void

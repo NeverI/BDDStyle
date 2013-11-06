@@ -11,7 +11,9 @@ class TestMain
         reporters.set('dot', [Dot, Error, Summary]);
         reporters.set('silent', [Silent]);
 
-        new bdd.reporter.helper.Factory().createFromList(reporters.get('desc'));
+        reporters.set('default', reporters.get('desc'));
+
+        new bdd.reporter.helper.Factory().createFromList(reporters.get('default'));
 
         var runner = new bdd.Runner();
         runner.add(numberguesser.RandomNumberGeneratorTest);
