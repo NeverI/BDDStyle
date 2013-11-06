@@ -6,7 +6,7 @@ class Run extends Command
     {
         Sys.println('');
         Sys.println('run   simple execute the pre-builded platforms (where is possible)');
-        Sys.println('      for js target available arguments: [ browser|nodejs ]');
+        Sys.println('      [ browser|nodejs ] for js target available arguments');
     }
 
     override public function run():Void
