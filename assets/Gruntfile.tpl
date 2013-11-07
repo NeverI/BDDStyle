@@ -1,6 +1,11 @@
 module.exports = function(grunt) {
 
-  var
+    var
+    okColor = 'green',
+    wrongColor = 'red',
+    pendingColor = 'cyan',
+    defaultColor = 'grey',
+
     DotColorizer = {
         line: '',
 
@@ -29,14 +34,14 @@ module.exports = function(grunt) {
         getColor: function(ch)
         {
             if (ch == '.') {
-                return 'green';
+                return okColor;
             } else if (ch == 'X') {
-                return 'red';
+                return wrongColor;
             } else if (ch == 'P') {
-                return 'cyan';
+                return pendingColor;
             }
 
-            return 'grey';
+            return defaultColor;
         }
     },
     SummaryColorizer = {
@@ -64,14 +69,14 @@ module.exports = function(grunt) {
         getColor: function(part)
         {
             if (part.indexOf('success') != -1) {
-                return 'green';
+                return okColor;
             } else if (part.indexOf('failed') != -1) {
-                return 'red';
+                return wrongColor;
             } else if (part.indexOf('pending') != -1) {
-                return 'cyan';
+                return pendingColor;
             }
 
-            return 'grey';
+            return defaultColor;
         }
     },
     DescriptiveColorizer = {
@@ -91,10 +96,10 @@ module.exports = function(grunt) {
         {
             this.line = this.line.replace(this.replacePattern, '');
             if (this.matches[2].indexOf('X') != -1) {
-                return this.line.red;
+                return this.line[wrongColor];
             }
 
-            return this.line.cyan;
+            return this.line[pendingColor];
         },
     },
     Highlighter = {
@@ -129,16 +134,16 @@ module.exports = function(grunt) {
                 this.line = this.descriptive.colorize();
 
             } else if (this.line.match(/\d+\)/)) {
-                this.line = this.line.red;
+                this.line = this.line[wrongColor];
 
             } else if (this.line == 'OK') {
-                this.line = this.line.green;
+                this.line = this.line[okColor];
 
             } else if (this.line == 'FAILED') {
-                this.line = this.line.red;
+                this.line = this.line[wrongColor];
 
             } else {
-                this.line = this.line.grey;
+                this.line = this.line[defaultColor];
             }
 
             grunt.log.writeln(this.line);
