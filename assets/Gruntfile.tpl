@@ -149,13 +149,70 @@ module.exports = function(grunt) {
             grunt.log.writeln(this.line);
         },
     },
-    hightlight = Highlighter.colorize();
+    GrepValueChanger = {
+        init: function(task)
+        {
+            if (!grunt.option('changed') || task.indexOf('watch:') == -1) {
+                return;
+            }
+
+            this.registerToWatchTask(task.split(':')[1]);
+        },
+
+        registerToWatchTask: function(target)
+        {
+            var tester = Object.create(this);
+
+            tester.target = target;
+            grunt.event.on("watch", tester.listener.bind(tester));
+
+            return tester;
+        },
+
+        listener: function(action, filepath, target)
+        {
+            if (!this.isListenedEvent(action, target)) {
+                return;
+            }
+            grunt.log.writeln('');
+
+            this.file = filepath;
+            grunt.config.set('grep', '-g ' + this.grepValue());
+        },
+
+        isListenedEvent: function(action, target)
+        {
+            return action == 'changed' && target == this.target;
+        },
+
+        grepValue: function()
+        {
+            var
+                prefix = '',
+                suffix = '';
+
+            if (this.file.match('Test.hx$')) {
+                prefix = grunt.config.get('test');
+                suffix = 'Test';
+            } else {
+                prefix = grunt.config.get('source');
+            }
+
+            suffix += '.hx';
+
+            return this.file.substr(prefix.length + 1).replace(suffix, '').split('/').join('\\.');
+        }
+    },
+    hightlight = Highlighter.colorize(),
+    grep = grunt.option('grep') ? '-g '+grunt.option('grep') : '',
+    reporter = grunt.option('reporter') ? '-r '+grunt.option('reporter') : ''
+    ;
 
     grunt.initConfig({
         testPath: '%test%',
         sourcePath: '%source%',
-        grep: grunt.option('grep') ? '-g '+grunt.option('grep') : '',
-        reporter: grunt.option('reporter') ? '-r '+grunt.option('reporter') : '',
+        grep: grep,
+        reporter: reporter,
 
         watch: {
             neko: {
@@ -185,4 +242,6 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-exec');
+
+    GrepValueChanger.init(process.argv[2]);
 };
