@@ -6,14 +6,17 @@ class Run extends Command
     {
         Sys.println('');
         Sys.println('run   simple execute the pre-builded platforms (where is possible)');
-        Sys.println('      [ browser|nodejs ] for js target available arguments');
+        Sys.println('      [ phantomjs ] for js target (openfl and hxml)');
+        Sys.println('      [ nodejs ] for js target (hxml)');
+        Sys.println('      [ native ] for swf target. this will launch the default swf player');
+        Sys.println('                 instead of browser. (openfl and hxml)');
     }
 
     override public function run():Void
     {
         var exitCode:Int = 0;
         for (platform in this.project.getPlatforms()) {
-            exitCode += this.project.run(platform, this.tools.getRunOptions(this.args, platform));
+            exitCode += this.project.run(platform, this.args);
         }
 
         Sys.exit(exitCode);

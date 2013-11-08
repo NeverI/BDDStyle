@@ -7,7 +7,7 @@ class Test extends Build
     override public function printHelp():Void
     {
         Sys.println('');
-        Sys.println('test [-g regexp] [-r reporter] build & run');
+        Sys.println('test    build & run');
     }
 
     override public function run():Void
@@ -22,6 +22,6 @@ class Test extends Build
     override private function processPlatform():Void
     {
         super.processPlatform();
-        this.exitCode += this.project.run(this.platform, this.tools.getRunOptions(this.args, this.platform));
+        this.exitCode += this.project.run(this.platform, this.args);
     }
 }

@@ -1,5 +1,6 @@
 package cli.project;
 
+import cli.helper.Args;
 import cli.helper.HxmlParser;
 
 class HxmlProject implements IProject
@@ -64,20 +65,47 @@ class HxmlProject implements IProject
         return platforms;
     }
 
-    public function run(platform:Platform, ?options:Dynamic):Int
+    public function run(platform:Platform, args:Args):Int
     {
         switch (platform.name) {
+            case 'js':
+                return this.runJs(platform.runnable, args);
+            case 'swf':
+                return this.runSwf(platform.runnable, args);
             case 'neko':
                 return new cli.helper.Process().run('neko', [platform.runnable]);
             case 'cpp':
                 return new cli.helper.Process().run(platform.runnable);
-            case 'swf':
-                return new cli.helper.Process().runWithDefault(platform.runnable);
-            case 'js':
-                return this.runJs(platform.runnable, options);
+            case 'php':
+                return new cli.helper.Process().run('php', [platform.runnable]);
         }
 
         return 1;
+    }
+
+    private function runJs(runnable:String, args:Args):Int
+    {
+        if (args.has('nodejs')) {
+            return new cli.helper.Process().run('nodejs', [runnable]);
+        }
+
+        if (args.has('phantomjs')) {
+            runnable = haxe.io.Path.directory(runnable) + '/phatom.html';
+            return new cli.helper.Process().run('phantomjs', [runnable]);
+        }
+
+        runnable = haxe.io.Path.directory(runnable) + '/js.html';
+        return new cli.helper.Process().runWithDefault(runnable);
+    }
+
+    private function runSwf(runnable:String, args:Args):Int
+    {
+        if (args.has('native')) {
+            return new cli.helper.Process().runWithDefault(runnable);
+        }
+
+        runnable = haxe.io.Path.directory(runnable) + '/swf.html';
+        return new cli.helper.Process().runWithDefault(runnable);
     }
 
     public function build(platform:Platform):Void
@@ -95,25 +123,6 @@ class HxmlProject implements IProject
 
         throw 'Platform not found';
     }
-
-    private function runJs(runnable:String, options:Dynamic):Int
-    {
-        if (options == null) {
-            return 0;
-        }
-
-        if (Reflect.hasField(options, 'nodejs')) {
-            return new cli.helper.Process().run('nodejs', [runnable]);
-        }
-
-        if (Reflect.hasField(options, 'browser')) {
-            runnable = haxe.io.Path.directory(runnable) + '/index.html';
-            return new cli.helper.Process().runWithDefault(runnable);
-        }
-
-        return 1;
-    }
-
 }
 
 typedef HxmlBlock = {
