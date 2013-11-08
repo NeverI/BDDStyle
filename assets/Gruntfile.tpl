@@ -203,7 +203,7 @@ module.exports = function(grunt) {
             return this.file.substr(prefix.length + 1).replace(suffix, '').split('/').join('\\.');
         }
     },
-    hightlight = Highlighter.colorize(),
+    highlight = Highlighter.colorize(),
     grep = grunt.option('grep') ? '-g '+grunt.option('grep') : '',
     reporter = grunt.option('reporter') ? '-r '+grunt.option('reporter') : ''
     ;
@@ -229,12 +229,12 @@ module.exports = function(grunt) {
             test_neko: {
                 command: 'haxelib run bdd test -p neko <%= grep %> <%= reporter %>',
                 stdout: false,
-                callback: hightlight
+                callback: highlight
             },
             test_cpp: {
                 command: 'haxelib run bdd test -p cpp <%= grep %> <%= reporter %>',
                 stdout: false,
-                callback: hightlight
+                callback: highlight
             },
         }
 
