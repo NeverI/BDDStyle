@@ -90,7 +90,7 @@ class HxmlProject implements IProject
         }
 
         if (args.has('phantomjs')) {
-            runnable = haxe.io.Path.directory(runnable) + '/phatom.html';
+            runnable = haxe.io.Path.directory(runnable) + '/phatomjs.html';
             return new cli.helper.Process().run('phantomjs', [runnable]);
         }
 
