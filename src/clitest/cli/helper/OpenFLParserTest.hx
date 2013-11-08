@@ -41,13 +41,13 @@ class OpenFLParserTest extends bdd.ExampleGroup
                     should.be.equal('TestMain', this.platformData.main);
                 });
 
-                it('should create runnable with placeholder for the platform', function(){
-                    should.be.equal('test/build/%platform%/TestMainFile%ext%', this.platformData.runnable);
+                it('should create compiledPath with placeholder for the platform', function(){
+                    should.be.equal('test/build/%platform%/TestMainFile%ext%', this.platformData.compiledPath);
                 });
 
-                it('should add the source pathes to the sources', function(){
-                    should.contains('src', this.platformData.sources);
-                    should.contains('src/clitest', this.platformData.sources);
+                it('should add the source pathes to the sourcePathes', function(){
+                    should.contains('src', this.platformData.sourcePathes);
+                    should.contains('src/clitest', this.platformData.sourcePathes);
                 });
             });
         });

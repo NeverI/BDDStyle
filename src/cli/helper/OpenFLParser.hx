@@ -11,8 +11,8 @@ class OpenFLParser
         this.platformData = {
             main: '',
             name: '',
-            sources: [],
-            runnable: ''
+            sourcePathes: [],
+            compiledPath: ''
         }
     }
 
@@ -34,15 +34,15 @@ class OpenFLParser
         switch (node.nodeName) {
             case 'app':
                 this.platformData.main = node.get('main');
-                this.platformData.runnable = node.get('path')+'/%platform%/'+node.get('file')+'%ext%';
+                this.platformData.compiledPath = node.get('path')+'/%platform%/'+node.get('file')+'%ext%';
             case 'classpath':
-                this.platformData.sources.push(node.get('name'));
+                this.platformData.sourcePathes.push(node.get('name'));
         }
     }
 
     private function validatePlatformData():Void
     {
-        if (this.platformData.sources.length == 0) {
+        if (this.platformData.sourcePathes.length == 0) {
             throw 'Not found any classpath';
         }
     }

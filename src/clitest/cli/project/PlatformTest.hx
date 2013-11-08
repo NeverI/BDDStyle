@@ -6,13 +6,13 @@ class PlatformTest extends bdd.ExampleGroup
 
     public function example():Void
     {
-        describe('main, mainHx, name and runnable', function(){
+        describe('main, mainHx, name and compiledPath', function(){
             it('should have getters', function(){
-                this.target = new cli.project.Platform({main:'cli.TestMain', name:'swf', sources:[], runnable:'flash.swf'});
+                this.target = new cli.project.Platform({main:'cli.TestMain', name:'swf', sourcePathes:[], compiledPath:'flash.swf'});
 
                 should.be.equal('swf', this.target.name);
                 should.be.equal('cli.TestMain', this.target.main);
-                should.be.equal('flash.swf', this.target.runnable);
+                should.be.equal('flash.swf', this.target.compiledPath);
                 should.be.equal('cli/TestMain.hx', this.target.mainHx);
             });
         });
@@ -32,7 +32,7 @@ class PlatformTest extends bdd.ExampleGroup
         });
 
         describe('getSourcePath():String', function(){
-            it('should throw an expection if there are no sources', function(){
+            it('should throw an expection if there are no sourcePathes', function(){
                 setupPlatform([]);
 
                 should.throws(function(){ target.getTestPath(); }, 'The source pathes are missing');
@@ -58,8 +58,8 @@ class PlatformTest extends bdd.ExampleGroup
         });
     }
 
-    private function setupPlatform(sources:Array<String>):Void
+    private function setupPlatform(sourcePathes:Array<String>):Void
     {
-        this.target = new cli.project.Platform({main:'TestMain', name:'swf', sources:sources, runnable:'flash.swf'});
+        this.target = new cli.project.Platform({main:'TestMain', name:'swf', sourcePathes:sourcePathes, compiledPath:'flash.swf'});
     }
 }

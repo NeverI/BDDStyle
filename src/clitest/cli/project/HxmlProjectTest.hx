@@ -53,8 +53,8 @@ class HxmlProjectTest extends bdd.ExampleGroup
             platform: new cli.project.Platform({
                 main:'',
                 name: name,
-                sources:[],
-                runnable:'',
+                sourcePathes:[],
+                compiledPath:'',
                 })
         }
     }

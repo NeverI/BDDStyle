@@ -69,42 +69,41 @@ class HxmlProject implements IProject
     {
         switch (platform.name) {
             case 'js':
-                return this.runJs(platform.runnable, args);
+                return this.runJs(platform.compiledPath, args);
             case 'swf':
-                return this.runSwf(platform.runnable, args);
+                return this.runSwf(platform.compiledPath, args);
             case 'neko':
-                return new cli.helper.Process().run('neko', [platform.runnable]);
+                return new cli.helper.Process().run('neko', [platform.compiledPath]);
             case 'cpp':
-                return new cli.helper.Process().run(platform.runnable);
+                return new cli.helper.Process().run(platform.compiledPath);
             case 'php':
-                return new cli.helper.Process().run('php', [platform.runnable]);
+                return new cli.helper.Process().run('php', [platform.compiledPath]);
         }
 
         return 1;
     }
 
-    private function runJs(runnable:String, args:Args):Int
+    private function runJs(compiledPath:String, args:Args):Int
     {
         if (args.has('nodejs')) {
-            return new cli.helper.Process().run('nodejs', [runnable]);
+            return new cli.helper.Process().run('nodejs', [compiledPath]);
         }
 
+        var runnable:String = haxe.io.Path.directory(compiledPath) + '/js.html';
         if (args.has('phantomjs')) {
-            runnable = haxe.io.Path.directory(runnable) + '/phatomjs.html';
             return new cli.helper.Process().run('phantomjs', [runnable]);
         }
 
-        runnable = haxe.io.Path.directory(runnable) + '/js.html';
         return new cli.helper.Process().runWithDefault(runnable);
     }
 
-    private function runSwf(runnable:String, args:Args):Int
+    private function runSwf(compiledPath:String, args:Args):Int
     {
         if (args.has('native')) {
-            return new cli.helper.Process().runWithDefault(runnable);
+            return new cli.helper.Process().runWithDefault(compiledPath);
         }
 
-        runnable = haxe.io.Path.directory(runnable) + '/swf.html';
+        var runnable:String = haxe.io.Path.directory(compiledPath) + '/swf.html';
         return new cli.helper.Process().runWithDefault(runnable);
     }
 

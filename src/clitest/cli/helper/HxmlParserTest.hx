@@ -48,53 +48,53 @@ class HxmlParserTest extends bdd.ExampleGroup
                 });
 
                 describe('platform depend data', function(){
-                    it('should set name and runnable with neko', function(){
+                    it('should set name and compiledPath with neko', function(){
                         parse('-main TestMain\n-cp src\n-neko build/neko.n\n');
 
                         should.be.equal('neko', this.result[0].platform.name);
-                        should.be.equal('build/neko.n', this.result[0].platform.runnable);
+                        should.be.equal('build/neko.n', this.result[0].platform.compiledPath);
                     });
 
-                    it('should set name and runnable with swf', function(){
+                    it('should set name and compiledPath with swf', function(){
                         parse('-main TestMain\n-cp src\n-swf build/flash.swf\n');
 
                         should.be.equal('swf', this.result[0].platform.name);
-                        should.be.equal('build/flash.swf', this.result[0].platform.runnable);
+                        should.be.equal('build/flash.swf', this.result[0].platform.compiledPath);
                     });
 
-                    it('should set name and runnable with javascript', function(){
+                    it('should set name and compiledPath with javascript', function(){
                         parse('-main TestMain\n-cp src\n-js build/index.js\n');
 
                         should.be.equal('js', this.result[0].platform.name);
-                        should.be.equal('build/index.js', this.result[0].platform.runnable);
+                        should.be.equal('build/index.js', this.result[0].platform.compiledPath);
                     });
 
-                    it('should set name and runnable with php', function(){
+                    it('should set name and compiledPath with php', function(){
                         parse('-main TestMain\n-cp src\n-php build/php\n');
 
                         should.be.equal('php', this.result[0].platform.name);
-                        should.be.equal('build/php/index.php', this.result[0].platform.runnable);
+                        should.be.equal('build/php/index.php', this.result[0].platform.compiledPath);
                     });
 
-                    it('should set name and runnable with cpp', function(){
+                    it('should set name and compiledPath with cpp', function(){
                         parse('-main TestMain\n-cp src\n-cpp build/cpp\n');
 
                         should.be.equal('cpp', this.result[0].platform.name);
-                        should.be.equal('build/cpp/TestMain', this.result[0].platform.runnable);
+                        should.be.equal('build/cpp/TestMain', this.result[0].platform.compiledPath);
                     });
 
-                    xit('should set name and runnable with java', function(){
+                    xit('should set name and compiledPath with java', function(){
                         parse('-main TestMain\n-cp src\n-java build/java\n');
 
                         should.be.equal('java', this.result[0].platform.name);
-                        should.be.equal('build/java/TestMain', this.result[0].platform.runnable);
+                        should.be.equal('build/java/TestMain', this.result[0].platform.compiledPath);
                     });
 
-                    xit('should set name and runnable with cs', function(){
+                    xit('should set name and compiledPath with cs', function(){
                         parse('-main TestMain\n-cp src\n-cs build/cs\n');
 
                         should.be.equal('cs', this.result[0].platform.name);
-                        should.be.equal('build/cs/TestMain', this.result[0].platform.runnable);
+                        should.be.equal('build/cs/TestMain', this.result[0].platform.compiledPath);
                     });
                 });
 

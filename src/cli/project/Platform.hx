@@ -2,19 +2,19 @@ package cli.project;
 
 class Platform
 {
-    private var sources:Array<String>;
+    private var sourcePathes:Array<String>;
 
     public var main(default, null):String;
     public var name(default, null):String;
     public var mainHx(default, null):String;
-    public var runnable(default, null):String;
+    public var compiledPath(default, null):String;
 
     public function new(data:PlatformData)
     {
         this.main = data.main;
         this.name = data.name;
-        this.sources = data.sources;
-        this.runnable = data.runnable;
+        this.sourcePathes = data.sourcePathes;
+        this.compiledPath = data.compiledPath;
         this.mainHx = this.main.split('.').join('/') + '.hx';
     }
 
@@ -22,7 +22,7 @@ class Platform
     {
         this.checkSources();
 
-        for (path in this.sources) {
+        for (path in this.sourcePathes) {
             if (sys.FileSystem.exists(path+'/'+this.mainHx)) {
                 return path;
             }
@@ -33,7 +33,7 @@ class Platform
 
     private function checkSources():Void
     {
-        if (this.sources.length == 0) {
+        if (this.sourcePathes.length == 0) {
             throw 'The source pathes are missing';
         }
     }
@@ -42,19 +42,19 @@ class Platform
     {
         this.checkSources();
 
-        for (path in this.sources) {
+        for (path in this.sourcePathes) {
             if (sys.FileSystem.exists(path+'/Main.hx')) {
                 return path;
             }
         }
 
-        for (path in this.sources) {
+        for (path in this.sourcePathes) {
             if (!sys.FileSystem.exists(path+'/'+this.mainHx)) {
                 return path;
             }
         }
 
-        return this.sources[0];
+        return this.sourcePathes[0];
     }
 }
 
@@ -62,6 +62,6 @@ class Platform
 typedef PlatformData = {
     var main:String;
     var name:String;
-    var sources:Array<String>;
-    var runnable:String;
+    var sourcePathes:Array<String>;
+    var compiledPath:String;
 }

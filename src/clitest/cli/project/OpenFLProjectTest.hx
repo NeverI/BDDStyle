@@ -19,8 +19,8 @@ class OpenFLProjectTest extends bdd.ExampleGroup
                 when(this.parser.parse('xml')).thenReturn({
                     main:'',
                     name: '',
-                    sources:[],
-                    runnable:'',
+                    sourcePathes:[],
+                    compiledPath:'',
                 });
             });
 

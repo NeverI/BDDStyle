@@ -48,8 +48,8 @@ class HxmlParser
         this.platformData = {
             name: '',
             main: '',
-            sources: [],
-            runnable: ''
+            sourcePathes: [],
+            compiledPath: ''
         };
     }
 
@@ -72,7 +72,7 @@ class HxmlParser
             throw 'Main entry not found';
         }
 
-        if (this.platformData.sources.length == 0) {
+        if (this.platformData.sourcePathes.length == 0) {
             throw 'Not found any source path';
         }
 
@@ -88,10 +88,10 @@ class HxmlParser
         if (line.indexOf('-main ') == 0) {
             this.platformData.main = this.getValueFromString(line);
         } else if (line.indexOf('-cp ') == 0) {
-            this.platformData.sources.push(this.getValueFromString(line));
+            this.platformData.sourcePathes.push(this.getValueFromString(line));
         } else if (this.isPlatform(line)) {
             this.platformData.name = this.getKeyFromString(line);
-            this.platformData.runnable = this.getRunnable(line);
+            this.platformData.compiledPath = this.getCompiledPath(line);
         }
     }
 
@@ -115,7 +115,7 @@ class HxmlParser
         return this.keyGetter.match(line) ? this.keyGetter.matched(1) : '';
     }
 
-    private function getRunnable(line:String):String
+    private function getCompiledPath(line:String):String
     {
         var value = this.getValueFromString(line);
 
@@ -123,6 +123,10 @@ class HxmlParser
             value += '/index.php';
         } else if (this.platformData.name == 'cpp') {
             value += '/'+this.platformData.main;
+
+            if (Sys.systemName() == 'Windows') {
+                value += '.exe';
+            }
         }
 
         return value;
