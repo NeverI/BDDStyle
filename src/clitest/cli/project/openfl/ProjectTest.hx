@@ -1,15 +1,15 @@
-package cli.project;
+package cli.project.openfl;
 
 import mockatoo.Mockatoo.*;
 
-class OpenFLProjectTest extends bdd.ExampleGroup
+class ProjectTest extends bdd.ExampleGroup
 {
-    private var target:cli.project.OpenFLProject;
-    private var parser:cli.helper.OpenFLParser;
+    private var target:cli.project.openfl.Project;
+    private var parser:cli.project.openfl.Parser;
 
     override public function beforeEach():Void
     {
-        this.parser = mock(cli.helper.OpenFLParser);
+        this.parser = mock(cli.project.openfl.Parser);
     }
 
     public function example():Void
@@ -25,7 +25,7 @@ class OpenFLProjectTest extends bdd.ExampleGroup
             });
 
             it('should tranlate the haxe (cpp, neko, swf, js) platforms to openfl targets', function(){
-                this.target = new OpenFLProject(this.parser, ['cpp', 'neko', 'swf', 'js']);
+                this.target = new Project(this.parser, ['cpp', 'neko', 'swf', 'js']);
                 this.target.parse('xml');
 
                 var system:String = Sys.systemName().toLowerCase();
@@ -33,14 +33,14 @@ class OpenFLProjectTest extends bdd.ExampleGroup
             });
 
             it('should set the default platform to neko if the requested platform is empty', function(){
-                this.target = new OpenFLProject(this.parser, []);
+                this.target = new Project(this.parser, []);
                 this.target.parse('xml');
 
                 verifyPlatforms([Sys.systemName().toLowerCase() + ' -neko']);
             });
 
             it('should return only the requested platform', function(){
-                this.target = new OpenFLProject(this.parser, ['flash', 'linux']);
+                this.target = new Project(this.parser, ['flash', 'linux']);
                 this.target.parse('xml');
 
                 verifyPlatforms(['flash', 'linux']);

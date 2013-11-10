@@ -1,13 +1,13 @@
-package cli.helper;
+package cli.project.openfl;
 
-class OpenFLParserTest extends bdd.ExampleGroup
+class ParserTest extends bdd.ExampleGroup
 {
-    private var target:OpenFLParser;
+    private var target:cli.project.openfl.Parser;
     private var platformData:cli.project.Platform.PlatformData;
 
     override public function beforeEach():Void
     {
-        this.target = new OpenFLParser();
+        this.target = new cli.project.openfl.Parser();
     }
 
     public function example():Void

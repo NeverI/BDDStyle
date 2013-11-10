@@ -1,13 +1,13 @@
-package cli.helper;
+package cli.project.hxml;
 
-class HxmlParserTest extends bdd.ExampleGroup
+class ParserTest extends bdd.ExampleGroup
 {
-    private var target:cli.helper.HxmlParser;
-    private var result:Array<cli.project.HxmlProject.HxmlBlock>;
+    private var target:cli.project.hxml.Parser;
+    private var result:Array<cli.project.hxml.Project.Block>;
 
     override public function beforeEach():Void
     {
-        this.target = new cli.helper.HxmlParser();
+        this.target = new cli.project.hxml.Parser();
     }
 
     public function example():Void

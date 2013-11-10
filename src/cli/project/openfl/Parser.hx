@@ -1,8 +1,8 @@
-package cli.helper;
+package cli.project.openfl;
 
 import cli.project.Platform;
 
-class OpenFLParser
+class Parser
 {
     private var platformData:PlatformData;
 

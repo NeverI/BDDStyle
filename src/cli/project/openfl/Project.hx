@@ -1,17 +1,16 @@
-package cli.project;
+package cli.project.openfl;
 
-import cli.helper.OpenFLParser;
 import cli.project.Platform;
 
-class OpenFLProject implements IProject
+class Project implements cli.project.IProject
 {
     private var platforms:Array<Platform>;
     private var requestedPlatforms:Array<String>;
     private var file:String;
 
-    private var parser:OpenFLParser;
+    private var parser:Parser;
 
-    public function new(parser:OpenFLParser, requestedPlatforms:Array<String>)
+    public function new(parser:Parser, requestedPlatforms:Array<String>)
     {
         this.parser = parser;
         this.platforms = [];
@@ -53,6 +52,10 @@ class OpenFLProject implements IProject
 
     public function run(platform:Platform, args:cli.helper.Args):Int
     {
+        if (platform.name.indexOf(Sys.systemName().toLowerCase()) == 0) {
+            return new cli.helper.CliOpenFLRunner(Sys.systemName().toLowerCase(), platform, args).run();
+        }
+
         return new cli.helper.Process().run('openfl', this.getArgument('run', platform));
     }
 

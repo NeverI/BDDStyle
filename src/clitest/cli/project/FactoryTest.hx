@@ -15,13 +15,13 @@ class FactoryTest extends bdd.ExampleGroup
             it('should return HxmlProject when file is .hxml', function(){
                 var project = this.target.create('test.hxml', []);
 
-                should.be.an.instanceOf(cli.project.HxmlProject, project);
+                should.be.an.instanceOf(cli.project.hxml.Project, project);
             });
 
             it('should return OpenFLProject when file is .xml', function(){
                 var project = this.target.create('test.xml', ['flash']);
 
-                should.be.an.instanceOf(cli.project.OpenFLProject, project);
+                should.be.an.instanceOf(cli.project.openfl.Project, project);
             });
 
             it('should throw when the file is none of these', function(){

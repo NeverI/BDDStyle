@@ -11,14 +11,14 @@ class BuildTest extends bdd.ExampleGroup
     private var args:cli.helper.Args;
     private var tools:cli.tools.Tools;
     private var platform:cli.project.Platform;
-    private var project:cli.project.HxmlProject;
+    private var project:cli.project.hxml.Project;
 
     override public function beforeEach():Void
     {
         this.args = mock(cli.helper.Args);
         this.tools = mock(cli.tools.Tools);
         this.platform = mock(cli.project.Platform);
-        this.project = mock(cli.project.HxmlProject);
+        this.project = mock(cli.project.hxml.Project);
 
         when(this.args.cwd).thenReturn('.');
         this.target = new cli.command.Build(this.args, this.project, this.tools);
@@ -133,7 +133,7 @@ class BuildTest extends bdd.ExampleGroup
         '\t\t//runner.add(cli.helper.OpenFLParserTest);\n'+
         '\n' +
         '\t\trunner.add(cli.project.PlatformTest);\n'+
-        '\t\t//runner.add(cli.project.HxmlProjectTest);\n'+
+        '\t\t//runner.add(cli.project.hxml.ProjectTest);\n'+
         '\n' +
         '\t\trunner.run();\n'+
         '\t}\n'+

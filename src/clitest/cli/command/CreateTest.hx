@@ -11,14 +11,14 @@ class CreateTest extends bdd.ExampleGroup
     private var args:cli.helper.Args;
     private var tools:cli.tools.Tools;
     private var platform:cli.project.Platform;
-    private var project:cli.project.HxmlProject;
+    private var project:cli.project.hxml.Project;
 
     override public function beforeEach():Void
     {
         this.args = mock(cli.helper.Args);
         this.tools = mock(cli.tools.Tools);
         this.platform = mock(cli.project.Platform);
-        this.project = mock(cli.project.HxmlProject);
+        this.project = mock(cli.project.hxml.Project);
 
         when(this.args.cwd).thenReturn('.');
         when(this.tools.getAsset(anyString, anyObject)).thenReturn('');

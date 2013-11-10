@@ -1,14 +1,14 @@
-package cli.helper;
+package cli.project.hxml;
 
-import cli.project.HxmlProject.HxmlBlock;
+import cli.project.hxml.Project.Block;
 import cli.project.Platform;
 
-class HxmlParser
+class Parser
 {
     private var valueGetter:EReg;
     private var keyGetter:EReg;
 
-    private var hxmlBlocks:Array<HxmlBlock>;
+    private var blocks:Array<Block>;
     private var parameters:Array<String>;
     private var platformData:PlatformData;
 
@@ -19,9 +19,9 @@ class HxmlParser
         this.keyGetter = ~/-(\w+)\s.+/;
     }
 
-    public function parse(hxml:String):Array<HxmlBlock>
+    public function parse(hxml:String):Array<Block>
     {
-        this.hxmlBlocks = [];
+        this.blocks = [];
 
         this.setupNewPlatformData();
 
@@ -31,16 +31,16 @@ class HxmlParser
                 continue;
             }
             if (line.indexOf('--next') == 0) {
-                this.createHxmlBlock();
+                this.createBlock();
                 continue;
             }
 
             this.process(line);
         }
 
-        this.createHxmlBlock();
+        this.createBlock();
 
-        return this.hxmlBlocks;
+        return this.blocks;
     }
 
     private function setupNewPlatformData():Void
@@ -53,11 +53,11 @@ class HxmlParser
         };
     }
 
-    private function createHxmlBlock():Void
+    private function createBlock():Void
     {
         this.validatePlatformData();
 
-        this.hxmlBlocks.push({
+        this.blocks.push({
             parameters: this.parameters,
             platform: new Platform(this.platformData)
         });

@@ -24,13 +24,13 @@ class Factory
         throw 'Invaid project file';
     }
 
-    private function createHxml(requestedPlatforms:Array<String>):HxmlProject
+    private function createHxml(requestedPlatforms:Array<String>):cli.project.hxml.Project
     {
-        return new cli.project.HxmlProject(new cli.helper.HxmlParser(), requestedPlatforms);
+        return new cli.project.hxml.Project(new cli.project.hxml.Parser(), requestedPlatforms);
     }
 
-    private function createOpenFL(requestedPlatforms:Array<String>):OpenFLProject
+    private function createOpenFL(requestedPlatforms:Array<String>):cli.project.openfl.Project
     {
-        return new cli.project.OpenFLProject(new cli.helper.OpenFLParser(), requestedPlatforms);
+        return new cli.project.openfl.Project(new cli.project.openfl.Parser(), requestedPlatforms);
     }
 }

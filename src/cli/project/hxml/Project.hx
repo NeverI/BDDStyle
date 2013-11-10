@@ -1,16 +1,15 @@
-package cli.project;
+package cli.project.hxml;
 
 import cli.helper.Args;
-import cli.helper.HxmlParser;
 
-class HxmlProject implements IProject
+class Project implements cli.project.IProject
 {
-    private var platforms:Array<HxmlBlock>;
+    private var platforms:Array<Block>;
     private var requestedPlatforms:Array<String>;
 
-    private var parser:HxmlParser;
+    private var parser:Parser;
 
-    public function new(parser:HxmlParser, requestedPlatforms:Array<String>)
+    public function new(parser:Parser, requestedPlatforms:Array<String>)
     {
         this.parser = parser;
         this.requestedPlatforms = requestedPlatforms;
@@ -44,7 +43,7 @@ class HxmlProject implements IProject
         }
     }
 
-    private function isRequestedPlatform(block:HxmlBlock):Bool
+    private function isRequestedPlatform(block:Block):Bool
     {
         var platfromName:String = block.platform.name;
         for (requestedPlatformName in this.requestedPlatforms) {
@@ -124,7 +123,7 @@ class HxmlProject implements IProject
     }
 }
 
-typedef HxmlBlock = {
+typedef Block = {
     var parameters:Array<String>;
     var platform:Platform;
 }
