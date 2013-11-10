@@ -1,5 +1,6 @@
 package ;
 
+import bdd.reporter.*;
 import numberguesser.*;
 
 class TestMain
