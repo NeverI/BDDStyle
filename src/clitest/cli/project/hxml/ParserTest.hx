@@ -12,7 +12,7 @@ class ParserTest extends bdd.ExampleGroup
 
     public function example():Void
     {
-        describe('#parse(data:String):Array<HxmlBlock>', function(){
+        describe('#parse(data:String):Array<Block>', function(){
             describe('with incorrect data', function(){
                 it('should throw when main not found', function(){
                     should.throws(function(){ parse('-cp src\n-js build/clitest/javascript.js'); }, 'Main entry not found');
@@ -33,7 +33,7 @@ class ParserTest extends bdd.ExampleGroup
                         parse('\n## Javascript\n-main TestMain\n-lib mockatoo\n-cp src\n-cp src/clitest\n-js build/clitest/javascript.js\n');
                     });
 
-                    it('should create one HxmlBlock', function(){
+                    it('should create one Block', function(){
                         should.have.length(1, this.result);
                     });
 
@@ -73,32 +73,32 @@ class ParserTest extends bdd.ExampleGroup
                         parse('-main TestMain\n-cp src\n-php build/php\n');
 
                         should.be.equal('php', this.result[0].platform.name);
-                        should.be.equal('build/php/index.php', this.result[0].platform.compiledPath);
+                        should.be.equal('build/php', this.result[0].platform.compiledPath);
                     });
 
                     it('should set name and compiledPath with cpp', function(){
                         parse('-main TestMain\n-cp src\n-cpp build/cpp\n');
 
                         should.be.equal('cpp', this.result[0].platform.name);
-                        should.be.equal('build/cpp/TestMain', this.result[0].platform.compiledPath);
+                        should.be.equal('build/cpp', this.result[0].platform.compiledPath);
                     });
 
-                    xit('should set name and compiledPath with java', function(){
+                    it('should set name and compiledPath with java', function(){
                         parse('-main TestMain\n-cp src\n-java build/java\n');
 
                         should.be.equal('java', this.result[0].platform.name);
-                        should.be.equal('build/java/TestMain', this.result[0].platform.compiledPath);
+                        should.be.equal('build/java', this.result[0].platform.compiledPath);
                     });
 
-                    xit('should set name and compiledPath with cs', function(){
+                    it('should set name and compiledPath with cs', function(){
                         parse('-main TestMain\n-cp src\n-cs build/cs\n');
 
                         should.be.equal('cs', this.result[0].platform.name);
-                        should.be.equal('build/cs/TestMain', this.result[0].platform.compiledPath);
+                        should.be.equal('build/cs', this.result[0].platform.compiledPath);
                     });
                 });
 
-                it('should create multiple HxmlBlock if hxml has --next', function(){
+                it('should create multiple Block if hxml has --next', function(){
                     parse('\n-main First\n-cp src\n-js javascript.js\n--next\n-main Second\n-cp src\n-js javascript.js\n');
 
                     should.have.length(2, this.result);

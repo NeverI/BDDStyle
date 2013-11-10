@@ -1,7 +1,5 @@
 package cli.project;
 
-import cli.helper.Args;
-
 class Factory
 {
     public function new()
@@ -26,11 +24,11 @@ class Factory
 
     private function createHxml(requestedPlatforms:Array<String>):cli.project.hxml.Project
     {
-        return new cli.project.hxml.Project(new cli.project.hxml.Parser(), requestedPlatforms);
+        return new cli.project.hxml.Project(new cli.project.hxml.Parser(), new cli.project.hxml.Compiled(), new cli.helper.Process(), requestedPlatforms);
     }
 
     private function createOpenFL(requestedPlatforms:Array<String>):cli.project.openfl.Project
     {
-        return new cli.project.openfl.Project(new cli.project.openfl.Parser(), requestedPlatforms);
+        return new cli.project.openfl.Project(new cli.project.openfl.Parser(), new cli.project.openfl.Compiled(), new cli.helper.Process(), requestedPlatforms);
     }
 }

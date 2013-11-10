@@ -5,12 +5,16 @@ import cli.project.hxml.Project;
 
 class ProjectTest extends bdd.ExampleGroup
 {
+    private var process:cli.helper.Process;
     private var target:cli.project.hxml.Project;
     private var parser:cli.project.hxml.Parser;
+    private var compiled:cli.project.hxml.Compiled;
 
     override public function beforeEach():Void
     {
+        this.process = mock(cli.helper.Process);
         this.parser = mock(cli.project.hxml.Parser);
+        this.compiled = mock(cli.project.hxml.Compiled);
     }
 
     public function example():Void
@@ -19,7 +23,7 @@ class ProjectTest extends bdd.ExampleGroup
             it('should return all platform when the requested platform is empty', function(){
                 parsed(['swf', 'cpp']);
 
-                this.target = new Project(this.parser, []);
+                this.target = new Project(this.parser, this.compiled, this.process, []);
                 this.target.parse('hxml');
 
                 verifyPlatforms(['swf', 'cpp']);
@@ -28,7 +32,7 @@ class ProjectTest extends bdd.ExampleGroup
             it('should return only the requested platform', function(){
                 parsed(['swf', 'cpp']);
 
-                this.target = new Project(this.parser, ['swf']);
+                this.target = new Project(this.parser, this.compiled, this.process, ['swf']);
                 this.target.parse('hxml');
 
                 verifyPlatforms(['swf']);

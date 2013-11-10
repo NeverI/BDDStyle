@@ -34,7 +34,7 @@ class Parser
         switch (node.nodeName) {
             case 'app':
                 this.platformData.main = node.get('main');
-                this.platformData.compiledPath = node.get('path')+'/%platform%/'+node.get('file')+'%ext%';
+                this.platformData.compiledPath = node.get('path')+'/%platform%/'+node.get('file');
             case 'classpath':
                 this.platformData.sourcePathes.push(node.get('name'));
         }

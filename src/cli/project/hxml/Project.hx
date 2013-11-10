@@ -1,17 +1,19 @@
 package cli.project.hxml;
 
-import cli.helper.Args;
-
 class Project implements cli.project.IProject
 {
     private var platforms:Array<Block>;
-    private var requestedPlatforms:Array<String>;
 
     private var parser:Parser;
+    private var compiled:Compiled;
+    private var process:cli.helper.Process;
+    private var requestedPlatforms:Array<String>;
 
-    public function new(parser:Parser, requestedPlatforms:Array<String>)
+    public function new(parser:Parser, compiled:Compiled, process:cli.helper.Process, requestedPlatforms:Array<String>)
     {
         this.parser = parser;
+        this.process = process;
+        this.compiled = compiled;
         this.requestedPlatforms = requestedPlatforms;
     }
 
@@ -64,51 +66,20 @@ class Project implements cli.project.IProject
         return platforms;
     }
 
-    public function run(platform:Platform, args:Args):Int
+    public function run(platform:Platform, args:cli.helper.Args):Int
     {
-        switch (platform.name) {
-            case 'js':
-                return this.runJs(platform.compiledPath, args);
-            case 'swf':
-                return this.runSwf(platform.compiledPath, args);
-            case 'neko':
-                return new cli.helper.Process().run('neko', [platform.compiledPath]);
-            case 'cpp':
-                return new cli.helper.Process().run(platform.compiledPath);
-            case 'php':
-                return new cli.helper.Process().run('php', [platform.compiledPath]);
+        var runnable:cli.project.Runnable = this.compiled.getRunnable(platform, args);
+        if (runnable.command == '%DEFAULT%') {
+            this.process.runWithDefault(runnable.args[0]);
+            return 0;
         }
 
-        return 1;
-    }
-
-    private function runJs(compiledPath:String, args:Args):Int
-    {
-        if (args.has('nodejs')) {
-            return new cli.helper.Process().run('nodejs', [compiledPath]);
-        }
-
-        var runnable:String = haxe.io.Path.directory(compiledPath) + '/js.html';
-        if (args.has('phantomjs')) {
-            return new cli.helper.Process().run('phantomjs', [runnable]);
-        }
-
-        return new cli.helper.Process().runWithDefault(runnable);
-    }
-
-    private function runSwf(compiledPath:String, args:Args):Int
-    {
-        if (args.has('native')) {
-            return new cli.helper.Process().runWithDefault(compiledPath);
-        }
-
-        var runnable:String = haxe.io.Path.directory(compiledPath) + '/swf.html';
-        return new cli.helper.Process().runWithDefault(runnable);
+        return this.process.run(runnable.command, runnable.args);
     }
 
     public function build(platform:Platform):Void
     {
-        new cli.helper.Process().run('haxe', this.getParametersForPlatform(platform));
+        this.process.run('haxe', this.getParametersForPlatform(platform));
     }
 
     private function getParametersForPlatform(platform:Platform):Array<String>

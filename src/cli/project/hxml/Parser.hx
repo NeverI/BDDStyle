@@ -91,7 +91,7 @@ class Parser
             this.platformData.sourcePathes.push(this.getValueFromString(line));
         } else if (this.isPlatform(line)) {
             this.platformData.name = this.getKeyFromString(line);
-            this.platformData.compiledPath = this.getCompiledPath(line);
+            this.platformData.compiledPath = this.getValueFromString(line);
         }
     }
 
@@ -104,31 +104,16 @@ class Parser
     {
         return
                 line.indexOf('-js ') == 0 ||
+                line.indexOf('-cs ') == 0 ||
                 line.indexOf('-php ') == 0 ||
                 line.indexOf('-swf ') == 0 ||
                 line.indexOf('-cpp ') == 0 ||
+                line.indexOf('-java ') == 0 ||
                 line.indexOf('-neko ') == 0;
     }
 
     private function getKeyFromString(line:String):String
     {
         return this.keyGetter.match(line) ? this.keyGetter.matched(1) : '';
-    }
-
-    private function getCompiledPath(line:String):String
-    {
-        var value = this.getValueFromString(line);
-
-        if (this.platformData.name == 'php') {
-            value += '/index.php';
-        } else if (this.platformData.name == 'cpp') {
-            value += '/'+this.platformData.main;
-
-            if (Sys.systemName() == 'Windows') {
-                value += '.exe';
-            }
-        }
-
-        return value;
     }
 }
