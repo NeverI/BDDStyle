@@ -4,11 +4,13 @@ class Tools
 {
     private var assets:Assets;
     private var fileCreator:FileCreator;
+    private var hxmlCompiled:cli.project.hxml.Compiled;
 
     public function new(cwd:String)
     {
         this.assets = new Assets(cwd);
         this.fileCreator = new FileCreator();
+        this.hxmlCompiled = new cli.project.hxml.Compiled();
     }
 
     public function getAsset(assets:String, ?data:Dynamic):String
@@ -89,26 +91,8 @@ class Tools
         return value;
     }
 
-    public function getRunOptions(args:cli.helper.Args, platform:cli.project.Platform):Dynamic
+    public function getHxmlCompiledPath(exportPath:String, platform:String):String
     {
-        var options:Dynamic = null;
-
-        if (platform.name != 'js') {
-            return options;
-        }
-
-        if (args.has('browser')) {
-            options = { browser: true };
-        }
-
-        if (args.has('nodejs')) {
-            if (options != null) {
-                Reflect.setField(options, 'nodejs', true);
-            } else {
-                options = { nodejs: true };
-            }
-        }
-
-        return options;
+        return this.hxmlCompiled.generatePath(platform, exportPath);
     }
 }

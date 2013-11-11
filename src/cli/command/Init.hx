@@ -8,7 +8,7 @@ class Init extends Command
     private var sourcePath:String;
     private var exportPath:String;
     private var libs:Array<String>;
-    private var reportes:Array<String>;
+    private var gruntPlatforms:Array<String>;
     private var format:String;
 
     private var projectFileContent:String;
@@ -25,6 +25,7 @@ class Init extends Command
         this.askGrunt();
         this.colletBasicData();
         this.init();
+        this.checkPhantomJs();
         this.copyAssets();
 
         Sys.println('done.');
@@ -38,14 +39,14 @@ class Init extends Command
             return;
         }
 
-        if (!this.gruntIsInstalled()) {
+        if (!this.isInstalled('grunt')) {
             throw 'You need to install the grunt-cli nodejs package ( http://gruntjs.com )';
         }
     }
 
-    private function gruntIsInstalled():Bool
+    private function isInstalled(name:String):Bool
     {
-        var process:sys.io.Process = new sys.io.Process('grunt', ['-V']);
+        var process:sys.io.Process = new sys.io.Process(name, ['--version']);
         return process.stderr.readAll().length == 0;
     }
 
@@ -69,8 +70,8 @@ class Init extends Command
     {
         this.descideFormat();
 
-        if (this.format != 'hxml') {
-            this.createProjectFile();
+        if (this.format == 'openfl') {
+            this.initOpenFL();
             return;
         }
 
@@ -89,6 +90,12 @@ class Init extends Command
         }
     }
 
+    private function initOpenFL():Void
+    {
+        this.gruntPlatforms = ['cpp', 'neko', 'phantomjs', 'swf'];
+        this.createProjectFile();
+    }
+
     private function createProjectFile():Void
     {
         this.projectFileContent = this.tools.getAsset('assets/'+this.format+'.tpl', this.projectTemplateData);
@@ -96,31 +103,58 @@ class Init extends Command
 
     private function initHxml():Void
     {
-        var platforms:Array<String> = this.tools.askArray('Which platforms would you like to use (default neko)?');
-        if (platforms.length == 0) {
-            platforms = ['neko'];
-        }
+        var platforms:Array<String> = this.tools.askArray('Which platforms would you like to use (default neko)?', 'neko');
 
+        this.gruntPlatforms = [];
         this.projectFileContent = '';
         for (i in 0...platforms.length) {
-            Reflect.setField(this.projectTemplateData, 'platform', this.getHxmlExport(platforms[i]));
+            Reflect.setField(this.projectTemplateData, 'platform', this.getHxmlCompiledPath(platforms[i]));
 
             this.projectFileContent += this.tools.getAsset('assets/hxml.tpl', this.projectTemplateData);
 
             if (i != platforms.length - 1) {
-                this.projectFileContent += '\n--next\n';
+                this.projectFileContent += '\n--next\n\n';
             }
+
+            this.gruntPlatforms.push(this.convertToGruntPlatform(platforms[i]));
         }
 
     }
 
-    private function getHxmlExport(platform:String):String
+    private function getHxmlCompiledPath(platform:String):String
+    {
+        return platform + ' ' + this.tools.getHxmlCompiledPath(this.exportPath, platform);
+    }
+
+    private function convertToGruntPlatform(platform:String):String
     {
         switch(platform) {
-            case 'js': return 'js '+this.exportPath+'/test.js';
-            case 'swf': return 'swf '+this.exportPath+'/test.swf';
-            case 'neko': return 'neko '+this.exportPath+'/test.n';
-            default: return platform+' '+this.exportPath;
+            case 'js':
+                for (lib in this.libs)
+                    if (lib == 'nodejs')
+                        return 'nodejs';
+                return 'phantomjs';
+            default:
+                return platform;
+        }
+    }
+
+    private function checkPhantomJs():Void
+    {
+        var isRequested:Bool = false;
+        for (platform in this.gruntPlatforms) {
+            if (platform == 'phantomjs') {
+                isRequested = true;
+                break;
+            }
+        }
+
+        if (!isRequested) {
+            return;
+        }
+
+        if (!this.isInstalled('phantomjs')) {
+            Sys.println('\nDo you know phantomjs? If you install it you can run your javascript with a headless browser.\n');
         }
     }
 
@@ -129,17 +163,36 @@ class Init extends Command
         this.tools.createDir(this.sourcePath);
         this.tools.createDir(this.exportPath);
 
-        this.tools.putContent(this.testPath+'/TestMain.hx', this.getTestMainContent());
-        this.tools.putContent(this.testPath+'/ExampleTest.hx', this.tools.getAsset('assets/ExampleTest.tpl'));
-
+        this.copySourceFiles();
+        this.copyHtmls();
         this.saveProject();
-
         this.installGrunt();
     }
 
-    private function getTestMainContent():String
+    private function copySourceFiles():Void
     {
-        return this.tools.getAsset('assets/TestMain.tpl');
+        this.tools.putContent(this.testPath+'/TestMain.hx', this.tools.getAsset('assets/TestMain.tpl'));
+        this.tools.putContent(this.testPath+'/ExampleTest.hx', this.tools.getAsset('assets/ExampleTest.tpl'));
+    }
+
+    private function copyHtmls():Void
+    {
+        for (platform in this.gruntPlatforms) {
+            var runnable:String = this.tools.getHxmlCompiledPath(platform, this.exportPath);
+            var directory:String = haxe.io.Path.directory(runnable);
+            switch(platform) {
+                case 'swf':
+                    this.tools.putContent(
+                        directory + '/swf.html',
+                        this.tools.getAsset('assets/swf_html.tpl', {swf: runnable})
+                    );
+                case 'phantomjs':
+                    this.tools.putContent(
+                        directory + '/js.html',
+                        this.tools.getAsset('assets/js_html.tpl', {js: runnable})
+                    );
+            }
+        }
     }
 
     private function saveProject():Void
@@ -166,6 +219,6 @@ class Init extends Command
 
     public function getGruntContent():String
     {
-        return this.tools.getAsset('assets/Gruntfile.tpl', { test: this.testPath, source: this.sourcePath });
+        return this.tools.getAsset('assets/Gruntfile.tpl', { test: this.testPath, source: this.sourcePath, platforms: Std.string(this.gruntPlatforms) });
     }
 }

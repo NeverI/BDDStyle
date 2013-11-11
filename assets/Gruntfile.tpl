@@ -211,6 +211,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         testPath: '%test%',
         sourcePath: '%source%',
+        paltforms: %platforms%,
         grep: grep,
         reporter: reporter,
 
