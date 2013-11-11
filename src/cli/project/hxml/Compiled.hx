@@ -38,7 +38,7 @@ class Compiled implements cli.project.ICompiled
 
     private function getJsRunnable(compiledPath:String):Runnable
     {
-        var file:String = !this.args.has('nodejs') ? haxe.io.Path.directory(compiledPath) + '/js.html' : compiledPath;
+        var file:String = this.args.has('nodejs') || this.args.has('phantomjs') ? compiledPath : haxe.io.Path.directory(compiledPath) + '/js.html';
         var command:String = '%DEFAULT%';
 
         if (this.args.has('nodejs')) {
