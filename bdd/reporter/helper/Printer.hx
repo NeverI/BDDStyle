@@ -12,7 +12,7 @@ class Printer
 
     public function new()
     {
-        #if flash9
+        #if (flash9 || mobile)
             textfield = new flash.text.TextField();
             textfield.selectable = false;
             textfield.width = flash.Lib.current.stage.stageWidth;
@@ -25,15 +25,20 @@ class Printer
             textfield.selectable = false;
             textfield.wordWrap = true;
         #elseif js
+            if (js.Browser.document == null) {
+                return;
+            }
+
             textfield = js.Browser.document.getElementById("haxe:trace");
             if( textfield == null ) {
-                js.Lib.alert("haxe:trace element not found");
+                textfield = js.Browser.document.createElement('div');
+                js.Browser.document.body.appendChild(textfield);
             }
         #end
     }
 
     public dynamic function print( v : Dynamic ) untyped {
-        #if flash9
+        #if (flash9 || mobile)
             textfield.appendText(v);
         #elseif flash
             var s = flash.Boot.__string_rec(v,"");
@@ -43,25 +48,41 @@ class Printer
                 lines.shift();
                 textfield.text = lines.join("\n");
             }
-        #elseif neko
-            __dollar__print(v);
-        #elseif php
-            php.Lib.print(v);
-        #elseif cpp
-            cpp.Lib.print(v);
         #elseif js
+            this.consoleLog(v);
+
+            if (textfield == null) {
+                return;
+            }
+
             var msg = StringTools.htmlEscape(js.Boot.__string_rec(v,"")).split("\n").join("<br/>");
             textfield.innerHTML += msg;
-        #elseif cs
-            var str:String = v;
-            untyped __cs__("System.Console.Write(str)");
-        #elseif java
-            var str:String = v;
-            untyped __java__("java.lang.System.out.print(str)");
+        #else
+            Sys.print(v);
         #end
     }
 
     public function customTrace( v, ?p : haxe.PosInfos ) {
         print(p.fileName+":"+p.lineNumber+": "+Std.string(v)+"\n");
     }
+
+    #if js
+    private function consoleLog(v:Dynamic):Void
+    {
+        if (!Std.is(v, String)) {
+            untyped console.log(v);
+            return;
+        }
+
+        var text:String = cast v;
+
+        if (text.lastIndexOf('\n') == text.length - 1) {
+            text = text.substring(0, text.length - 1);
+        }
+
+        for (line in text.split("\n")) {
+            untyped console.log(line);
+        }
+    }
+    #end
 }
