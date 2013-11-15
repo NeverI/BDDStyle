@@ -35,9 +35,14 @@ class Project implements cli.project.IProject
         this.file = file;
 
         var platformData:PlatformData = this.parser.parse(content);
+        var platformReplacerEReg:EReg = ~/%platform%/;
+        var splittedPlatformName:Array<String> = [];
 
         for (platformName in requestedPlatforms) {
+            splittedPlatformName = platformName.split(' ');
+
             platformData.name = platformName;
+            platformData.compiledPath = platformReplacerEReg.replace(platformData.compiledPath, splittedPlatformName[0]);
             this.platforms.push(new Platform(platformData));
         }
     }
