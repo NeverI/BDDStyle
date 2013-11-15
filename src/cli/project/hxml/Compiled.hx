@@ -13,9 +13,9 @@ class Compiled implements cli.project.ICompiled
     public function generatePath(platform:String, exportFolder:String):String
     {
         switch(platform) {
-            case 'js': return exportFolder + '/test.js';
-            case 'swf': return exportFolder + '/test.swf';
-            case 'neko': return exportFolder + '/test.n';
+            case 'js': return exportFolder + '/TestMain.js';
+            case 'swf': return exportFolder + '/TestMain.swf';
+            case 'neko': return exportFolder + '/TestMain.n';
         }
 
         return exportFolder + '/' + platform;
