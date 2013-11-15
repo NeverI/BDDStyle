@@ -22,8 +22,6 @@ class Summary extends bdd.reporter.helper.Abstract
 
         this.print(report);
 
-        #if (cpp||neko)
-        Sys.exit(this.infoCollector.failedSpecs.length);
-        #end
+        this.trigger('report.done', this.infoCollector.failedSpecs.length);
     }
 }

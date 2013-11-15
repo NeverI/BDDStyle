@@ -17,6 +17,7 @@ class Runner extends bdd.event.EventDispatcher
         this.groups = [];
 
         this.addListener('group.done', this.runNextGroup);
+        this.addListener('report.done', this.exit);
     }
 
     private function runNextGroup(?group:ExampleGroup):Void
@@ -49,5 +50,16 @@ class Runner extends bdd.event.EventDispatcher
         this.currentGroupIndex = 0;
         this.trigger('runner.start',{});
         this.runNextGroup();
+    }
+
+    private function exit(exitCode:Int):Void
+    {
+        #if (cpp||neko)
+        Sys.exit(exitCode);
+        #elseif js
+        try {
+            untyped phantom.exit(exitCode);
+        } catch(e:Dynamic) {}
+        #end
     }
 }
