@@ -123,7 +123,7 @@ class Init extends Command
 
     private function getHxmlCompiledPath(platform:String):String
     {
-        return platform + ' ' + this.tools.getHxmlCompiledPath(this.exportPath, platform);
+        return platform + ' ' + this.tools.getCompiledPath('hxml', this.exportPath, platform);
     }
 
     private function convertToGruntPlatform(platform:String):String
@@ -178,8 +178,9 @@ class Init extends Command
     private function copyHtmls():Void
     {
         for (platform in this.gruntPlatforms) {
-            var runnable:String = this.tools.getHxmlCompiledPath(platform, this.exportPath);
+            var runnable:String = this.tools.getCompiledPath(this.format, this.exportPath, platform == 'phantomjs' ? 'js' : platform);
             var directory:String = haxe.io.Path.directory(runnable);
+            runnable = haxe.io.Path.withoutDirectory(runnable);
             switch(platform) {
                 case 'swf':
                     this.tools.putContent(

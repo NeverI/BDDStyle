@@ -5,12 +5,14 @@ class Tools
     private var assets:Assets;
     private var fileCreator:FileCreator;
     private var hxmlCompiled:cli.project.hxml.Compiled;
+    private var openflCompiled:cli.project.openfl.Compiled;
 
     public function new(cwd:String)
     {
         this.assets = new Assets(cwd);
         this.fileCreator = new FileCreator();
         this.hxmlCompiled = new cli.project.hxml.Compiled();
+        this.openflCompiled = new cli.project.openfl.Compiled();
     }
 
     public function getAsset(assets:String, ?data:Dynamic):String
@@ -91,8 +93,12 @@ class Tools
         return value;
     }
 
-    public function getHxmlCompiledPath(exportPath:String, platform:String):String
+    public function getCompiledPath(format:String, exportPath:String, platform:String):String
     {
+        if (format == 'openfl') {
+            return this.openflCompiled.generatePath(platform, exportPath);
+        }
+
         return this.hxmlCompiled.generatePath(platform, exportPath);
     }
 }
