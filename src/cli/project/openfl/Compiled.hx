@@ -21,6 +21,19 @@ class Compiled implements cli.project.ICompiled
 
         return exportFolder;
     }
+
+    public function translateHaxePlatform(platform:String):String
+    {
+        switch (platform) {
+            case 'cpp': return Sys.systemName().toLowerCase();
+            case 'neko': return Sys.systemName().toLowerCase() + ' -neko';
+            case 'swf': return 'flash';
+            case 'js': return 'html5';
+        }
+
+        return platform;
+    }
+
     public function getRunnable(platform:cli.project.Platform, args:cli.helper.Args):Runnable
     {
         this.args = args;

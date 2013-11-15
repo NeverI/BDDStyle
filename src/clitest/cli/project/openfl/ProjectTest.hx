@@ -28,21 +28,6 @@ class ProjectTest extends bdd.ExampleGroup
                 });
             });
 
-            it('should tranlate the haxe (cpp, neko, swf, js) platforms to openfl targets', function(){
-                this.target = new Project(this.parser, this.compiled, this.process, ['cpp', 'neko', 'swf', 'js']);
-                this.target.parse('xml');
-
-                var system:String = Sys.systemName().toLowerCase();
-                verifyPlatforms([system, system + ' -neko', 'flash', 'html5']);
-            });
-
-            it('should set the default platform to neko if the requested platform is empty', function(){
-                this.target = new Project(this.parser, this.compiled, this.process, []);
-                this.target.parse('xml');
-
-                verifyPlatforms([Sys.systemName().toLowerCase() + ' -neko']);
-            });
-
             it('should return only the requested platform', function(){
                 this.target = new Project(this.parser, this.compiled, this.process, ['flash', 'linux']);
                 this.target.parse('xml');
