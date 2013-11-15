@@ -10,6 +10,17 @@ class Compiled implements cli.project.ICompiled
     {
     }
 
+    public function generatePath(platform:String, exportFolder:String):String
+    {
+        platform = this.translateHaxePlatform(platform);
+        exportFolder = exportFolder + '/' + platform + '/bin/TestMain';
+        switch(platform) {
+            case 'html5': return exportFolder + '.js';
+            case 'flash': return exportFolder + '.swf';
+        }
+
+        return exportFolder;
+    }
     public function getRunnable(platform:cli.project.Platform, args:cli.helper.Args):Runnable
     {
         this.args = args;
