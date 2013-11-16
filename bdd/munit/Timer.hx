@@ -69,27 +69,21 @@ class Timer
 
 	private var id:Null<Int>;
 
-	#if js
-	private static var arr = new Array<Timer>();
-	private var timerId:Int;
-	#elseif (neko||cpp)
+	#if (neko||cpp)
 	private var runThread:Thread;
 	#end
 
 	public function new(time_ms:Int)
 	{
+		var me = this;
+		var timerCallback = function() { me.run(); };
 		#if flash9
-			var me = this;
-			id = untyped __global__["flash.utils.setInterval"](function() { me.run(); },time_ms);
+			id = untyped __global__["flash.utils.setInterval"](timerCallback,time_ms);
 		#elseif flash
-			var me = this;
-			id = untyped _global["setInterval"](function() { me.run(); },time_ms);
+			id = untyped _global["setInterval"](timerCallback,time_ms);
 		#elseif js
-			id = arr.length;
-			arr[id] = this;
-			timerId = untyped window.setInterval("bdd.munit.Timer.arr["+id+"].run();",time_ms);
+			id = untyped setInterval(timerCallback,time_ms);
 		#elseif (neko||cpp)
-			var me = this;
 			runThread = Thread.create(function() { me.runLoop(time_ms); } );
 		#end
 	}
@@ -104,15 +98,7 @@ class Timer
 		#elseif flash
 			untyped _global["clearInterval"](id);
 		#elseif js
-			untyped window.clearInterval(timerId);
-			arr[id] = null;
-			if (id > 100 && id == arr.length - 1)
-			{
-				// compact array
-				var p = id - 1;
-				while ( p >= 0 && arr[p] == null) p--;
-				arr = arr.slice(0, p + 1);
-			}
+			untyped clearInterval(id);
 		#elseif (neko||cpp)
 			run = function() {};
 			runThread.sendMessage("stop");
