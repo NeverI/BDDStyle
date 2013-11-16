@@ -48,7 +48,8 @@ class Args
             return this.args.pop();
         }
 
-        return Sys.getCwd();
+        var cwd:String = Sys.getCwd();
+        return cwd.substr(0, cwd.length-1);
     }
 
     private function getParams():StringMap<String>

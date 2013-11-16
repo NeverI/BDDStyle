@@ -24,9 +24,11 @@ class CommandFactory
 
         var project = this.createProject(args);
         var cls = this.getClass(args.command);
+        var cwd:String = Sys.getCwd();
+        cwd = cwd.substr(0, cwd.length-1);
 
         try {
-            return Type.createInstance(cls, [args, project, new Tools(Sys.getCwd())]);
+            return Type.createInstance(cls, [args, project, new Tools(cwd)]);
         } catch(e:Dynamic) {
             return new Help(args, project, null);
         }
