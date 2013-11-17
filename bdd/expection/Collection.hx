@@ -48,7 +48,7 @@ class Collection extends Abstract
 
     private function getLength(actual:Dynamic):Int
     {
-        return Reflect.isFunction(actual.length) ? actual.length() : actual.length;
+        return Reflect.isFunction(actual.length) ? Reflect.callMethod(actual, Reflect.field(actual, 'length'), []) : actual.length;
     }
 
     public function length(expected:Int, actual:Dynamic, ?pos:PosInfos):Void

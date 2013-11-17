@@ -85,6 +85,8 @@ class Timer
 			id = untyped setInterval(timerCallback,time_ms);
 		#elseif (neko||cpp)
 			runThread = Thread.create(function() { me.runLoop(time_ms); } );
+		#else php
+			timerCallback();
 		#end
 	}
 
