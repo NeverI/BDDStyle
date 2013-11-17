@@ -1,6 +1,14 @@
 module.exports = function(grunt) {
 
     var
+    paltforms: %platforms%,,
+
+    testPath: '%test%',
+    sourcePath: '%source%',
+
+    customWatchTasks = {},
+    customExecTasks = {},
+
     okColor = 'green',
     wrongColor = 'red',
     pendingColor = 'cyan',
@@ -149,6 +157,85 @@ module.exports = function(grunt) {
             grunt.log.writeln(this.line);
         },
     },
+    TasksCreator = {
+        platforms: [],
+        colorizer: undefined,
+
+        init: function(platforms, colorizer)
+        {
+            this.colorizer = colorizer;
+            this.platforms = this.prepairPlatforms(platforms);
+        },
+
+        prepairPlatforms: function(platforms)
+        {
+            var fixedPlatforms = [];
+            for (var platform in platforms) {
+                platform = platforms[platform];
+                switch(platform) {
+                    case 'phantomjs':
+                        fixedPlatforms.push('js');
+                        fixedPlatforms.push(platform);
+                        break;
+                    default:
+                        fixedPlatforms.push(platform);
+                }
+            }
+
+            return fixedPlatforms;
+        },
+
+        create: function(type, userTasks)
+        {
+            var tasks = {};
+            for (var platform in this.platforms) {
+                platform = this.platforms[platform];
+                tasks[platform] = this[type](platform);
+            }
+
+            return grunt.util._.extend(tasks, userTasks);
+        },
+
+        watch: function(platform)
+        {
+            return {
+                files: ['<%= testPath %>/**/*.hx', '<%= sourcePath %>/**/*.hx'],
+                tasks: 'exec:' + platform
+            }
+        },
+
+        exec: function(platform)
+        {
+            var
+                commandPrefix = 'haxelib run bdd';
+                commandSuffix = platform + '<%= grep %><%= reporter %><%= projectFile %>';
+            switch(platform) {
+                case 'js':
+                case 'swf':
+                    return {
+                        command: commandPrefix + ' build -p ' + commandSuffix,
+                        stdout: false
+                    }
+                    break;
+
+                case 'nodejs':
+                case 'phantomjs':
+                    return {
+                        command: commandPrefix + ' test -p js ' + commandSuffix,
+                        stdout: false,
+                        callback: this.colorizer
+                    }
+                    break;
+
+                default:
+                    return {
+                        command: commandPrefix + ' test -p ' + commandSuffix,
+                        stdout: false,
+                        callback: this.colorizer
+                    }
+            }
+        }
+    },
     GrepValueChanger = {
         init: function(task)
         {
@@ -192,10 +279,10 @@ module.exports = function(grunt) {
                 suffix = '';
 
             if (this.file.match('Test.hx$')) {
-                prefix = grunt.config.get('test');
+                prefix = grunt.config.get('testPath');
                 suffix = 'Test';
             } else {
-                prefix = grunt.config.get('source');
+                prefix = grunt.config.get('sourcePath');
             }
 
             suffix += '.hx';
@@ -203,42 +290,52 @@ module.exports = function(grunt) {
             return this.file.substr(prefix.length + 1).replace(suffix, '').split('/').join('\\.');
         }
     },
-    highlight = Highlighter.colorize(),
-    grep = grunt.option('grep') ? '-g '+grunt.option('grep') : '',
-    reporter = grunt.option('reporter') ? '-r '+grunt.option('reporter') : ''
+    grep = grunt.option('grep') ? ' -g '+grunt.option('grep') : '',
+    reporter = grunt.option('reporter') ? ' -r '+grunt.option('reporter') : '',
+    project = grunt.option('project') ? ' -f '+grunt.option('project') : ''
     ;
 
-    grunt.initConfig({
-        testPath: '%test%',
-        sourcePath: '%source%',
-        paltforms: %platforms%,
-        grep: grep,
-        reporter: reporter,
+    grunt.registerTask('help', 'Brief description for available options and watch/exec tasks', function(){
+        var tasks;
 
-        watch: {
-            neko: {
-                files: ['<%= testPath %>/**/*.hx', '<%= sourcePath %>/**/*.hx'],
-                tasks: 'exec:test_neko'
-            },
-            cpp: {
-                files: ['<%= testPath %>/**/*.hx', '<%= sourcePath %>/**/*.hx'],
-                tasks: 'exec:test_cpp'
-            },
-        },
+        grunt.log.writeln('Available options:');
+        grunt.log.writeln('    --grep     alias for bdd -g');
+        grunt.log.writeln('    --reporter alias for bdd -r');
+        grunt.log.writeln('    --project  alias for bdd -f');
+        grunt.log.writeln('    --changed  change the grep value to the changed file or its test file');
 
-        exec: {
-            test_neko: {
-                command: 'haxelib run bdd test -p neko <%= grep %> <%= reporter %>',
-                stdout: false,
-                callback: highlight
-            },
-            test_cpp: {
-                command: 'haxelib run bdd test -p cpp <%= grep %> <%= reporter %>',
-                stdout: false,
-                callback: highlight
-            },
+        grunt.log.writeln('');
+        grunt.log.writeln('example:');
+        grunt.log.writeln('    grunt watch:neko --reporter=dot --changed');
+
+        grunt.log.writeln('');
+        grunt.log.writeln('Available watch tasks:');
+        tasks = grunt.config.get('watch');
+        for (var taskName in tasks) {
+            grunt.log.writeln('    watch:'+taskName);
         }
 
+        grunt.log.writeln('');
+        grunt.log.writeln('Available exec tasks:');
+        tasks = grunt.config.get('exec');
+        for (var taskName in tasks) {
+            grunt.log.writeln('    exec:'+taskName);
+        }
+
+    });
+
+    TasksCreator.init(platforms, Highlighter.colorize());
+
+    grunt.initConfig({
+        testPath: testPath,
+        sourcePath: sourcePath,
+        grep: grep,
+        reporter: reporter,
+        project: project,
+
+        watch: TasksCreator.create('watch', customWatchTasks),
+
+        exec: TasksCreator.create('exec', customExecTasks),
     });
 
     grunt.loadNpmTasks('grunt-contrib-watch');
