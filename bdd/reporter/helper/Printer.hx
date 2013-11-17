@@ -14,16 +14,19 @@ class Printer
     {
         #if (flash9 || mobile)
             textfield = new flash.text.TextField();
-            textfield.selectable = false;
             textfield.width = flash.Lib.current.stage.stageWidth;
-            textfield.autoSize = flash.text.TextFieldAutoSize.LEFT;
+            textfield.height = flash.Lib.current.stage.stageHeight;
+            textfield.wordWrap = true;
+            textfield.multiline = true;
+            textfield.mouseWheelEnabled = true;
             flash.Lib.current.addChild(textfield);
         #elseif flash
             var root = flash.Lib.current;
-            root.createTextField("__tf",1048500,0,0,flash.Stage.width,flash.Stage.height+30);
+            root.createTextField("__tf",1048500,0,0,flash.Stage.width,flash.Stage.height);
             textfield = root.__tf;
-            textfield.selectable = false;
             textfield.wordWrap = true;
+            textfield.multiline = true;
+            textfield.mouseWheelEnabled = true;
         #elseif js
             if (js.Browser.document == null) {
                 return;
@@ -39,9 +42,11 @@ class Printer
 
     public dynamic function print( v : Dynamic ) untyped {
         #if (flash9 || mobile)
+            textfield.scrollV += getLineNumber(v);
             textfield.appendText(v);
         #elseif flash
             var s = flash.Boot.__string_rec(v,"");
+            textfield.scrollV += getLineNumber(v);
             textfield.text += s;
             while( textfield.textHeight > flash.Stage.height ) {
                 var lines = textfield.text.split("\r");
@@ -64,6 +69,11 @@ class Printer
 
     public function customTrace( v, ?p : haxe.PosInfos ) {
         print(p.fileName+":"+p.lineNumber+": "+Std.string(v)+"\n");
+    }
+
+    private function getLineNumber(v:Dynamic):Int
+    {
+        return Std.string(v).split('\n').length + 1;
     }
 
     #if js
