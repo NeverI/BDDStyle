@@ -17,16 +17,16 @@ class CompiledTest extends bdd.ExampleGroup
     {
         describe('#generatePath(platform:String, exportFolder:String):String', function(){
             describe('explicit compiled file path', function(){
-                it('should be exportFolder + test.js', function(){
-                    should.be.equal('src/test.js', this.target.generatePath('js', 'src'));
+                it('should be exportFolder + TestMain.js', function(){
+                    should.be.equal('src/TestMain.js', this.target.generatePath('js', 'src'));
                 });
 
-                it('should be exportFolder + test.swf', function(){
-                    should.be.equal('src/test.swf', this.target.generatePath('swf', 'src'));
+                it('should be exportFolder + TestMain.swf', function(){
+                    should.be.equal('src/TestMain.swf', this.target.generatePath('swf', 'src'));
                 });
 
-                it('should be exportFolder + test.n', function(){
-                    should.be.equal('src/test.n', this.target.generatePath('neko', 'src'));
+                it('should be exportFolder + TestMain.n', function(){
+                    should.be.equal('src/TestMain.n', this.target.generatePath('neko', 'src'));
                 });
             });
 
@@ -55,8 +55,8 @@ class CompiledTest extends bdd.ExampleGroup
             });
 
             it('should return {command:neko, args: [compiledPath]} when platform is neko', function(){
-                setupPlatform('neko', 'build/test.n');
-                verifyRunnable('neko', ['build/test.n']);
+                setupPlatform('neko', 'build/TestMain.n');
+                verifyRunnable('neko', ['build/TestMain.n']);
             });
 
             it('should return {command:php, args: [compiledPath + index.php]} when platform is php', function(){
@@ -72,7 +72,7 @@ class CompiledTest extends bdd.ExampleGroup
             describe('javascript platform', function(){
                 extendBeforeEach(function(){
                     this.args = mock(cli.helper.Args);
-                    setupPlatform('js', 'build/test.js');
+                    setupPlatform('js', 'build/TestMain.js');
                 });
 
                 it('should return {command:%DEFAULT%, args: [compiledPath changed to js.html ]}', function(){
@@ -82,13 +82,13 @@ class CompiledTest extends bdd.ExampleGroup
                 it('should return {command:phantomjs, args: [compiledPath changed to js.html ]} when phantomjs argument is present', function(){
                     when(this.args.has('phantomjs')).thenReturn(true);
 
-                    verifyRunnable('phantomjs', ['build/js.html']);
+                    verifyRunnable('phantomjs', ['build/TestMain.js']);
                 });
 
                 it('should return {command:nodejs, args: [compiledPath]} when nodejs argument is present', function(){
                     when(this.args.has('nodejs')).thenReturn(true);
 
-                    verifyRunnable('nodejs', ['build/test.js']);
+                    verifyRunnable('nodejs', ['build/TestMain.js']);
                 });
             });
 

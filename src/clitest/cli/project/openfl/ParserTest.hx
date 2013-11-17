@@ -42,7 +42,7 @@ class ParserTest extends bdd.ExampleGroup
                 });
 
                 it('should create compiledPath with placeholder for the platform', function(){
-                    should.be.equal('test/build/%platform%/TestMainFile', this.platformData.compiledPath);
+                    should.be.equal('test/build/%platform%/bin/TestMainFile', this.platformData.compiledPath);
                 });
 
                 it('should add the source pathes to the sourcePathes', function(){
