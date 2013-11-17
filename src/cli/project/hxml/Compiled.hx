@@ -42,7 +42,7 @@ class Compiled implements cli.project.ICompiled
         var command:String = '%DEFAULT%';
 
         if (this.args.has('nodejs')) {
-            command = 'nodejs';
+            command = 'node';
         } else if (this.args.has('phantomjs')) {
             command = 'phantomjs';
         }
