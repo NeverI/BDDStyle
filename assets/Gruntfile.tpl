@@ -193,15 +193,57 @@ module.exports = function(grunt) {
                 tasks[platform] = this[type](platform);
             }
 
-            return grunt.util._.extend(tasks, userTasks);
+            return grunt.util._.extend(this[type+'Extend'](tasks), userTasks);
         },
 
         watch: function(platform)
         {
-            return {
+            var task = {
                 files: ['<%= testPath %>/**/*.hx', '<%= sourcePath %>/**/*.hx'],
                 tasks: 'exec:' + platform
+            };
+
+            switch(platform) {
+                case 'all':
+                    if (this.platforms.indexOf('js') == -1 || this.platforms.indexOf('swf')) {
+                        break;
+                    }
+                case 'js':
+                case 'swf':
+                    task.tasks = [task.tasks, 'push_to_livereload'];
+                    break;
             }
+
+            return task;
+        },
+
+        watchExtend: function(tasks)
+        {
+            this.appendAllWatch(tasks);
+
+            tasks['options'] = {
+                spawn: false
+            }
+
+            return tasks;
+        },
+
+        appendAllWatch: function(tasks)
+        {
+            var
+                all = this.watch('all'),
+                allHasLiveReload = all.tasks[1] == 'push_to_livereload';
+
+            all.tasks = [];
+            for (var platform in this.platforms) {
+                all.tasks.push('exec:'+this.platforms[platform]);
+            }
+
+            if (allHasLiveReload) {
+                all.tasks.push('push_to_livereload');
+            }
+
+            tasks['all'] = all;
         },
 
         exec: function(platform)
@@ -234,6 +276,37 @@ module.exports = function(grunt) {
                         callback: this.colorizer
                     }
             }
+        },
+
+        execExtend: function(tasks)
+        {
+            return tasks;
+        },
+    },
+    LiveReloadServer = {
+        server: undefined,
+
+        init: function(task) {
+            task = task.split(':');
+            if (task[0] != 'watch' ||
+                !Array.isArray(grunt.config.get('watch.'+task[1]+'.tasks')) ||
+                grunt.config.get('watch.'+task[1]+'.tasks').indexOf('push_to_livereload') == -1
+            ) {
+                return;
+            }
+
+            this.start();
+        },
+
+        start: function()
+        {
+            this.server = require('tiny-lr')();
+            this.server.listen(35729, function(err) { console.log('LR Server Started'); });
+        },
+
+        push: function()
+        {
+            this.server.changed({body:{files: ['TestMain.js', 'TestMain.swf'] }});
         }
     },
     GrepValueChanger = {
@@ -341,5 +414,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-exec');
 
-    GrepValueChanger.init(process.argv[2]);
+    var requestedTask = process.argv[2];
+
+    GrepValueChanger.init(requestedTask);
+    LiveReloadServer.init(requestedTask);
+
+    grunt.registerTask('push_to_livereload', 'for internal usage', function(){
+        LiveReloadServer.push();
+    });
 };

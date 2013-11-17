@@ -6,5 +6,6 @@
 <body>
     <div id="haxe:trace" style="white-space:pre"></div>
     <script type="application/javascript" src="%js%"></script>
+    %liveReload%
 </body>
 </html>

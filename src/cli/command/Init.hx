@@ -179,6 +179,7 @@ class Init extends Command
     {
         var swf:String = '';
         var js:String = '';
+        var liveReload:String = this.gruntIsRequired ? '<script src="http://localhost:35729/livereload.js"></script>' : '';
 
         for (platform in this.gruntPlatforms) {
             var runnable:String = this.tools.getCompiledPath(this.format, this.exportPath, platform == 'phantomjs' ? 'js' : platform);
@@ -189,13 +190,13 @@ class Init extends Command
                     swf = runnable;
                     this.tools.putContent(
                         directory + '/swf.html',
-                        this.tools.getAsset('assets/swf_html.tpl', {swf: runnable})
+                        this.tools.getAsset('assets/swf_html.tpl', {swf: runnable, liveReload: liveReload })
                     );
                 case 'phantomjs':
                     js = runnable;
                     this.tools.putContent(
                         directory + '/js.html',
-                        this.tools.getAsset('assets/js_html.tpl', {js: runnable})
+                        this.tools.getAsset('assets/js_html.tpl', {js: runnable, liveReload: liveReload})
                     );
             }
         }
@@ -203,7 +204,7 @@ class Init extends Command
         if (swf != '' && js != '') {
             this.tools.putContent(
                 directory + '/swf_js.html',
-                this.tools.getAsset('assets/swf_js_html.tpl', {js: js, swf: swf})
+                this.tools.getAsset('assets/swf_js_html.tpl', {js: js, swf: swf, liveReload: liveReload})
             );
         }
     }
@@ -226,8 +227,8 @@ class Init extends Command
 
         this.tools.putContent(this.args.cwd+'/Gruntfile.js', this.getGruntContent());
 
-        Sys.println('grunt modules will be installed: grunt grunt-contrib-watch grunt-exec');
-        new cli.helper.Process().run('npm', ['install', 'grunt', 'grunt-contrib-watch', 'grunt-exec']);
+        Sys.println('grunt modules will be installed: grunt grunt-contrib-watch grunt-exec tiny-lr');
+        new cli.helper.Process().run('npm', ['install', 'grunt', 'grunt-contrib-watch', 'grunt-exec', 'tiny-lr']);
     }
 
     public function getGruntContent():String

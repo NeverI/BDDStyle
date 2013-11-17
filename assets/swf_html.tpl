@@ -16,5 +16,6 @@
         <param name="movie" value="%swf%">
         <embed src="%swf%" width="100%" height="100%"></embed>
     </object>
+    %liveReload%
 </body>
 </html>

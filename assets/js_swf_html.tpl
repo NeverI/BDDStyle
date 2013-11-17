@@ -13,5 +13,6 @@
             <embed src="%swf%" width="100%" height="100%"></embed>
         </object>
     </div>
+    %liveReload%
 </body>
 </html>
