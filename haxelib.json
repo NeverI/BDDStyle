@@ -1,0 +1,10 @@
+{
+	"name": "bdd",
+	"license": "MIT",
+	"tags": ["cross", "unittest", "bdd"],
+	"description": "Crossplatform async BDD style testing framework with commandline tool and gruntjs integration.",
+	"contributors": ["nevi"],
+	"releasenote": "Initial release.",
+	"version": "0.9",
+	"url": "https://github.com/NeverI/BDDStyle",
+}
