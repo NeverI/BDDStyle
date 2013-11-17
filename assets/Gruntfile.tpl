@@ -394,6 +394,12 @@ module.exports = function(grunt) {
         grunt.log.writeln('example:');
         grunt.log.writeln('    grunt watch:neko --reporter=dot --changed');
 
+        grunt.log.writeln('Livereload usage:');
+        grunt.log.writeln('    Only available for js and swf platforms.');
+        grunt.log.writeln('    Does not require any browser extension but');
+        grunt.log.writeln('    the watch task must be started before the');
+        grunt.log.writeln('    html page opened or a refresh needed.');
+
         grunt.log.writeln('');
         grunt.log.writeln('Available watch tasks:');
         tasks = grunt.config.get('watch');
