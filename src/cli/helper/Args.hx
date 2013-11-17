@@ -41,7 +41,7 @@ class Args
 
     private function getCwd():String
     {
-        var last:String = this.args[this.args.length - 1];
+        var last:String = this.stripLastSlashes(this.args[this.args.length - 1]);
         var beforeLast:String = this.args[this.args.length - 2];
 
         if (last != null && (beforeLast == null || !this.isKey(this.args.length - 2)) && sys.FileSystem.exists(last)) {
@@ -50,6 +50,20 @@ class Args
 
         var cwd:String = Sys.getCwd();
         return cwd.substr(0, cwd.length-1);
+    }
+
+    private function stripLastSlashes(path:String):String
+    {
+        if (path == null) {
+            return '';
+        }
+
+        var lastChar = path.substr(path.length - 1);
+        if (lastChar == '/' || lastChar == '\\') {
+            return path.substr(0, path.length - 1);
+        }
+
+        return path;
     }
 
     private function getParams():StringMap<String>

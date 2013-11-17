@@ -27,10 +27,11 @@ class FileCreator
         var current:String = '';
 
         for (folder in folders) {
-            current += folder+'/';
+            current += folder;
             if (!this.folderExists(current)) {
                 sys.FileSystem.createDirectory(current);
             }
+            current += '/';
         }
     }
 }

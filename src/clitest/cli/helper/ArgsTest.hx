@@ -87,7 +87,7 @@ class ArgsTest extends bdd.ExampleGroup
     private function cwdShouldBeTheCurrentCwd():Void
     {
         it('should .cwd be the current cwd', function(){
-            should.be.equal(Sys.getCwd(), this.target.cwd);
+            should.be.equal(Sys.getCwd().substr(0, Sys.getCwd().length - 1), this.target.cwd);
         });
     }
 

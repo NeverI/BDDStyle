@@ -29,7 +29,7 @@ class FileCreatorTest extends bdd.ExampleGroup
 
     private function shouldCreate(path:String):Void
     {
-        path = this.path + '/' + path;
+        path = this.path + path;
         this.target.put(path, 'foo');
 
         should.be.True(sys.FileSystem.exists(path));
