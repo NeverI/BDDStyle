@@ -120,7 +120,7 @@ module.exports = function(grunt) {
         colorize: function()
         {
             return function(err, stdout, stderr) {
-                stdout = stdout.split('\n');
+                stdout = this.clearFirstAndLastEmptyLine(stdout.split('\n'));
                 this.lineIndex = 1;
                 for (var i in stdout) {
                     this.line = stdout[i];
@@ -128,6 +128,19 @@ module.exports = function(grunt) {
                     this.lineIndex++;
                 }
             }.bind(this);
+        },
+
+        clearFirstAndLastEmptyLine: function(lines)
+        {
+            if (lines[0] == '') {
+                lines.unshift();
+            }
+
+            if (lines[lines.length] == '') {
+                lines.pop();
+            }
+
+            return lines;
         },
 
         process: function()
