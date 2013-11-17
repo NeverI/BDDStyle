@@ -1,162 +1,42 @@
 #BDDStyle (like RSpec or Jasmine)
 ##### because old school unit tests are boring :)
 
-It is a working in progress project so it is need lot of and intensive real testing. (It sucks if test failed because of the test framework :D)
+The main purpose for this framework is the continuous testing as small effort as can be.
 
-I would appreciate any contribution.
-(for example how the heck can I embed that regexp.dso to cpp target?)
+I think writing tests before the actual code is written is a good think, but I'm lazy as hell and if its require some effort... then it has a high chance I will don't do it :)
 
-Feature list (neko, flash, js):
+##Features
+#####Command Line Tool
 
-       - nested 'describe' and 'before/afterEach'
+    - project initializer
+    - class creator
+    - [Gruntjs](http://gruntjs.com) integration
+    - seamless OpenFL support
+    - test runner with grep and reporter setter
+    - headless javascript testing with phantomjs or nodejs
+
+#####Gruntjs
+
+    - automatic setup with project initializer
+    - terminal output colorization
+    - watch/exec tasks realtime created so can be change anytime
+    - grep and reporter option passtrough
+    - grep value can be setted based on the changed file so
+      anytime a class or its test is edited only these tests will be run
+    - livereload for js and swf watch tasks
+
+#####Framework
+
+       - nested 'describe' and 'before/afterEach' sections
        - async blocks inside 'it'-s
-       - should.be.eql(this, this)
-       - extendable and modular reporting system
+       - modular reporting system
+       - available platforms: all
+           - except php:
+               - builtin Sys.print generate wrong code...
+               - cannot identify iterable objects like other platforms
+           - C# / java: I don't know how to compile so not tested
 
-Some code more then any other word (especially my english)
-TestMain.hx
-```haxe
-package ;
-
-import numberguesser.*;
-
-class TestMain
-{
-    static function main(){ new TestMain(); }
-
-    public function new()
-    {
-        var reporterFactory:bdd.reporter.helper.Factory = new bdd.reporter.helper.Factory();
-        // the Dot and Descriptive reporters are interfere with each others
-        //reporterFactory.create(bdd.reporter.Dot);
-        reporterFactory.create(bdd.reporter.Descriptive);
-        reporterFactory.create(bdd.reporter.Error);
-        reporterFactory.create(bdd.reporter.Summary);
-
-        var runner = new bdd.Runner();
-
-        runner.add(numberguesser.ThinkerTest);
-
-        runner.run();
-    }
-}
-```
-
-TestClass
-```haxe
-package numberguesser;
-
-import mockatoo.Mockatoo.*;
-
-class ThinkerTest extends bdd.ExampleGroup
-{
-    private var target:Thinker;
-    private var generator:RandomNumberGenerator;
-
-    override public function beforeEach():Void
-    {
-        this.generator = mock(RandomNumberGenerator);
-        this.target = new Thinker(this.generator);
-    }
-
-    public function example_1_Think():Void
-    {
-        this.describe('#think(min:Int, max:Int):Void', function(){
-            this.it('should call the random generator with given values', function(){
-                this.target.think(1, 100);
-
-                verify(this.generator.generate(1, 100));
-
-                this.should.success();
-            });
-        });
-    }
-
-    public function example_3_guessAnsAsk():Void
-    {
-        extendBeforeEach(function(){
-            when(generator.generate(0, 20)).thenReturn(10);
-            when(generator.generate(0, 10)).thenReturn(5);
-        });
-
-        describe('gueesing and asking', function(){
-            describe('#guess(value:Int):Int', function(){
-                extendBeforeEach(function(){
-                    target.think(0, 20);
-                });
-
-                it('should return -1 if the value is smaller then own number', function(){
-                    should.be.equal(-1, target.guess(5));
-                });
-
-                it('should return 1 if the value is bigger then own number', function(){
-                    should.be.equal(1, target.guess(20));
-                });
-
-                it('should return 1 if the value is equal with own number', function(){
-                   should.be.equal(1, target.guess(10));
-                });
-            });
-
-            // can be disable any desribe or it
-            xdescribe('#ask(value:Int):Bool', function(){
-                extendBeforeEach(function(){
-                    target.think(0, 10);
-                });
-
-                it('should return false if the value is not equal with own number', function(){
-                    should.be.False(target.ask(10));
-                });
-
-                xit('should return true if the value is equal with own number', function(){
-                    should.be.True(target.ask(5));
-                });
-            });
-        });
-    }
-
-    public function example_2_async():Void
-    {
-        describe('working with async', function(){
-            it('really shoud', function(){
-                var asyncTimeout = 1500;
-                var callbackWillBeCalled = 500;
-
-                var thatWasFalse:Bool = false;
-                var asyncFunc = this.createAsyncBlock(function(?data){ this.should.be.True(thatWasFalse); }, asyncTimeout);
-
-                bdd.munit.Timer.delay( asyncFunc, callbackWillBeCalled);
-
-                thatWasFalse = true;
-            });
-        });
-    }
-}
-```
-
-output:
-```
-# Descriptive reporter
-numberguesser.ThinkerTest
-#think(min:Int, max:Int):Void
-    should call the random generator with given values
-working with async
-    really shoud
-gueesing and asking
-    #guess(value:Int):Int
-        should return -1 if the value is smaller then own number
-        should return 1 if the value is bigger then own number
-        should return 1 if the value is equal with own number
-    #ask(value:Int):Bool
-        P: should return false if the value is not equal with own number
-        P: should return true if the value is equal with own number
-
-# Summary reporter
-7 spec, 5 success, 2 pending, 0 failed, 5 expects.
-OK
-```
-
-shoulds:
+#####Available shoulds:
 ```
 should.success();
 should.fail();
@@ -203,4 +83,41 @@ should.not.fail();
 should.not.not.not.not.not.fail(); :D
 
 //checkout the tests for more detailed possibilities
+```
+
+##Usage
+
+#####Install
+```
+$> haxelib install bdd
+```
+
+#####Command line:
+```
+$> haxelib run bdd init # it will ask some questions
+Woud you like to use gruntjs as automatic/colorizer runner?
+test path (default test):
+source path (default src):
+export path (default build):
+haxelibs (other then bdd (commasep list)):
+# if you enter openfl then the project file will be an openfl xml
+# instead of hxml, and does not ask for the platforms
+Which platforms would you like to use (default neko)?
+
+$> haxelib run bdd test # compile and run all the platforms
+                        # or neko with openfl
+$> haxelib run bdd test -p cpp # only cpp target (both openfl/hxml)
+$> haxelib run bdd create org.example.Whatever # create a class and
+                                               # its test file
+$> haxelib run bdd help # for more info :)
+```
+
+#####Gruntjs:
+```
+$> grunt watch:neko # run all the test files on file change with neko
+$> grunt watch:phantomjs --grep=Example # only Example with phantom js
+$> grunt watch:neko --reporter=dot --changed # only the changed file
+                                             # with dot reporter
+$> grunt watch:js # this will only build the js file and trigger for livereload
+$> grunt help # for more info
 ```
