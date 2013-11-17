@@ -24,6 +24,7 @@ class Init extends Command
     {
         this.askGrunt();
         this.colletBasicData();
+        this.checkExistingTestMain();
         this.init();
         this.checkPhantomJs();
         this.copyAssets();
@@ -63,6 +64,17 @@ class Init extends Command
             sources: [this.testPath, this.sourcePath],
             export: this.exportPath,
             libs: this.libs
+        }
+    }
+
+    private function checkExistingTestMain():Void
+    {
+        if (!sys.FileSystem.exists(this.testPath+'/TestMain.hx')) {
+            return;
+        }
+
+        if (!this.tools.askBool('TestMain is exists, do you would like to overwrite?')) {
+            Sys.exit(1);
         }
     }
 
