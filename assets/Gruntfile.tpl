@@ -1,10 +1,10 @@
 module.exports = function(grunt) {
 
     var
-    paltforms: %platforms%,,
+    platforms = %platforms%,
 
-    testPath: '%test%',
-    sourcePath: '%source%',
+    testPath = '%test%',
+    sourcePath = '%source%',
 
     customWatchTasks = {},
     customExecTasks = {},
@@ -250,7 +250,7 @@ module.exports = function(grunt) {
         {
             var
                 commandPrefix = 'haxelib run bdd';
-                commandSuffix = platform + '<%= grep %><%= reporter %><%= projectFile %>';
+                commandSuffix = platform + ' <%= grep %> <%= reporter %> <%= projectFile %>';
             switch(platform) {
                 case 'js':
                 case 'swf':
@@ -301,7 +301,7 @@ module.exports = function(grunt) {
         start: function()
         {
             this.server = require('tiny-lr')();
-            this.server.listen(35729, function(err) { console.log('LR Server Started'); });
+            this.server.listen(35729, function(err) { if (err) console.log(err); });
         },
 
         push: function()
@@ -363,9 +363,9 @@ module.exports = function(grunt) {
             return this.file.substr(prefix.length + 1).replace(suffix, '').split('/').join('\\.');
         }
     },
-    grep = grunt.option('grep') ? ' -g '+grunt.option('grep') : '',
-    reporter = grunt.option('reporter') ? ' -r '+grunt.option('reporter') : '',
-    project = grunt.option('project') ? ' -f '+grunt.option('project') : ''
+    grep = grunt.option('grep') ? '-g '+grunt.option('grep') : '',
+    reporter = grunt.option('reporter') ? '-r '+grunt.option('reporter') : '',
+    project = grunt.option('project') ? '-f '+grunt.option('project') : ''
     ;
 
     grunt.registerTask('help', 'Brief description for available options and watch/exec tasks', function(){
@@ -385,6 +385,9 @@ module.exports = function(grunt) {
         grunt.log.writeln('Available watch tasks:');
         tasks = grunt.config.get('watch');
         for (var taskName in tasks) {
+            if (taskName == 'options') {
+                continue;
+            }
             grunt.log.writeln('    watch:'+taskName);
         }
 
@@ -392,6 +395,9 @@ module.exports = function(grunt) {
         grunt.log.writeln('Available exec tasks:');
         tasks = grunt.config.get('exec');
         for (var taskName in tasks) {
+            if (taskName == 'options') {
+                continue;
+            }
             grunt.log.writeln('    exec:'+taskName);
         }
 
