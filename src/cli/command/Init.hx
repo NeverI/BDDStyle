@@ -177,22 +177,34 @@ class Init extends Command
 
     private function copyHtmls():Void
     {
+        var swf:String = '';
+        var js:String = '';
+
         for (platform in this.gruntPlatforms) {
             var runnable:String = this.tools.getCompiledPath(this.format, this.exportPath, platform == 'phantomjs' ? 'js' : platform);
             var directory:String = haxe.io.Path.directory(runnable);
             runnable = haxe.io.Path.withoutDirectory(runnable);
             switch(platform) {
                 case 'swf':
+                    swf = runnable;
                     this.tools.putContent(
                         directory + '/swf.html',
                         this.tools.getAsset('assets/swf_html.tpl', {swf: runnable})
                     );
                 case 'phantomjs':
+                    js = runnable;
                     this.tools.putContent(
                         directory + '/js.html',
                         this.tools.getAsset('assets/js_html.tpl', {js: runnable})
                     );
             }
+        }
+
+        if (swf != '' && js != '') {
+            this.tools.putContent(
+                directory + '/swf_js.html',
+                this.tools.getAsset('assets/swf_js_html.tpl', {js: js, swf: swf})
+            );
         }
     }
 
@@ -220,6 +232,10 @@ class Init extends Command
 
     public function getGruntContent():String
     {
-        return this.tools.getAsset('assets/Gruntfile.tpl', { test: this.testPath, source: this.sourcePath, platforms: Std.string(this.gruntPlatforms) });
+        return this.tools.getAsset('assets/Gruntfile.tpl', {
+                test: this.testPath,
+                source: this.sourcePath,
+                platforms: haxe.Json.stringify(this.gruntPlatforms)
+            });
     }
 }
