@@ -15,7 +15,7 @@ class Process
             return this.run('open', [runnable]);
 
         } else if (Sys.systemName() == 'Windows') {
-            return this.run('start', [runnable]);
+            return Sys.command('start', [runnable]);
         }
 
         return 1;

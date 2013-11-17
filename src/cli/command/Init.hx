@@ -47,8 +47,7 @@ class Init extends Command
 
     private function isInstalled(name:String):Bool
     {
-        var process:sys.io.Process = new sys.io.Process(name, ['--version']);
-        return process.stderr.readAll().length == 0;
+        return Sys.command(name, ['--version']) == 0;
     }
 
     private function colletBasicData():Void
