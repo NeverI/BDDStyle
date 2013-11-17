@@ -203,8 +203,8 @@ class Init extends Command
 
         if (swf != '' && js != '') {
             this.tools.putContent(
-                directory + '/swf_js.html',
-                this.tools.getAsset('assets/swf_js_html.tpl', {js: js, swf: swf, liveReload: liveReload})
+                this.exportPath + '/js_swf.html',
+                this.tools.getAsset('assets/js_swf_html.tpl', {js: js, swf: swf, liveReload: liveReload})
             );
         }
     }
@@ -227,7 +227,7 @@ class Init extends Command
 
         this.tools.putContent(this.args.cwd+'/Gruntfile.js', this.getGruntContent());
 
-        Sys.println('grunt modules will be installed: grunt grunt-contrib-watch grunt-exec tiny-lr');
+        Sys.println('nodejs modules will be installed: grunt grunt-contrib-watch grunt-exec tiny-lr');
         new cli.helper.Process().run('npm', ['install', 'grunt', 'grunt-contrib-watch', 'grunt-exec', 'tiny-lr']);
     }
 
