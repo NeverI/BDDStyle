@@ -57,6 +57,16 @@ class ExampleGroup
         ExampleGroup.describeTracker.addRunnable(new It(msg));
     }
 
+    public function when(msg:String, ?method:Void->Void):Void
+    {
+        ExampleGroup.describeTracker.addRunnable(new It('when ' + msg, method));
+    }
+
+    public function xwhen(msg:String, ?method:Void->Void):Void
+    {
+        ExampleGroup.describeTracker.addRunnable(new It(msg));
+    }
+
     public function createAsyncBlock(block:Dynamic->Void, ?timeout:Int):Dynamic->Void
     {
         #if php

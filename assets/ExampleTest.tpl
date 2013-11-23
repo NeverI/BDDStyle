@@ -19,13 +19,15 @@ class ExampleTest extends bdd.ExampleGroup
             should.contains('bar', this.array);
         });
 
-        describe('this.array from a describe', function(){
+        describe('this.array popped', function(){
             extendBeforeEach(function(){
                 this.array.pop();
             });
 
-            it('should not contains bar', function(){
-                should.not.contains('bar', this.array);
+            describe('array does not contain bar', function(){
+                when('this test run', function(){
+                    should.not.contains('bar', this.array);
+                });
             });
         });
 
