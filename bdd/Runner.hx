@@ -56,6 +56,8 @@ class Runner extends bdd.event.EventDispatcher
     {
         #if (cpp||neko)
         Sys.exit(exitCode);
+        #elseif nodejs
+        js.Node.process.exit(exitCode);
         #elseif js
         try {
             untyped phantom.exit(exitCode);
