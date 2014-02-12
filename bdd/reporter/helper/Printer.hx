@@ -27,6 +27,7 @@ class Printer
             textfield.wordWrap = true;
             textfield.multiline = true;
             textfield.mouseWheelEnabled = true;
+        #elseif nodejs
         #elseif js
             if (js.Browser.document == null) {
                 return;
