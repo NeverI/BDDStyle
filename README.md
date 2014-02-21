@@ -121,3 +121,7 @@ $> grunt watch:neko --reporter=dot --changed # only the changed file
 $> grunt watch:js # this will only build the js file and trigger for livereload
 $> grunt help # for more info
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/NeverI/bddstyle/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
